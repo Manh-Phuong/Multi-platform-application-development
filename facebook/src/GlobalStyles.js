@@ -1,5 +1,6 @@
 /* fonts */
 export const FontFamily = {
+
     uI16Semi: "Inter-SemiBold",
     uI16Medium: "Inter-Medium",
   };
@@ -31,3 +32,4 @@ export const FontFamily = {
     br_5xs: 8,
   };
   
+
