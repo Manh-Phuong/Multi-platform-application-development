@@ -8,12 +8,13 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='CreatePassword' screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName='ChooseGender'>
         {publicRoutes.map((route, index) => (
           <Stack.Screen
             key={index}
             name={route.name}
             component={route.component}
+            options={{ headerShown: false }}
           />
         ))}
       </Stack.Navigator>
