@@ -12,8 +12,10 @@ import {
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useNavigation } from "@react-navigation/native";
 
 const ChooseNumberPhone = () => {
+  const navigation = useNavigation();
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
@@ -23,18 +25,24 @@ const ChooseNumberPhone = () => {
 
   const handlePasswordChange = (text) => {
     // Kiểm tra xem text có chứa khoảng trắng không
-    if (!text.includes(' ')) {
+    if (!text.includes(" ")) {
       setPassword(text);
     }
   };
 
+  const goBackHandler = () => {
+    navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
   return (
     <View style={styles.createName}>
-      <Image
-        style={[styles.vectorIcon, styles.iconLayout]}
-        contentFit="cover"
-        source={require("../assets/images/vector.png")}
-      />
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
       <Text style={[styles.bnTnG]}>Tạo mật khẩu</Text>
       <Text style={[styles.nhpTnBn1]}>
         Tạo mật khẩu gồm ít nhất 6 chữ cái hoặc chữ số. Bạn nên chọn mật khẩu
@@ -50,7 +58,10 @@ const ChooseNumberPhone = () => {
             onChangeText={handlePasswordChange}
           />
           {password.length > 0 && (
-            <TouchableOpacity onPress={togglePasswordVisibility} style={[styles.iconEye]}>
+            <TouchableOpacity
+              onPress={togglePasswordVisibility}
+              style={[styles.iconEye]}
+            >
               <Icon
                 name={isPasswordVisible ? "eye" : "eye-slash"}
                 size={20}

@@ -9,15 +9,29 @@ import {
   Platform,
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const ChooseNumberPhone = () => {
+  const navigation = useNavigation();
+
+  const goBackHandler = () => {
+    navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
+  const goToCreatePasswordScreen = () => {
+    navigation.navigate('CreatePassword'); 
+  };
+
   return (
     <View style={styles.createName}>
-      <Image
-        style={[styles.vectorIcon, styles.iconLayout]}
-        contentFit="cover"
-        source={require("../assets/images/vector.png")}
-      />
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
+
       <Text style={[styles.bnTnG]}>Số di động của bạn là gì?</Text>
       <Text style={[styles.nhpTnBn1]}>
         Nhập số di động có thể dùng để liên hệ với bạn. Thông tin này sẽ không
@@ -34,12 +48,15 @@ const ChooseNumberPhone = () => {
 
       <Text style={[styles.nhpTnBn2]}>
         Bạn cũng sẽ nhận được thông báo của chúng tôi qua SMS và có thể chọn
-        không nhận bất cứ lúc nào. <Text style={{color: '#0062e0', fontWeight: 600}}>Tìm hiểu thêm</Text>
+        không nhận bất cứ lúc nào.{" "}
+        <Text style={{ color: "#0062e0", fontWeight: 600 }}>Tìm hiểu thêm</Text>
       </Text>
 
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
+      <TouchableOpacity onPress={goToCreatePasswordScreen}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
 
       <View style={styles.buttonSub}>
         <Text style={styles.logIn2}>Đăng ký bằng email</Text>
