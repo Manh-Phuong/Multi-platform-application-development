@@ -22,6 +22,7 @@ const publicRoutes = [
     name: "ChooseGender",
     component: ChooseGenderScreen,
 },
+  {
     name: "CreateName",
     component: CreateNameScreen,
   },
