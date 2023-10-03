@@ -1,19 +1,76 @@
-import * as React from "react";
+import React, {useState, useRef} from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 import {
     StyleSheet,
     Text,
     View,
     TextInput,
-    Button,
-    Pressable,
-    TouchableOpacity
+    TouchableOpacity,
+    Alert,
+    Keyboard,
+    TouchableWithoutFeedback
 } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome'; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 
 const Login = () => {
-    return (
+    const [account, setAccount] = useState('');
+    const [password, setPassword] = useState('');
+    const [isFocusedAccount, setIsFocusedAccount] = useState(false);
+    const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+    const [isShowPassword, setIsShowPassword] = useState(false);
 
+    const accountInputRef = useRef(null);
+    const passwordInputRef = useRef(null);
+
+    const navigation = useNavigation();
+
+    const changePassword = (newPassword) => {
+        setPassword(newPassword);
+    };
+    const changeAccount = (newAccount) => {
+        setAccount(newAccount);
+    };
+    const handleFocusPassword = () => {
+        setIsFocusedPassword(true);
+    };
+
+    const handleBlurPassword = () => {
+        setIsFocusedPassword(false);
+    };
+    const handleFocusAccount = () => {
+        setIsFocusedAccount(true);
+    };
+
+    const handleBlurAccount = () => {
+        setIsFocusedAccount(false);
+    };
+
+    const handleTogglePassword = () => {
+        setIsShowPassword(!isShowPassword)
+    }
+    const handleSummit = () => {
+        if (!account.trim()) {
+            Alert.alert("Cần có email hoặc số di động", 'Nhập email và số di động của bạn để tiếp tục.', [{
+                    text: 'OK',
+                    onPress: () => {
+                        accountInputRef.current.focus()
+                    }
+                },])
+        } else if (!password.trim()) {
+            Alert.alert("Cần có mật khẩu", 'Nhập mật khẩu của bạn để tiếp tục.', [{
+                    text: 'OK',
+                    onPress: () => {
+                        passwordInputRef.current.focus()
+                    }
+                },])
+        }
+    };
+
+    return (<TouchableWithoutFeedback onPress={
+            Keyboard.dismiss
+        }
+        accessible={false}>
         <View style={
             styles.container
         }>
@@ -28,7 +85,7 @@ const Login = () => {
                 {
                     width: "100%",
                     paddingTop: 80,
-                    paddingBottom: 100,
+                    paddingBottom: 80,
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center'
@@ -51,27 +108,70 @@ const Login = () => {
                 </View>
             </View>
             <View>
+                <Text style={
+                    styles.textLabel
+                }>Số di động hoặc email</Text>
+                <View style={styles.textInputContainer}>
+
                 <TextInput style={
-                        styles.textInput
+                        [
+                            styles.textInput,
+                            isFocusedAccount ? styles.focusedInput : null
+                        ]
                     }
-                    placeholder="Số di động hoặc email"
+                    ref={accountInputRef}
+                    keyboardType='email-address'
+                    returnKeyType='next'
+                    onSubmitEditing={
+                        () => passwordInputRef.current.focus()
+                    }
+                    placeholder="Nhập số di động hoặc email"
                     placeholderTextColor="#888"
-                    // Màu sắc của placeholder
-                ></TextInput>
+                    onChangeText={changeAccount}
+                    onFocus={handleFocusAccount}
+                    onBlur={handleBlurAccount}></TextInput>
+                                    </View>
+
             </View>
             <View>
-                <TextInput style={
-                        styles.textInput
-                    }
-                    placeholder="Mật khẩu"
-                    placeholderTextColor="#888"
-                    // Màu sắc của placeholder
-                />
+                <Text style={
+                    styles.textLabel
+                }>Mật khẩu</Text>
+                <View style={
+                    [
+                        styles.textInputContainer,
+                        isFocusedPassword ? styles.focusedInput : null
+                    ]
+                }>
+
+                    <TextInput style={styles.textInput} ref={passwordInputRef}
+                        placeholder="Nhập mật khẩu"
+                        placeholderTextColor="#888"
+                        secureTextEntry={
+                            !isShowPassword
+                        }
+                        returnKeyType='done'
+                        onChangeText={changePassword}
+                        onFocus={handleFocusPassword}
+                        onBlur={handleBlurPassword}/>
+                        {(isFocusedPassword || password.trim()) && <Icon style={
+                                styles.eysIcon
+                            }
+                            onPress={handleTogglePassword}
+                            name={
+                                isShowPassword ? "eye" : "eye-slash"
+                            }
+
+                            size={20}
+                            color="#000"/>}
+                </View>
+
             </View>
             <View>
                 <TouchableOpacity style={
-                    styles.primaryButton
-                }>
+                        styles.primaryButton
+                    }
+                    onPress={handleSummit}>
                     <Text style={
                         styles.buttonText
                     }>Đăng nhập</Text>
@@ -89,14 +189,14 @@ const Login = () => {
             }>
                 <TouchableOpacity style={
                     styles.subButton
-                }>
+                } onPress={() => navigation.navigate('ChooseGender')}>
                     <Text style={
                         styles.subButtonText
                     }>Tạo tài khoản mới</Text>
                 </TouchableOpacity>
             </View>
         </View>
-    );
+    </TouchableWithoutFeedback>);
 };
 
 const styles = StyleSheet.create({
@@ -106,14 +206,21 @@ const styles = StyleSheet.create({
         height: "100%",
         position: "relative"
     },
-    textInput: {
+    textInputContainer: {
         borderColor: "#ccc",
         borderWidth: 1,
-        padding: 16,
-        fontSize: 16,
+        paddingTop: 16,
+        paddingBottom: 16,
+        paddingLeft: 16,
+        paddingRight: 16,
         backgroundColor: "white",
         borderRadius: 16,
-        marginBottom: 10
+        marginBottom: 10,
+        position: "relative",
+        height: 56
+    },
+    textInput: {
+        fontSize: 16,
     },
     primaryButton: {
         backgroundColor: "#0063e0",
@@ -165,141 +272,27 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center"
+    },
+    textLabel: {
+        fontSize: 16,
+        marginBottom: 6,
+        marginLeft: 12
+    },
+    eysIcon: {
+        position: "absolute",
+        right: 12,
+        top: 16
     }
-    // inputtextPosition: {
-    //     height: 50,
+    // focusedInput: {
+    //     paddingTop: 10,
+    //     fontSize:16,
+    //     placeholder: "none"
+    // },
+    // label: {
     //     position: "absolute",
-    //     left: 16,
-    //     right: 16
-    // },
-    // iconLayout: {
-    //     maxHeight: "100%",
-    //     maxWidth: "100%",
-    //     position: "absolute",
-    //     overflow: "hidden"
-    // },
-    // buttonprimarySpaceBlock: {
-    //     paddingVertical: Padding.p_base,
-    //     paddingHorizontal: Padding.p_13xl,
-    //     alignItems: "center",
-    //     borderRadius: Border.br_81xl,
-    //     position: "absolute"
-    // },
-    // logTypo: {
-    //     textAlign: "center",
-    //     fontWeight: "600",
-    //     fontSize: FontSize.uI16Semi_size
-    // },
-    // bgIcon: {
-    //     height: "100%",
-    //     top: "0%",
-    //     right: "0%",
-    //     bottom: "0%",
-    //     left: "0%",
-    //     borderRadius: Border.br_5xs,
-    //     width: "100%",
-    //     maxHeight: "100%",
-    //     maxWidth: "100%"
-    // },
-    // email: {
-    //     color: Color.gray03,
-    //     textAlign: "left",
-
-    //     fontWeight: "500",
-    //     fontSize: FontSize.uI16Semi_size,
-    //     top: "50%",
-    //     marginTop: -9,
-    //     left: 16,
-    //     position: "absolute"
-    // },
-    // show: {
-    //     color: Color.greenPrimary,
-    //     textAlign: "right",
-    //     display: "none",
-
-    //     fontWeight: "500",
-    //     fontSize: FontSize.uI16Semi_size,
-    //     top: "50%",
-    //     marginTop: -9,
-    //     right: 16,
-    //     position: "absolute"
-    // },
-    // inputtext: {
-    //     top: 256
-    // },
-    // inputtext1: {
-    //     top: 322
-    // },
-    // logIn1: {
-    //     color: Color.white
-    // },
-    // buttonprimary: {
-    //     bottom: 350,
-    //     backgroundColor: Color.colorRoyalblue_200,
-    //     left: 16,
-    //     right: 16,
-    //     paddingVertical: Padding.p_base,
-    //     paddingHorizontal: Padding.p_13xl,
-    //     alignItems: "center",
-    //     borderRadius: Border.br_81xl
-    // },
-    // logIn2: {
-    //     color: Color.colorRoyalblue_200
-    // },
-    // buttonprimary1: {
-    //     right: 15,
-    //     bottom: 114,
-    //     left: 15,
-    //     borderStyle: "solid",
-    //     borderColor: Color.colorRoyalblue_200,
-    //     borderWidth: 1,
-    //     paddingVertical: Padding.p_base,
-    //     paddingHorizontal: Padding.p_13xl,
-    //     alignItems: "center",
-    //     borderRadius: Border.br_81xl,
-    //     backgroundColor: Color.white
-    // },
-    // qunMtKhu: {
-    //     marginLeft: -62.5,
-    //     bottom: 315,
-    //     left: "50%",
-    //     color: Color.colorBlack,
-
-    //     fontWeight: "600",
-    //     textAlign: "left",
-    //     fontSize: FontSize.uI16Semi_size,
-    //     position: "absolute"
-    // },
-    // vectorIcon: {
-    //     height: "8.5%",
-    //     width: "18.4%",
-    //     top: "15.27%",
-    //     right: "40.8%",
-    //     bottom: "76.23%",
-    //     left: "40.8%"
-    // },
-    // vectorIcon1: {
-    //     height: "2.63%",
-    //     width: "3.45%",
-    //     top: "4.19%",
-    //     right: "92.28%",
-    //     bottom: "93.19%",
-    //     left: "4.27%"
-    // },
-    // logIn: {
-    //     flex: 1,
-    //     height: 812,
-    //     overflow: "hidden",
-    //     width: "100%",
-    //     backgroundColor: Color.white
-    // },
-    // input: {
-    //     borderWidth: 1, // Độ dày của viền
-    //     borderColor: 'black', // Màu sắc của viền
-    //     padding: 20,
-    //     borderRadius: 10
+    //     top: 8,
+    //     left: 16
     // }
-
 });
 
 export default Login;

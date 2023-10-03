@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login'>
+      <Stack.Navigator initialRouteName='ChooseDateOfBirth'>
         {publicRoutes.map((route, index) => (
           <Stack.Screen
             key={index}
