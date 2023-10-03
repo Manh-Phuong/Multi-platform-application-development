@@ -9,7 +9,7 @@ import {
   Platform,
   TouchableOpacity
 } from "react-native";
-import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 
 const CreateName = () => {
@@ -20,7 +20,7 @@ const CreateName = () => {
   };
 
   const goToNextScreen = () => {
-    navigation.navigate('ChooseAge'); 
+    navigation.navigate('ChooseDateOfBirth'); 
   };
 
   return (
@@ -106,7 +106,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   showTypo: {
-    fontFamily: FontFamily.uI16Medium,
     fontWeight: "500",
     top: "50%",
     marginTop: -9,
@@ -117,7 +116,6 @@ const styles = StyleSheet.create({
     color: Color.white,
     textAlign: "center",
     fontSize: FontSize.uI16Medium_size,
-    fontFamily: FontFamily.uI16Semi,
     fontWeight: "600",
   },
   buttonprimary: {
@@ -142,14 +140,12 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xl,
     width: 142,
     height: 30,
-    fontFamily: FontFamily.uI16Semi,
     fontWeight: "600",
     color: Color.colorBlack,
   },
   nhpTnBn: {
     top: 175,
     fontSize: 14,
-    fontFamily: FontFamily.interRegular,
     left: 16,
   },
   bgIcon: {

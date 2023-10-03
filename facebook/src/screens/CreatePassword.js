@@ -10,7 +10,7 @@ import {
   Platform,
   TouchableOpacity,
 } from "react-native";
-import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 
@@ -133,7 +133,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   showTypo: {
-    fontFamily: FontFamily.uI16Medium,
     fontWeight: "500",
     top: "50%",
     marginTop: -9,
@@ -144,14 +143,12 @@ const styles = StyleSheet.create({
     color: Color.white,
     textAlign: "center",
     fontSize: FontSize.uI16Medium_size,
-    fontFamily: FontFamily.uI16Semi,
     fontWeight: "800",
   },
   logIn2: {
     color: Color.colorBlack,
     textAlign: "center",
     fontSize: FontSize.uI16Medium_size,
-    fontFamily: FontFamily.uI16Semi,
     fontWeight: "800",
   },
   buttonprimary: {
@@ -189,14 +186,12 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_xl,
     width: "100%",
     height: 30,
-    fontFamily: FontFamily.uI16Semi,
     fontWeight: "800",
     color: Color.colorBlack,
   },
   nhpTnBn1: {
     top: 125,
     fontSize: 14,
-    fontFamily: FontFamily.interRegular,
     left: 16,
     maxWidth: "100%",
     marginRight: 16,
@@ -204,7 +199,6 @@ const styles = StyleSheet.create({
   nhpTnBn2: {
     top: 215,
     fontSize: 14,
-    fontFamily: FontFamily.interRegular,
     left: 16,
     maxWidth: "100%",
     marginRight: 16,

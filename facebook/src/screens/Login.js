@@ -12,10 +12,8 @@ import {
     TouchableWithoutFeedback
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
-import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
-
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
     const [isFocusedAccount, setIsFocusedAccount] = useState(false);
@@ -112,7 +110,7 @@ const Login = () => {
             <View>
                 <Text style={
                     styles.textLabel
-                }>Số di động hoặc email</Text>
+                }>Email</Text>
                 <View style={styles.textInputContainer}>
 
                 <TextInput style={
@@ -127,7 +125,7 @@ const Login = () => {
                     onSubmitEditing={
                         () => passwordInputRef.current.focus()
                     }
-                    placeholder="Nhập số di động hoặc email"
+                    placeholder="Nhập email"
                     placeholderTextColor="#888"
                     onChangeText={changeAccount}
                     onFocus={handleFocusAccount}
@@ -191,7 +189,7 @@ const Login = () => {
             }>
                 <TouchableOpacity style={
                     styles.subButton
-                } onPress={() => navigation.navigate('ChooseGender')}>
+                } onPress={() => navigation.navigate('IntroCreateAccount')}>
                     <Text style={
                         styles.subButtonText
                     }>Tạo tài khoản mới</Text>

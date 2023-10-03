@@ -18,7 +18,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'; // Chú ý: Icon set c
 const ChooseDateOfBirth = () => {
     const [dateOfBirth, setDateOfBirth] = useState(new Date());
     const [isFocusDate, setIsFocusDate] = useState(false);
-    const dateInputRef = useRef(null);
+    const navigation = useNavigation();
 
     const translateY = useRef(new Animated.Value(100)).current;
 
@@ -39,8 +39,14 @@ const ChooseDateOfBirth = () => {
 
     const handleChangeDate = (event, newDate) => {
         setDateOfBirth(newDate)
-    }
-
+    };
+    const goBackHandler = () => {
+        navigation.goBack(); // Quay lại màn hình trước đó
+    };
+    const goToNextScreen = () => {
+        navigation.navigate('ChooseGender'); 
+    };
+    
     const formatCustomDate = (date) => {
         const months = [
             'Tháng 1',
@@ -75,8 +81,8 @@ const ChooseDateOfBirth = () => {
         }>
             <View style={
                 {marginTop: 40}
-            }>
-                <Icon name="angle-left"
+            } >
+                <Icon onPress={goBackHandler} name="angle-left"
                     size={30}
                     color="#000"/>
             </View>
@@ -120,7 +126,7 @@ const ChooseDateOfBirth = () => {
         <View>
             <TouchableOpacity style={
                 styles.primaryButton
-            }>
+            } onPress={goToNextScreen}>
                 <Text style={
                     styles.buttonText
                 }>Tiếp</Text>
