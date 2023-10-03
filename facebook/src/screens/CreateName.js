@@ -7,6 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -16,6 +17,10 @@ const CreateName = () => {
 
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
+  const goToNextScreen = () => {
+    navigation.navigate('ChooseAge'); 
   };
 
   return (
@@ -44,9 +49,11 @@ const CreateName = () => {
         </KeyboardAvoidingView>
       </View>
 
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
+      <TouchableOpacity onPress={goToNextScreen}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
       <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
     </View>
   );

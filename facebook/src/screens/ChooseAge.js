@@ -7,6 +7,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
@@ -17,6 +18,11 @@ const ChooseAge = () => {
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
   };
+
+  const goToNextScreen = () => {
+    navigation.navigate("ChooseGender");
+  };
+
   return (
     <View style={styles.createName}>
       <TouchableOpacity onPress={goBackHandler}>
@@ -30,19 +36,15 @@ const ChooseAge = () => {
       <Text style={[styles.bnTnG]}>Bạn bao nhiêu tuổi?</Text>
       <View>
         <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition1]} placeholder="Tên" />
+          <TextInput style={[styles.inputtextPosition1]} placeholder="Tuổi" />
         </KeyboardAvoidingView>
       </View>
 
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition2]} placeholder="Họ" />
-        </KeyboardAvoidingView>
-      </View>
-
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
+      <TouchableOpacity onPress={goToNextScreen}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
 
       <View style={styles.buttonSub}>
         <Text style={styles.logIn2}>Dùng ngày sinh</Text>
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
     top: 148,
     left: 16,
     position: "absolute",
-    minWidth: 170,
-    maxWidth: 170,
+    width: "92%",
+    maxWidth: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,

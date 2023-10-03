@@ -6,7 +6,7 @@ import CreateNameScreen from "../screens/CreateName";
 import ChooseAgeScreen from "../screens/ChooseAge";
 import ChooseNumberPhoneScreen from "../screens/ChooseNumberPhone";
 import CreatePasswordScreen from "../screens/CreatePassword";
-
+import IntroCreateAccountScreen from "../screens/IntroCreateAccount";
 
 const publicRoutes = [
   {
@@ -18,13 +18,14 @@ const publicRoutes = [
     component: LoginScreen,
   },
   {
-
+    name: "IntroCreateAccount",
+    component: IntroCreateAccountScreen,
+  },
+  {
     name: "ChooseGender",
     component: ChooseGenderScreen,
-},
-    name: "CreateName",
-    component: CreateNameScreen,
   },
+  { name: "CreateName", component: CreateNameScreen },
   {
     name: "ChooseAge",
     component: ChooseAgeScreen,
@@ -36,7 +37,6 @@ const publicRoutes = [
   {
     name: "CreatePassword",
     component: CreatePasswordScreen,
-
   },
 ];
 
