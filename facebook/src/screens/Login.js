@@ -17,9 +17,7 @@ const Login = () => {
             styles.container
         }>
             <View style={
-                {
-                    marginTop: 40
-                }
+                {marginTop: 40}
             }>
                 <Icon name="angle-left"
                     size={30}
@@ -58,7 +56,7 @@ const Login = () => {
                     placeholder="Số di động hoặc email"
                     placeholderTextColor="#888"
                     // Màu sắc của placeholder
-                />
+                ></TextInput>
             </View>
             <View>
                 <TextInput style={
@@ -123,11 +121,11 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "50%",
+        borderRadius: "50%"
     },
     buttonText: {
         color: "white",
-        fontWeight: "bold",
+        fontWeight: "bold"
 
     },
     subButton: {
@@ -142,7 +140,7 @@ const styles = StyleSheet.create({
     },
     subButtonText: {
         color: "#0063e0",
-        fontWeight: "bold",
+        fontWeight: "bold"
     },
     icon: {
         width: 30,
