@@ -1,10 +1,12 @@
 // publicRoutes.js
 import HomeScreen from "../screens/Home";
 import LoginScreen from "../screens/Login";
+import ChooseGenderScreen from "../screens/ChooseGender";
 import CreateNameScreen from "../screens/CreateName";
 import ChooseAgeScreen from "../screens/ChooseAge";
 import ChooseNumberPhoneScreen from "../screens/ChooseNumberPhone";
 import CreatePasswordScreen from "../screens/CreatePassword";
+
 
 const publicRoutes = [
   {
@@ -16,6 +18,10 @@ const publicRoutes = [
     component: LoginScreen,
   },
   {
+
+    name: "ChooseGender",
+    component: ChooseGenderScreen,
+},
     name: "CreateName",
     component: CreateNameScreen,
   },
@@ -30,6 +36,7 @@ const publicRoutes = [
   {
     name: "CreatePassword",
     component: CreatePasswordScreen,
+
   },
 ];
 
