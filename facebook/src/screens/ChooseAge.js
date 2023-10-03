@@ -7,41 +7,50 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const ChooseAge = () => {
+  const navigation = useNavigation();
+
+  const goBackHandler = () => {
+    navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
+  const goToNextScreen = () => {
+    navigation.navigate("ChooseGender");
+  };
+
   return (
     <View style={styles.createName}>
-      <Image
-        style={[styles.vectorIcon, styles.iconLayout]}
-        contentFit="cover"
-        source={require("../assets/images/vector.png")}
-      />
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
+
       <Text style={[styles.bnTnG]}>Bạn bao nhiêu tuổi?</Text>
       <View>
         <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition1]} placeholder="Tên" />
+          <TextInput style={[styles.inputtextPosition1]} placeholder="Tuổi" />
         </KeyboardAvoidingView>
       </View>
 
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition2]} placeholder="Họ" />
-        </KeyboardAvoidingView>
-      </View>
-
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
+      <TouchableOpacity onPress={goToNextScreen}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
 
       <View style={styles.buttonSub}>
         <Text style={styles.logIn2}>Dùng ngày sinh</Text>
       </View>
 
-      <Text style={[styles.button]}>
-        Bạn đã có tài khoản ư?
-      </Text>
+      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
     </View>
   );
 };
@@ -56,12 +65,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   button: {
-    position: 'absolute',
-    left: '32%',
-    width: '100%',
+    position: "absolute",
+    left: "32%",
+    width: "100%",
     bottom: 18,
-    color: '#0062e0',
-    fontWeight: 600
+    color: "#0062e0",
+    fontWeight: 600,
   },
   bnTnGClr: {
     color: Color.colorBlack,
@@ -73,8 +82,8 @@ const styles = StyleSheet.create({
     top: 148,
     left: 16,
     position: "absolute",
-    minWidth: 170,
-    maxWidth: 170,
+    width: "92%",
+    maxWidth: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -129,7 +138,7 @@ const styles = StyleSheet.create({
     bottom: -250,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.white,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
@@ -141,13 +150,13 @@ const styles = StyleSheet.create({
   vectorIcon: {
     width: 20,
     height: 20,
-    objectFit: 'cover'
+    objectFit: "cover",
   },
   bnTnG: {
     top: 117,
     left: 16,
     fontSize: FontSize.size_xl,
-    width: '100%',
+    width: "100%",
     height: 30,
     fontFamily: FontFamily.uI16Semi,
     fontWeight: "800",

@@ -7,40 +7,47 @@ import ChooseAgeScreen from "../screens/ChooseAge";
 import ChooseNumberPhoneScreen from "../screens/ChooseNumberPhone";
 import CreatePasswordScreen from "../screens/CreatePassword";
 import ChooseDateOfBirthCreen from "../screens/ChooseDateOfBirth";
-
+import IntroCreateAccountScreen from "../screens/IntroCreateAccount";
 
 const publicRoutes = [
-    {
-        name: "Home",
-        component: HomeScreen
-    },
-    {
-        name: "Login",
-        component: LoginScreen
-    },
-    {
-        name: "ChooseGender",
-        component: ChooseGenderScreen
-    },
-    {
-        name: "CreateName",
-        component: CreateNameScreen
-    }, {
-        name: "ChooseAge",
-        component: ChooseAgeScreen
-    }, {
-        name: "ChooseNumberPhone",
-        component: ChooseNumberPhoneScreen
-    }, {
-        name: "CreatePassword",
-        component: CreatePasswordScreen
-
-    },
-    {
+  {
+    name: "Home",
+    component: HomeScreen,
+  },
+  {
+    name: "Login",
+    component: LoginScreen,
+  },
+  {
+    name: "IntroCreateAccount",
+    component: IntroCreateAccountScreen,
+  },
+  {
+    name: "ChooseGender",
+    component: ChooseGenderScreen,
+  },
+  {
+    name: "CreateName",
+    component: CreateNameScreen,
+  },
+  {
+    name: "ChooseAge",
+    component: ChooseAgeScreen,
+  },
+  {
+    name: "ChooseNumberPhone",
+    component: ChooseNumberPhoneScreen,
+  },
+  {
+    name: "CreatePassword",
+    component: CreatePasswordScreen,
+  },
+   {
         name: "ChooseDateOfBirth",
         component: ChooseDateOfBirthCreen
 
     },
+
 ];
 
 const privateRoutes = [];

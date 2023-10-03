@@ -7,17 +7,32 @@ import {
   TextInput,
   KeyboardAvoidingView,
   Platform,
+  TouchableOpacity
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
+import { useNavigation } from "@react-navigation/native";
 
 const CreateName = () => {
+  const navigation = useNavigation();
+
+  const goBackHandler = () => {
+    navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
+  const goToNextScreen = () => {
+    navigation.navigate('ChooseAge'); 
+  };
+
   return (
     <View style={styles.createName}>
-      <Image
-        style={[styles.vectorIcon, styles.iconLayout]}
-        contentFit="cover"
-        source={require("../assets/images/vector.png")}
-      />
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
+
       <Text style={[styles.bnTnG, styles.bnTnGClr]}>Bạn tên gì?</Text>
       <Text style={[styles.nhpTnBn, styles.bnTnGClr]}>
         Nhập tên bạn sử dụng trong đời thực.
@@ -34,12 +49,12 @@ const CreateName = () => {
         </KeyboardAvoidingView>
       </View>
 
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
-      <Text style={[styles.button]}>
-        Bạn đã có tài khoản ư?
-      </Text>
+      <TouchableOpacity onPress={goToNextScreen}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
+      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
     </View>
   );
 };
@@ -54,12 +69,12 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   button: {
-    position: 'absolute',
-    left: '32%',
-    width: '100%',
+    position: "absolute",
+    left: "32%",
+    width: "100%",
     bottom: 18,
-    color: '#0062e0',
-    fontWeight: 600
+    color: "#0062e0",
+    fontWeight: 600,
   },
   bnTnGClr: {
     color: Color.colorBlack,
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
   vectorIcon: {
     width: 20,
     height: 20,
-    objectFit: 'cover'
+    objectFit: "cover",
   },
   bnTnG: {
     top: 137,

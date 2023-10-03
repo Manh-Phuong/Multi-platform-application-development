@@ -11,9 +11,11 @@ import {
     Keyboard,
     TouchableWithoutFeedback
 } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome'; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
+import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
+import { useNavigation } from "@react-navigation/native";
 
 const Login = () => {
+
     const [account, setAccount] = useState('');
     const [password, setPassword] = useState('');
     const [isFocusedAccount, setIsFocusedAccount] = useState(false);
@@ -293,6 +295,7 @@ const styles = StyleSheet.create({
     //     top: 8,
     //     left: 16
     // }
+
 });
 
 export default Login;

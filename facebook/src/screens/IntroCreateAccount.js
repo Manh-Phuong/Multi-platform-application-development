@@ -1,5 +1,4 @@
 import * as React from "react";
-import { useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,27 +10,17 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 
-const ChooseNumberPhone = () => {
+const IntroCreateAccount = () => {
   const navigation = useNavigation();
-  const [password, setPassword] = useState("");
-  const [isPasswordVisible, setPasswordVisible] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setPasswordVisible(!isPasswordVisible);
-  };
-
-  const handlePasswordChange = (text) => {
-    // Kiểm tra xem text có chứa khoảng trắng không
-    if (!text?.includes(" ")) {
-      setPassword(text);
-    }
-  };
 
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
+  const goToNextScreen = () => {
+    navigation.navigate("CreateName");
   };
 
   return (
@@ -43,40 +32,31 @@ const ChooseNumberPhone = () => {
           source={require("../assets/images/vector.png")}
         />
       </TouchableOpacity>
-      <Text style={[styles.bnTnG]}>Tạo mật khẩu</Text>
-      <Text style={[styles.nhpTnBn1]}>
-        Tạo mật khẩu gồm ít nhất 6 chữ cái hoặc chữ số. Bạn nên chọn mật khẩu
-        thật khó đoán.
-      </Text>
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput
-            style={[styles.inputtextPosition1]}
-            placeholder="Mật khẩu"
-            secureTextEntry={!isPasswordVisible}
-            value={password}
-            onChangeText={handlePasswordChange}
+
+      <Text style={[styles.bnTnG]}>Tham gia Facebook</Text>
+
+      <View style={[styles.wrapIntro]}>
+        <Image
+            style={[styles.bgIntro]}
+            contentFit="cover"
+            source={require("../assets/images/bg-intro.jpg")}
           />
-          {password.length > 0 && (
-            <TouchableOpacity
-              onPress={togglePasswordVisibility}
-              style={[styles.iconEye]}
-            >
-              <Icon
-                name={isPasswordVisible ? "eye" : "eye-slash"}
-                size={20}
-                color="black"
-              />
-            </TouchableOpacity>
-          )}
-        </KeyboardAvoidingView>
       </View>
 
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
+      <Text style={[styles.nhpTnBn2]}>
+        Tạo tài khoản để kết nối với bạn bè, người thân và cộng đồng có chung sở
+        thích.
+      </Text>
 
-      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
+      <TouchableOpacity onPress={goToNextScreen}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Bắt đầu</Text>
+        </View>
+      </TouchableOpacity>
+
+      <View style={styles.buttonSub}>
+        <Text style={styles.logIn2}>Tôi có tài khoản rồi</Text>
+      </View>
     </View>
   );
 };
@@ -98,10 +78,16 @@ const styles = StyleSheet.create({
     color: "#0062e0",
     fontWeight: 600,
   },
-  iconEye: {
-    position: "relative",
-    top: 165,
-    left: 330,
+  wrapIntro: {
+    position: 'relative',
+    top: 140,
+  },
+  bgIntro: {
+    width: 376,
+    height: 200,
+    objectFit: "cover",
+    borderRadius: 16,
+    marginLeft: 16,
   },
   bnTnGClr: {
     color: Color.colorBlack,
@@ -155,7 +141,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   buttonprimary: {
-    bottom: -220,
+    bottom: -190,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
     alignItems: "center",
@@ -166,7 +152,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   buttonSub: {
-    bottom: -260,
+    bottom: -210,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.white,
     borderColor: "#ccc",
@@ -202,7 +188,7 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   nhpTnBn2: {
-    top: 215,
+    top: 165,
     fontSize: 14,
     fontFamily: FontFamily.interRegular,
     left: 16,
@@ -246,4 +232,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChooseNumberPhone;
+export default IntroCreateAccount;
