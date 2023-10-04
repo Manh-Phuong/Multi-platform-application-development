@@ -193,8 +193,8 @@ const styles = StyleSheet.create({
   },
   inputtextPosition1: {
     height: 50,
-    minWidth: 170,
-    maxWidth: 170,
+    minWidth: 180,
+    maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -202,8 +202,8 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
-    minWidth: 170,
-    maxWidth: 170,
+    minWidth: 180,
+    maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
