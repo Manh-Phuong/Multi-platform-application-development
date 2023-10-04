@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set c
 import { CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
-const ChooseGender = () => {
+const PolicyConfirm = () => {
   const [positionCheckbox, setPositionCheckbox] = useState(-1)
   const navigation = useNavigation();
 
@@ -45,29 +45,17 @@ const ChooseGender = () => {
       </TouchableOpacity> */}
 
       <View style={styles.headerText}>
-        <Text style={styles.mainText}>Giới tính của bạn là gì?</Text>
+        <Text style={styles.mainText}>Đồng ý với điều khoản và chính sách của Facebook</Text>
         <Text style={styles.subText}>
-          Bạn có thể thay đổi người nhìn thấy giới tính của mình trên trang cá
-          nhân vào lúc khác.
+          Những người dùng dịch vụ của chúng tôi có thể đã tải thông tin liên hệ của bạn lên Facebook.
         </Text>
-      </View>
-      <View style={styles.checkboxField}>
-        <View style={styles.field}>
-          <Text style={styles.fieldText}>Nữ</Text>
-          <CheckBox checkedIcon="dot-circle-o" onPress={() => {handleCheckbox(1)}} checked={positionCheckbox == 1} uncheckedIcon="circle-o" />
-        </View>
-        <View style={styles.field}>
-          <Text style={styles.fieldText}>Nam</Text>
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" onPress={() => {handleCheckbox(2)}} checked={positionCheckbox == 2}/>
-        </View>
-        <View style={[styles.field, styles.lastField]}>
-            <Text style={styles.fieldText}>Khác</Text>
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" onPress={() => {handleCheckbox(0)}} checked={positionCheckbox == 0} />
-        </View>
+        <Text style={[styles.subText, styles.marginTop12 ]}>
+          Bạn đồng ý với Điều khoản, Chính sách và Quyền riêng tư của chúng tôi nhé.
+        </Text>
       </View>
       <View>
         <TouchableOpacity style={styles.primaryButton} onPress={goToNextScreen}>
-          <Text style={styles.buttonText}>Tiếp</Text>
+          <Text style={styles.buttonText}>Tôi đồng ý</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -91,6 +79,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
+  subText: {
+    fontSize: 15
+  },    
   checkboxField: {
     borderRadius: 16,
     backgroundColor: "white",
@@ -122,7 +113,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontWeight: "700",
+    fontWeight: "bold",
     fontSize: 16
   },
   vectorIcon: {
@@ -137,9 +128,9 @@ const styles = StyleSheet.create({
     top: 70,
     overflow: "hidden",
   },
-  subText: {
-    fontSize: 15
-  }
+  marginTop12: {
+    marginTop: 12, // Khoảng cách giữa đoạn văn bản và phần trên nó
+  },
 });
 
-export default ChooseGender;
+export default PolicyConfirm;

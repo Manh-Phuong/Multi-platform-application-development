@@ -59,7 +59,7 @@ const CreatePassword = () => {
 
   const validateData = () => {
     if (!password.trim()) {
-      Alert.alert("Cần có email", "Nhập email của bạn để tiếp tục.", [
+      Alert.alert("Cần có mật khẩu", "Nhập mật khẩu của bạn để tiếp tục.", [
         {
           text: "OK",
           onPress: () => {
@@ -81,14 +81,12 @@ const CreatePassword = () => {
         ]
       );
     }
+    else {
+      navigation.navigate("SaveInfoConfirm")
+    }
   };
 
   return (
-    <LinearGradient
-      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-    >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.createName}>
           <TouchableOpacity onPress={goBackHandler}>
@@ -114,6 +112,7 @@ const CreatePassword = () => {
                 placeholder="Mật khẩu"
                 secureTextEntry={!isPasswordVisible}
                 value={password}
+                returnKeyType='done'
                 onChangeText={handlePasswordChange}
                 onFocus={handleFocusPassword}
                 onBlur={handleBlurPassword}
@@ -142,7 +141,6 @@ const CreatePassword = () => {
           <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
         </View>
       </TouchableWithoutFeedback>
-    </LinearGradient>
   );
 };
 
@@ -211,13 +209,7 @@ const styles = StyleSheet.create({
     color: Color.white,
     textAlign: "center",
     fontSize: 16,
-    fontWeight: "800",
-  },
-  logIn2: {
-    color: Color.colorBlack,
-    textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
-    fontWeight: "500",
+    fontWeight: "700",
   },
   buttonprimary: {
     bottom: -220,
@@ -251,7 +243,7 @@ const styles = StyleSheet.create({
   bnTnG: {
     top: 117,
     left: 16,
-    fontSize: FontSize.size_xl,
+    fontSize: 24,
     width: "100%",
     height: 30,
     fontWeight: "800",
@@ -259,14 +251,14 @@ const styles = StyleSheet.create({
   },
   nhpTnBn1: {
     top: 125,
-    fontSize: 14,
+    fontSize: 15,
     left: 16,
     maxWidth: "100%",
     marginRight: 16,
   },
   nhpTnBn2: {
     top: 215,
-    fontSize: 14,
+    fontSize: 15,
     left: 16,
     maxWidth: "100%",
     marginRight: 16,

@@ -5,47 +5,28 @@ import {
   StyleSheet,
   View,
   Image,
-  TextInput,
-  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
   TouchableOpacity,
+  Keyboard,
   Alert,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
-import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
-// import { WebView } from "expo-web-browser";
-import { WebView } from "react-native-webview";
 
-const Policy = () => {
+const CreatePassword = () => {
   const navigation = useNavigation();
+
+  const handleSubmit = () => {
+    navigation.navigate('PolicyConfirm')
+  };
 
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
   };
 
-  const apiEndpoint =
-    "https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0";
-
-  const handleWebViewLoad = () => {
-    fetch(apiEndpoint)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Dữ liệu từ API:", data);
-      })
-      .catch((error) => {
-        console.error("Lỗi khi gọi API:", error);
-      });
-  };
-
   return (
-    <LinearGradient
-      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.createName}
-    >
-      <View style={{ flex: 1 }}>
-        <View style={styles.wrapHeader}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <View style={styles.container}>
           <TouchableOpacity onPress={goBackHandler}>
             <Image
               style={[styles.vectorIcon, styles.iconLayout]}
@@ -53,16 +34,30 @@ const Policy = () => {
               source={require("../assets/images/vector.png")}
             />
           </TouchableOpacity>
-          <Text style={styles.textHeader}>Điều khoản và quyền riêng tư</Text>
+          <Text style={[styles.bnTnG]}>Lưu thông tin đăng nhập?</Text>
+          <Text style={[styles.nhpTnBn1]}>
+            Chúng tôi sẽ lưu thông tin đăng nhập để bạn không cần nhập vào lần sau.
+          </Text>
+
+          <View>
+            <TouchableOpacity
+              style={styles.buttonprimary}
+              onPress={handleSubmit}
+            >
+              <Text style={styles.logIn}>Lưu</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <TouchableOpacity
+                style={styles.buttonSub}
+                onPress={handleSubmit}
+                >
+                <Text style={styles.logIn2}>Lúc khác</Text>
+                </TouchableOpacity>
+          </View>
         </View>
-        <WebView
-          source={{
-            uri: "https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0",
-          }}
-          onLoad={handleWebViewLoad}
-        />
-      </View>
-    </LinearGradient>
+      </TouchableWithoutFeedback>
   );
 };
 
@@ -71,17 +66,9 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     maxWidth: "100%",
     position: "relative",
-    top: 24,
+    top: 90,
     left: 16,
     overflow: "hidden",
-  },
-  wrapHeader: {
-    height: 60,
-    backgroundColor: 'white',
-  },
-  textHeader: {
-    fontSize:20,
-    left: 46,
   },
   button: {
     position: "absolute",
@@ -96,19 +83,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
   },
-  wrapInput: {
-    top: 208,
-    position: "absolute",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    marginLeft: 16,
-  },
   inputtextPosition1: {
     height: 50,
-    minWidth: 170,
-    maxWidth: 170,
+    top: 148,
+    left: 16,
+    position: "absolute",
+    width: "92%",
+    maxWidth: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -116,13 +97,15 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
+    top: 148,
+    left: 206,
+    position: "absolute",
     minWidth: 170,
     maxWidth: 170,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
     paddingHorizontal: 15,
-    marginRight: 32,
   },
   showTypo: {
     fontWeight: "500",
@@ -134,13 +117,32 @@ const styles = StyleSheet.create({
   logIn: {
     color: Color.white,
     textAlign: "center",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+  logIn2: {
+    color: Color.colorBlack,
+    textAlign: "center",
     fontSize: FontSize.uI16Medium_size,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   buttonprimary: {
-    bottom: -290,
+    bottom: -150,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
+    alignItems: "center",
+    paddingHorizontal: Padding.p_13xl,
+    paddingVertical: Padding.p_base,
+    marginLeft: 16,
+    marginRight: 16,
+    position: "relative",
+  },
+  buttonSub: {
+    bottom: -170,
+    borderRadius: Border.br_81xl,
+    borderColor: "#ccc",
+    color: "black",
+    borderWidth: 1,
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
@@ -154,18 +156,27 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   bnTnG: {
-    top: 137,
-    left: -8,
-    fontSize: FontSize.size_xl,
-    width: 142,
+    top: 117,
+    left: 16,
+    fontSize: 24,
+    width: "100%",
     height: 30,
-    fontWeight: "600",
+    fontWeight: "800",
     color: Color.colorBlack,
   },
-  nhpTnBn: {
-    top: 175,
+  nhpTnBn1: {
+    top: 125,
     fontSize: 16,
     left: 16,
+    maxWidth: "100%",
+    marginRight: 16,
+  },
+  nhpTnBn2: {
+    top: 215,
+    fontSize: 14,
+    left: 16,
+    maxWidth: "100%",
+    marginRight: 16,
   },
   bgIcon: {
     height: "100%",
@@ -196,13 +207,15 @@ const styles = StyleSheet.create({
     right: 14,
     left: 197,
   },
-  createName: {
-    // backgroundColor: "#f0f2f5",
+  container: {
+    backgroundColor: Color.white,
     flex: 1,
     overflow: "hidden",
     width: "100%",
-    marginTop: 70
+  },
+  focusedInput: {
+    borderColor: "black",
   },
 });
 
-export default Policy;
+export default CreatePassword;

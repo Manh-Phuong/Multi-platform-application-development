@@ -30,7 +30,7 @@ const SaveAccountLogin = () => {
             <View style={
                 {
                     width: "100%",
-                    paddingTop: 80,
+                    paddingTop: 140,
                     paddingBottom: 80,
                     display: 'flex',
                     justifyContent: 'center',
@@ -149,7 +149,8 @@ const styles = StyleSheet.create({
     },
     subButtonText: {
         color: "#0063e0",
-        fontWeight: "bold"
+        fontWeight: "bold",
+        fontSize: 15
     },
     icon: {
         width: 30,

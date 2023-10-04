@@ -9,6 +9,8 @@ import {
   TextInput,
   KeyboardAvoidingView,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
   Alert,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
@@ -66,7 +68,7 @@ const ChooseNumberPhone = () => {
         ]
       );
     } else {
-      navigation.navigate("CreatePassword");
+      goToNextScreen()
     }
   };
 
@@ -79,64 +81,65 @@ const ChooseNumberPhone = () => {
   };
 
   return (
-    <LinearGradient
-      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      style={styles.createEmail}
-    >
-      <TouchableOpacity onPress={goBackHandler}>
-        <Image
-          style={[styles.vectorIcon, styles.iconLayout]}
-          contentFit="cover"
-          source={require("../assets/images/vector.png")}
-        />
-      </TouchableOpacity>
-
-      <Text style={[styles.bnTnG]}>Địa chỉ email của bạn là gì?</Text>
-      <Text style={[styles.nhpTnBn1]}>
-        Nhập địa chỉ email có thể dùng để liên hệ với bạn. Thông tin này sẽ
-        không hiển thị với ai khác trên trang cá nhân của bạn.
-      </Text>
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput
-            style={[styles.inputtextPosition1, inputBorderStyleEmail]}
-            placeholder="Địa chỉ email"
-            ref={emailInputRef}
-            // keyboardType="email"
-            returnKeyType="next"
-            onSubmitEditing={() => emailInputRef.current.focus()}
-            onChangeText={changeEmail}
-            onFocus={handleFocusEmail}
-            onBlur={handleBlurEmail}
-            autoFocus
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <LinearGradient
+        colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.createEmail}
+      >
+        <TouchableOpacity onPress={goBackHandler}>
+          <Image
+            style={[styles.vectorIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/images/vector.png")}
           />
-        </KeyboardAvoidingView>
-      </View>
-
-      <Text style={[styles.nhpTnBn2]}>
-        Bạn cũng sẽ nhận được thông báo của chúng tôi qua email và có thể chọn
-        không nhận bất cứ lúc nào.{" "}
-        <TouchableOpacity onPress={() => navigation.navigate("Policy")}>
-          <Text style={{ color: "#0062e0", fontWeight: 600 }}>
-            Tìm hiểu thêm
-          </Text>
         </TouchableOpacity>
-      </Text>
 
-      <TouchableOpacity onPress={handleSummit}>
-        <View style={styles.buttonprimary}>
-          <Text style={styles.logIn}>Tiếp</Text>
+        <Text style={[styles.bnTnG]}>Địa chỉ email của bạn là gì?</Text>
+        <Text style={[styles.nhpTnBn1]}>
+          Nhập địa chỉ email có thể dùng để liên hệ với bạn. Thông tin này sẽ
+          không hiển thị với ai khác trên trang cá nhân của bạn.
+        </Text>
+        <View>
+          <KeyboardAvoidingView>
+            <TextInput
+              style={[styles.inputtextPosition1, inputBorderStyleEmail]}
+              placeholder="Địa chỉ email"
+              ref={emailInputRef}
+              // keyboardType="email"
+              returnKeyType="done"
+              onChangeText={changeEmail}
+              onFocus={handleFocusEmail}
+              onBlur={handleBlurEmail}
+              autoFocus
+            />
+          </KeyboardAvoidingView>
         </View>
-      </TouchableOpacity>
 
-      <View style={styles.buttonSub}>
-        <Text style={styles.logIn2}>Đăng ký bằng số điện thoại</Text>
-      </View>
+        <Text style={[styles.nhpTnBn2]}>
+          Bạn cũng sẽ nhận được thông báo của chúng tôi qua email và có thể chọn
+          không nhận bất cứ lúc nào.
+          <TouchableOpacity onPress={() => navigation.navigate("Policy")}>
+            <Text style={{ color: "#0062e0", fontWeight: 600 }}>
+              Tìm hiểu thêm
+            </Text>
+          </TouchableOpacity>
+        </Text>
 
-      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
-    </LinearGradient>
+        <TouchableOpacity onPress={handleSummit}>
+          <View style={styles.buttonprimary}>
+            <Text style={styles.logIn}>Tiếp</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.buttonSub}>
+          <Text style={styles.logIn2}>Đăng ký bằng số điện thoại</Text>
+        </View>
+
+        <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -146,7 +149,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     position: "relative",
     top: 90,
-    left: 16,
     overflow: "hidden",
   },
   button: {
@@ -165,9 +167,8 @@ const styles = StyleSheet.create({
   inputtextPosition1: {
     height: 50,
     top: 148,
-    left: 16,
     position: "absolute",
-    width: "92%",
+    width: "100%",
     maxWidth: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
@@ -196,14 +197,14 @@ const styles = StyleSheet.create({
   logIn: {
     color: Color.white,
     textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
-    fontWeight: "800",
+    fontSize: 16,
+    fontWeight: "700",
   },
   logIn2: {
     color: Color.colorBlack,
     textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
-    fontWeight: "800",
+    fontSize: 16,
+    fontWeight: "700",
   },
   buttonprimary: {
     bottom: -240,
@@ -212,8 +213,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    marginLeft: 16,
-    marginRight: 16,
     position: "relative",
   },
   buttonSub: {
@@ -225,8 +224,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    marginLeft: 16,
-    marginRight: 16,
     position: "relative",
   },
   vectorIcon: {
@@ -236,7 +233,6 @@ const styles = StyleSheet.create({
   },
   bnTnG: {
     top: 117,
-    left: 16,
     fontSize: FontSize.size_xl,
     width: "100%",
     height: 30,
@@ -245,17 +241,13 @@ const styles = StyleSheet.create({
   },
   nhpTnBn1: {
     top: 125,
-    fontSize: 14,
-    left: 16,
+    fontSize: 15,
     maxWidth: "100%",
-    marginRight: 16,
   },
   nhpTnBn2: {
     top: 215,
-    fontSize: 14,
-    left: 16,
-    maxWidth: "100%",
-    marginRight: 16,
+    fontSize: 15,
+    width: "100%",
   },
   bgIcon: {
     height: "100%",
@@ -287,10 +279,11 @@ const styles = StyleSheet.create({
     left: 197,
   },
   createEmail: {
-    // backgroundColor: "#f0f2f5",
     flex: 1,
     overflow: "hidden",
     width: "100%",
+    paddingLeft: 16, 
+    paddingRight: 16
   },
 });
 

@@ -134,14 +134,14 @@ const styles = StyleSheet.create({
   logIn: {
     color: Color.white,
     textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
-    fontWeight: "800",
+    fontSize: 16,
+    fontWeight: "700",
   },
   logIn2: {
     color: Color.colorBlack,
     textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
-    fontWeight: "800",
+    fontSize: 16,
+    fontWeight: "700",
   },
   buttonprimary: {
     bottom: -190,
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   bnTnG: {
     top: 117,
     left: 16,
-    fontSize: FontSize.size_xl,
+    fontSize: 24,
     width: "100%",
     height: 30,
     fontWeight: "800",
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   nhpTnBn2: {
     top: 165,
-    fontSize: 14,
+    fontSize: 15,
     left: 16,
     maxWidth: "100%",
     marginRight: 16,

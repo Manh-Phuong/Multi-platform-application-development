@@ -7,9 +7,11 @@ import CreateNameScreen from "../screens/CreateName";
 import ChooseAgeScreen from "../screens/ChooseAge";
 import ChooseNumberPhoneScreen from "../screens/ChooseNumberPhone";
 import CreatePasswordScreen from "../screens/CreatePassword";
-import ChooseDateOfBirthCreen from "../screens/ChooseDateOfBirth";
+import ChooseDateOfBirthScreen from "../screens/ChooseDateOfBirth";
 import IntroCreateAccountScreen from "../screens/IntroCreateAccount";
 import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
+import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
+import PolicyConfirmScreen from "../screens/PolicyConfirm";
 
 const publicRoutes = [
     {
@@ -27,8 +29,7 @@ const publicRoutes = [
     {
         name: "IntroCreateAccount",
         component: IntroCreateAccountScreen
-    },
-    {
+    }, {
         name: "ChooseGender",
         component: ChooseGenderScreen
     }, {
@@ -45,11 +46,20 @@ const publicRoutes = [
         component: CreatePasswordScreen
     }, {
         name: "ChooseDateOfBirth",
-        component: ChooseDateOfBirthCreen
+        component: ChooseDateOfBirthScreen
 
     }, {
         name: "SaveAccountLogin",
         component: SaveAccountLoginScreen
+
+    }, {
+        name: "SaveInfoConfirm",
+        component: SaveInfoConfirmScreen
+
+    },
+    {
+        name: "PolicyConfirm",
+        component: PolicyConfirmScreen
 
     },
 
