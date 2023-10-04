@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,55 +7,61 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { Color, FontFamily, FontSize, Border, Padding } from "../GlobalStyles";
-import { useNavigation } from "@react-navigation/native";
+import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
+// import { WebView } from "expo-web-browser";
+import { WebView } from "react-native-webview";
 
-const ChooseAge = () => {
+const Policy = () => {
   const navigation = useNavigation();
 
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
   };
 
-  const goToNextScreen = () => {
-    navigation.navigate("ChooseGender");
+  const apiEndpoint =
+    "https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0";
+
+  const handleWebViewLoad = () => {
+    fetch(apiEndpoint)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Dữ liệu từ API:", data);
+      })
+      .catch((error) => {
+        console.error("Lỗi khi gọi API:", error);
+      });
   };
 
   return (
-    <LinearGradient colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
-    start={{ x: 0, y: 0 }}
-    end={{ x: 1, y: 1 }}
-    style={styles.createName}>
-      <TouchableOpacity onPress={goBackHandler}>
-        <Image
-          style={[styles.vectorIcon, styles.iconLayout]}
-          contentFit="cover"
-          source={require("../assets/images/vector.png")}
-        />
-      </TouchableOpacity>
-
-      <Text style={[styles.bnTnG]}>Bạn bao nhiêu tuổi?</Text>
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition1]} placeholder="Tuổi" />
-        </KeyboardAvoidingView>
-      </View>
-
-      <TouchableOpacity onPress={goToNextScreen}>
-        <View style={styles.buttonprimary}>
-          <Text style={styles.logIn}>Tiếp</Text>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.createName}
+    >
+      <View style={{ flex: 1 }}>
+        <View style={styles.wrapHeader}>
+          <TouchableOpacity onPress={goBackHandler}>
+            <Image
+              style={[styles.vectorIcon, styles.iconLayout]}
+              contentFit="cover"
+              source={require("../assets/images/vector.png")}
+            />
+          </TouchableOpacity>
+          <Text style={styles.textHeader}>Điều khoản và quyền riêng tư</Text>
         </View>
-      </TouchableOpacity>
-
-      <View style={styles.buttonSub}>
-        <Text style={styles.logIn2}>Dùng ngày sinh</Text>
+        <WebView
+          source={{
+            uri: "https://www.facebook.com/privacy/policy/?entry_point=data_policy_redirect&entry=0",
+          }}
+          onLoad={handleWebViewLoad}
+        />
       </View>
-
-      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
     </LinearGradient>
   );
 };
@@ -64,9 +71,17 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     maxWidth: "100%",
     position: "relative",
-    top: 90,
+    top: 24,
     left: 16,
     overflow: "hidden",
+  },
+  wrapHeader: {
+    height: 60,
+    backgroundColor: 'white',
+  },
+  textHeader: {
+    fontSize:20,
+    left: 46,
   },
   button: {
     position: "absolute",
@@ -81,23 +96,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
   },
+  wrapInput: {
+    top: 208,
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginLeft: 16,
+  },
   inputtextPosition1: {
     height: 50,
-    top: 148,
-    left: 16,
-    position: "absolute",
-    width: "92%",
-    maxWidth: "100%",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 16,
-    paddingHorizontal: 15,
-  },
-  inputtextPosition2: {
-    height: 50,
-    top: 148,
-    left: 206,
-    position: "absolute",
     minWidth: 170,
     maxWidth: 170,
     borderWidth: 1,
@@ -105,8 +114,17 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 15,
   },
+  inputtextPosition2: {
+    height: 50,
+    minWidth: 170,
+    maxWidth: 170,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 16,
+    paddingHorizontal: 15,
+    marginRight: 32,
+  },
   showTypo: {
-    fontFamily: FontFamily.uI16Medium,
     fontWeight: "500",
     top: "50%",
     marginTop: -9,
@@ -117,33 +135,12 @@ const styles = StyleSheet.create({
     color: Color.white,
     textAlign: "center",
     fontSize: FontSize.uI16Medium_size,
-    fontFamily: FontFamily.uI16Semi,
-    fontWeight: "800",
-  },
-  logIn2: {
-    color: Color.colorBlack,
-    textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
-    fontFamily: FontFamily.uI16Semi,
-    fontWeight: "800",
+    fontWeight: "600",
   },
   buttonprimary: {
-    bottom: -230,
+    bottom: -290,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
-    alignItems: "center",
-    paddingHorizontal: Padding.p_13xl,
-    paddingVertical: Padding.p_base,
-    marginLeft: 16,
-    marginRight: 16,
-    position: "relative",
-  },
-  buttonSub: {
-    bottom: -250,
-    borderRadius: Border.br_81xl,
-    backgroundColor: Color.white,
-    borderColor: "#ccc",
-    borderWidth: 1,
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
@@ -157,19 +154,17 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   bnTnG: {
-    top: 117,
-    left: 16,
+    top: 137,
+    left: -8,
     fontSize: FontSize.size_xl,
-    width: "100%",
+    width: 142,
     height: 30,
-    fontFamily: FontFamily.uI16Semi,
-    fontWeight: "800",
+    fontWeight: "600",
     color: Color.colorBlack,
   },
   nhpTnBn: {
     top: 175,
     fontSize: 14,
-    fontFamily: FontFamily.interRegular,
     left: 16,
   },
   bgIcon: {
@@ -202,11 +197,11 @@ const styles = StyleSheet.create({
     left: 197,
   },
   createName: {
-    // backgroundColor: Color.white,
+    // backgroundColor: "#f0f2f5",
     flex: 1,
     overflow: "hidden",
     width: "100%",
   },
 });
 
-export default ChooseAge;
+export default Policy;

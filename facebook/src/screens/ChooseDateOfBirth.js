@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 
 import {
     StyleSheet,
@@ -145,14 +145,14 @@ const ChooseDateOfBirth = () => {
         </View>
 
         {
-        isFocusDate && <DateTimePicker style={
+        {/* isFocusDate && <DateTimePicker style={
                 styles.datePicker
             }
             mode="date"
             value={dateOfBirth}
             is24Hour={true}
             display="spinner"
-            onChange={handleChangeDate}/>
+            onChange={handleChangeDate}/> */}
         } 
         </View>
 </TouchableWithoutFeedback>);
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "999"
+        borderRadius: 999
     },
     buttonText: {
         color: "white",
@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
         borderColor: "#0063e0", // Màu của viền
         borderWidth: 1, // Độ dày của viền
         padding: 10, // Khoảng cách giữa viền và văn bản
-        borderRadius: "999",
+        borderRadius: 999,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",

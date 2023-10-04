@@ -1,6 +1,7 @@
 // publicRoutes.js
 import HomeScreen from "../screens/Home";
 import LoginScreen from "../screens/Login";
+import PolicyScreen from "../screens/Policy";
 import ChooseGenderScreen from "../screens/ChooseGender";
 import CreateNameScreen from "../screens/CreateName";
 import ChooseAgeScreen from "../screens/ChooseAge";
@@ -18,6 +19,10 @@ const publicRoutes = [
     {
         name: "Login",
         component: LoginScreen
+    },
+    {
+        name: "Policy",
+        component: PolicyScreen
     },
     {
         name: "IntroCreateAccount",

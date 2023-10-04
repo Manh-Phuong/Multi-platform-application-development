@@ -1,4 +1,6 @@
-import React, {useState, useRef} from "react";
+import * as React from "react";
+import { useState, useRef } from "react";
+
 import {
   Text,
   StyleSheet,
@@ -8,23 +10,64 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
   Alert,
-  TouchableWithoutFeedback, Keyboard
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ChooseNumberPhone = () => {
-  const [email, setEmail] = useState('')
-  const [isFocusEmail, setIsFocusEmail] = useState(false)
   const navigation = useNavigation();
-  const emailInputRef = useRef(null)
+  const [email, setEmail] = useState("");
+  const [isFocusedEmail, setIsFocusedEmail] = useState(false);
+
+  const emailInputRef = useRef(null);
+
+  const inputBorderStyleEmail = isFocusedEmail
+    ? { borderColor: "black", borderWidth: 1 }
+    : {};
+
+  const changeEmail = (newEmail) => {
+    setEmail(newEmail);
+  };
 
   const handleFocusEmail = () => {
-    setIsFocusEmail(true)
+    setIsFocusedEmail(true);
   };
 
   const handleBlurEmail = () => {
-    setIsFocusEmail(false)
+    setIsFocusedEmail(false);
+  };
+
+  const handleSummit = () => {
+    if (!email.trim()) {
+      Alert.alert(
+        "Email không được để trống",
+        "Hãy nhập email của bạn để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              emailInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      Alert.alert(
+        "Email không hợp lệ",
+        "Hãy nhập một địa chỉ email hợp lệ để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              emailInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else {
+      navigation.navigate("CreatePassword");
+    }
   };
 
   const goBackHandler = () => {
@@ -32,89 +75,68 @@ const ChooseNumberPhone = () => {
   };
 
   const goToNextScreen = () => {
-    if (validateData()) {
-      navigation.navigate('CreatePassword'); 
-    }
+    navigation.navigate("CreatePassword");
   };
 
-  const isEmailValid = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validateData = () => {
-    if (!email.trim()) {
-      Alert.alert("Cần có email", 'Nhập email của bạn để tiếp tục.', [{
-        text: 'OK',
-        onPress: () => {
-          emailInputRef.current.focus()
-        }
-    },])
-    return false
-    }
-    else if (!isEmailValid(email.trim())) {
-      Alert.alert("Email không đúng định dạng", 'Nhập email đúng định dạng.', [{
-        text: 'OK',
-        onPress: () => {
-          emailInputRef.current.focus()
-        }
-    },])
-    return false
-    }
-    return true
-  }
   return (
-    <TouchableWithoutFeedback onPress={
-      Keyboard.dismiss
-    }
-    accessible={false}
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.createEmail}
     >
-      <View style={styles.createName}>
-        <TouchableOpacity onPress={goBackHandler}>
-          <Image
-            style={[styles.vectorIcon, styles.iconLayout]}
-            contentFit="cover"
-            source={require("../assets/images/vector.png")}
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
+
+      <Text style={[styles.bnTnG]}>Địa chỉ email của bạn là gì?</Text>
+      <Text style={[styles.nhpTnBn1]}>
+        Nhập địa chỉ email có thể dùng để liên hệ với bạn. Thông tin này sẽ
+        không hiển thị với ai khác trên trang cá nhân của bạn.
+      </Text>
+      <View>
+        <KeyboardAvoidingView>
+          <TextInput
+            style={[styles.inputtextPosition1, inputBorderStyleEmail]}
+            placeholder="Địa chỉ email"
+            ref={emailInputRef}
+            // keyboardType="email"
+            returnKeyType="next"
+            onSubmitEditing={() => emailInputRef.current.focus()}
+            onChangeText={changeEmail}
+            onFocus={handleFocusEmail}
+            onBlur={handleBlurEmail}
+            autoFocus
           />
-        </TouchableOpacity>
-
-        <Text style={[styles.bnTnG]}>Địa chỉ email của bạn là gì?</Text>
-        <Text style={[styles.nhpTnBn1]}>
-          Nhập địa chỉ email có thể dùng để liên hệ với bạn. Thông tin này sẽ không
-          hiển thị với ai khác trên trang cá nhân của bạn.
-        </Text>
-        <View>
-          <KeyboardAvoidingView>
-            <TextInput
-              ref={emailInputRef}
-              style={[styles.inputtextPosition1, isFocusEmail ? styles.focusedInput : null]}
-              placeholder="Địa chỉ email"
-              onChangeText={setEmail}
-              onFocus={handleFocusEmail}
-              onBlur={handleBlurEmail}
-            />
-          </KeyboardAvoidingView>
-        </View>
-
-        <Text style={[styles.nhpTnBn2]}>
-          Bạn cũng sẽ nhận được thông báo của chúng tôi qua email và có thể chọn
-          không nhận bất cứ lúc nào.{" "}
-          <Text style={{ color: "#0062e0", fontWeight: 600 }}>Tìm hiểu thêm</Text>
-        </Text>
-
-        <TouchableOpacity onPress={goToNextScreen}>
-          <View style={styles.buttonprimary}>
-            <Text style={styles.logIn}>Tiếp</Text>
-          </View>
-        </TouchableOpacity>
-
-        <View style={styles.buttonSub}>
-          <Text style={styles.logIn2}>Đăng ký bằng số điện thoại</Text>
-        </View>
-
-        <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
+        </KeyboardAvoidingView>
       </View>
-    </TouchableWithoutFeedback>
+
+      <Text style={[styles.nhpTnBn2]}>
+        Bạn cũng sẽ nhận được thông báo của chúng tôi qua email và có thể chọn
+        không nhận bất cứ lúc nào.{" "}
+        <TouchableOpacity onPress={() => navigation.navigate("Policy")}>
+          <Text style={{ color: "#0062e0", fontWeight: 600 }}>
+            Tìm hiểu thêm
+          </Text>
+        </TouchableOpacity>
+      </Text>
+
+      <TouchableOpacity onPress={handleSummit}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
+
+      <View style={styles.buttonSub}>
+        <Text style={styles.logIn2}>Đăng ký bằng số điện thoại</Text>
+      </View>
+
+      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
+    </LinearGradient>
   );
 };
 
@@ -124,6 +146,7 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     position: "relative",
     top: 90,
+    left: 16,
     overflow: "hidden",
   },
   button: {
@@ -142,8 +165,9 @@ const styles = StyleSheet.create({
   inputtextPosition1: {
     height: 50,
     top: 148,
+    left: 16,
     position: "absolute",
-    width: "100%",
+    width: "92%",
     maxWidth: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
@@ -188,6 +212,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
+    marginLeft: 16,
+    marginRight: 16,
     position: "relative",
   },
   buttonSub: {
@@ -199,6 +225,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
+    marginLeft: 16,
+    marginRight: 16,
     position: "relative",
   },
   vectorIcon: {
@@ -208,6 +236,7 @@ const styles = StyleSheet.create({
   },
   bnTnG: {
     top: 117,
+    left: 16,
     fontSize: FontSize.size_xl,
     width: "100%",
     height: 30,
@@ -217,12 +246,16 @@ const styles = StyleSheet.create({
   nhpTnBn1: {
     top: 125,
     fontSize: 14,
+    left: 16,
     maxWidth: "100%",
+    marginRight: 16,
   },
   nhpTnBn2: {
     top: 215,
     fontSize: 14,
+    left: 16,
     maxWidth: "100%",
+    marginRight: 16,
   },
   bgIcon: {
     height: "100%",
@@ -237,6 +270,7 @@ const styles = StyleSheet.create({
   email: {
     color: Color.gray03,
     textAlign: "left",
+    left: 16,
   },
   show: {
     color: Color.greenPrimary,
@@ -246,22 +280,18 @@ const styles = StyleSheet.create({
   },
   inputtext: {
     right: 195,
+    left: 16,
   },
   inputtext1: {
     right: 14,
     left: 197,
   },
-  createName: {
-    backgroundColor: Color.white,
+  createEmail: {
+    // backgroundColor: "#f0f2f5",
     flex: 1,
     overflow: "hidden",
     width: "100%",
-    paddingLeft: 16,
-    paddingRight: 16,
   },
-  focusedInput: {
-    borderColor: "black"
-  }
 });
 
 export default ChooseNumberPhone;

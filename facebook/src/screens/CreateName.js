@@ -11,17 +11,26 @@ import {
   Alert,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
+// import LinearGradient from "react-native-linear-gradient";
+import {LinearGradient} from 'expo-linear-gradient';
 import { useNavigation } from "@react-navigation/native";
 
 const CreateName = () => {
   const navigation = useNavigation();
   const [name, setName] = useState("");
   const [surName, setSurName] = useState("");
-  const [isFocusedName, setIsFocusedName] = useState(false);
+  const [isFocusedName, setIsFocusedName] = useState(true);
   const [isFocusedSurName, setIsFocusedSurName] = useState(false);
 
   const nameInputRef = useRef(null);
   const surNameInputRef = useRef(null);
+
+  const inputBorderStyleName = isFocusedName
+    ? { borderColor: "black", borderWidth: 1 }
+    : {};
+  const inputBorderStyleSurName = isFocusedSurName
+    ? { borderColor: "black", borderWidth: 1 }
+    : {};
 
   const changeName = (newName) => {
     setName(newName);
@@ -30,10 +39,10 @@ const CreateName = () => {
   const changeSurName = (newSurName) => {
     setSurName(newSurName);
   };
-  
 
   const handleFocusSurName = () => {
     setIsFocusedSurName(true);
+    setIsFocusedName(false);
   };
 
   const handleBlurSurName = () => {
@@ -75,7 +84,7 @@ const CreateName = () => {
         ]
       );
     } else {
-      navigation.navigate("ChooseDateOfBirth");
+      navigation.navigate("ChooseNumberPhone");
     }
   };
 
@@ -84,11 +93,16 @@ const CreateName = () => {
   };
 
   const goToNextScreen = () => {
-    navigation.navigate("ChooseDateOfBirth");
+    navigation.navigate("ChooseGender");
   };
 
   return (
-    <View style={styles.createName}>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.createName}
+    >
       <TouchableOpacity onPress={goBackHandler}>
         <Image
           style={[styles.vectorIcon, styles.iconLayout]}
@@ -105,15 +119,16 @@ const CreateName = () => {
         <View>
           <KeyboardAvoidingView>
             <TextInput
-              style={[styles.inputtextPosition1]}
+              style={[styles.inputtextPosition1, inputBorderStyleName]}
               placeholder="Tên"
               ref={nameInputRef}
-              keyboardType="name"
+              // keyboardType="default"
               returnKeyType="next"
               onSubmitEditing={() => nameInputRef.current.focus()}
               onChangeText={changeName}
               onFocus={handleFocusName}
               onBlur={handleBlurName}
+              autoFocus
             />
           </KeyboardAvoidingView>
         </View>
@@ -121,10 +136,10 @@ const CreateName = () => {
         <View>
           <KeyboardAvoidingView>
             <TextInput
-              style={[styles.inputtextPosition2]}
+              style={[styles.inputtextPosition2, inputBorderStyleSurName]}
               placeholder="Họ"
               ref={surNameInputRef}
-              keyboardType="name"
+              // keyboardType="default"
               returnKeyType="next"
               // onSubmitEditing={() => surNameInputRef.current.focus()}
               onChangeText={changeSurName}
@@ -141,7 +156,7 @@ const CreateName = () => {
         </View>
       </TouchableOpacity>
       <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -178,8 +193,8 @@ const styles = StyleSheet.create({
   },
   inputtextPosition1: {
     height: 50,
-    minWidth: 170,
-    maxWidth: 170,
+    minWidth: 180,
+    maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -187,8 +202,8 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
-    minWidth: 170,
-    maxWidth: 170,
+    minWidth: 180,
+    maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -268,7 +283,7 @@ const styles = StyleSheet.create({
     left: 197,
   },
   createName: {
-    backgroundColor: Color.white,
+    // backgroundColor: "#f0f2f5",
     flex: 1,
     overflow: "hidden",
     width: "100%",

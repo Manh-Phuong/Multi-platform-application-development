@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const IntroCreateAccount = () => {
   const navigation = useNavigation();
@@ -24,7 +25,12 @@ const IntroCreateAccount = () => {
   };
 
   return (
-    <View style={styles.createName}>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.createName}
+    >
       <TouchableOpacity onPress={goBackHandler}>
         <Image
           style={[styles.vectorIcon, styles.iconLayout]}
@@ -37,10 +43,10 @@ const IntroCreateAccount = () => {
 
       <View style={[styles.wrapIntro]}>
         <Image
-            style={[styles.bgIntro]}
-            contentFit="cover"
-            source={require("../assets/images/bg-intro.jpg")}
-          />
+          style={[styles.bgIntro]}
+          contentFit="cover"
+          source={require("../assets/images/bg-intro.jpg")}
+        />
       </View>
 
       <Text style={[styles.nhpTnBn2]}>
@@ -57,7 +63,7 @@ const IntroCreateAccount = () => {
       <View style={styles.buttonSub}>
         <Text style={styles.logIn2}>Tôi có tài khoản rồi</Text>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -79,7 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
   },
   wrapIntro: {
-    position: 'relative',
+    position: "relative",
     top: 140,
   },
   bgIntro: {
@@ -219,7 +225,7 @@ const styles = StyleSheet.create({
     left: 197,
   },
   createName: {
-    backgroundColor: Color.white,
+    // backgroundColor: Color.white,
     flex: 1,
     overflow: "hidden",
     width: "100%",
