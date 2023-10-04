@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-// import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 import {
   StyleSheet,
@@ -13,12 +13,13 @@ import {
   TouchableWithoutFeedback,
   Animated,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
+import Icon from "react-native-vector-icons/FontAwesome"; 
 import { LinearGradient } from "expo-linear-gradient";
 
 const ChooseDateOfBirth = () => {
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [isFocusDate, setIsFocusDate] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const navigation = useNavigation();
 
   const translateY = useRef(new Animated.Value(100)).current;
@@ -26,12 +27,14 @@ const ChooseDateOfBirth = () => {
   useEffect(() => {
     Animated.timing(translateY, {
       toValue: 0,
-      duration: 1000, // Thời gian của hiệu ứng (1 giây)
-      useNativeDriver: true, // Sử dụng native driver để tối ưu hiệu suất
+      duration: 1000,
+      useNativeDriver: true,
     }).start();
   }, [translateY]);
+
   const handleFocusDate = () => {
     setIsFocusDate(true);
+    setShowDatePicker(true);
   };
 
   const handleBlurDate = () => {
@@ -39,11 +42,16 @@ const ChooseDateOfBirth = () => {
   };
 
   const handleChangeDate = (event, newDate) => {
-    setDateOfBirth(newDate);
+    setShowDatePicker(false);
+    if (event.type === "set") {
+      setDateOfBirth(newDate);
+    }
   };
+
   const goBackHandler = () => {
-    navigation.goBack(); // Quay lại màn hình trước đó
+    navigation.goBack();
   };
+
   const goToNextScreen = () => {
     navigation.navigate("ChooseGender");
   };
@@ -70,11 +78,13 @@ const ChooseDateOfBirth = () => {
 
     return `Ngày ${day} ${month}, ${year}`;
   };
+
   return (
     <TouchableWithoutFeedback
       onPress={() => {
         Keyboard.dismiss();
         handleBlurDate();
+        setShowDatePicker(false);
       }}
       accessible={false}
     >
@@ -84,16 +94,6 @@ const ChooseDateOfBirth = () => {
         end={{ x: 1, y: 1 }}
         style={styles.container}
       >
-        {/* <TouchableOpacity onPress={goBackHandler}>
-                <View style={
-                    {marginTop: 40}
-                } >
-                    <Icon name="angle-left"
-                        size={30}
-                        color="#000"/>
-                </View>
-            </TouchableOpacity> */}
-
         <TouchableOpacity onPress={goBackHandler}>
           <Image
             style={[styles.vectorIcon, styles.iconLayout]}
@@ -137,14 +137,16 @@ const ChooseDateOfBirth = () => {
           </TouchableOpacity>
         </View>
 
-        {/* { isFocusDate && <DateTimePicker style={
-                styles.datePicker
-            }
+        {showDatePicker && (
+          <DateTimePicker
+            style={styles.datePicker}
             mode="date"
             value={dateOfBirth}
             is24Hour={true}
             display="spinner"
-            onChange={handleChangeDate}/> }  */}
+            onChange={handleChangeDate}
+          />
+        )}
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
