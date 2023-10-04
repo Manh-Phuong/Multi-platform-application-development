@@ -1,10 +1,11 @@
-import * as React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {React, useState} from "react";
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
-import { Button, CheckBox } from "react-native-elements";
+import { CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
 const ChooseGender = () => {
+  const [positionCheckbox, setPositionCheckbox] = useState(-1)
   const navigation = useNavigation();
 
   const goBackHandler = () => {
@@ -12,16 +13,36 @@ const ChooseGender = () => {
   };
 
   const goToNextScreen = () => {
-    navigation.navigate("ChooseNumberPhone");
+    if (validateCheckbox()) {
+      navigation.navigate("ChooseNumberPhone");
+    }
   };
-
+  const handleCheckbox = (index) => {
+    setPositionCheckbox(index)
+  }
+  const validateCheckbox = () => {
+    if (positionCheckbox == -1) {
+      Alert.alert("Giới tính trống.", 'Vui lòng chọn giới tính.', [{
+        text: 'OK',
+      },])
+      return false;
+    }
+    return true;
+  }
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={goBackHandler}>
+       <TouchableOpacity onPress={goBackHandler}>
+          <Image
+            style={[styles.vectorIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/images/vector.png")}
+          />
+        </TouchableOpacity>
+      {/* <TouchableOpacity onPress={goBackHandler}>
         <View style={{ marginTop: 40 }}>
           <Icon name="angle-left" size={30} color="#000" />
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View style={styles.headerText}>
         <Text style={styles.mainText}>Giới tính của bạn là gì?</Text>
@@ -33,37 +54,15 @@ const ChooseGender = () => {
       <View style={styles.checkboxField}>
         <View style={styles.field}>
           <Text style={styles.fieldText}>Nữ</Text>
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" />
+          <CheckBox checkedIcon="dot-circle-o" onPress={() => {handleCheckbox(1)}} checked={positionCheckbox == 1} uncheckedIcon="circle-o" />
         </View>
         <View style={styles.field}>
           <Text style={styles.fieldText}>Nam</Text>
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" />
+          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" onPress={() => {handleCheckbox(2)}} checked={positionCheckbox == 2}/>
         </View>
         <View style={[styles.field, styles.lastField]}>
-          <Text
-            style={{
-              ...styles.fieldText,
-              maxWidth: "80%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            {/* <View>
-                            <Text style= {
-                                {
-                                    fontWeight: "bold",
-                                }
-                            }>Tùy chọn khác</Text>
-
-                        </View>
-                        <View>
-                            <Text>Chọn tùy chọn khác nếu bạn thuộc giới tính khác hoặc không muốn tiết lộ.</Text>
-
-                        </View> */}
-            <Text>Khác</Text>
-          </Text>
-
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" />
+            <Text style={styles.fieldText}>Khác</Text>
+          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" onPress={() => {handleCheckbox(0)}} checked={positionCheckbox == 0} />
         </View>
       </View>
       <View>
@@ -78,13 +77,13 @@ const ChooseGender = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: "#fdf5f7",
+    backgroundColor: "#f0f2f5",
     height: "100%",
     position: "relative",
     fontSize: 16,
   },
   headerText: {
-    marginTop: 12,
+    marginTop: 100,
     marginBottom: 20,
   },
   mainText: {
@@ -110,8 +109,6 @@ const styles = StyleSheet.create({
   },
   lastField: {
     borderBottomWidth: 0,
-    paddingTop: 12,
-    paddingBottom: 12,
   },
   primaryButton: {
     backgroundColor: "#0063e0",
@@ -126,6 +123,18 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
+  },
+  vectorIcon: {
+    width: 20,
+    height: 20,
+    objectFit: "cover",
+  },
+  iconLayout: {
+    maxHeight: "100%",
+    maxWidth: "100%",
+    position: "relative",
+    top: 70,
+    overflow: "hidden",
   },
 });
 
