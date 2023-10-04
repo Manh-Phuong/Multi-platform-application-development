@@ -12,6 +12,7 @@ import IntroCreateAccountScreen from "../screens/IntroCreateAccount";
 import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
 import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
+import VerificationCodeScreen from "../screens/VerificationCode";
 
 const publicRoutes = [
     {
@@ -55,10 +56,12 @@ const publicRoutes = [
     }, {
         name: "SaveInfoConfirm",
         component: SaveInfoConfirmScreen
-    },
-    {
+    }, {
         name: "PolicyConfirm",
         component: PolicyConfirmScreen
+    }, {
+        name: "VerificationCode",
+        component: VerificationCodeScreen
     },
 
 ];

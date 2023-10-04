@@ -7,8 +7,6 @@ import {
   Alert,
   Image,
 } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
-import { CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -21,9 +19,7 @@ const PolicyConfirm = () => {
   };
 
   const goToNextScreen = () => {
-    if (validateCheckbox()) {
-      navigation.navigate("ChooseNumberPhone");
-    }
+      navigation.navigate("VerificationCode");
   };
   const handleCheckbox = (index) => {
     setPositionCheckbox(index);

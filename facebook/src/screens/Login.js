@@ -10,10 +10,12 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { LinearGradient } from "expo-linear-gradient";
-
+const windowHeight = Dimensions.get('window').height;
+const customHeight = windowHeight - 100; 
 const Login = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
@@ -265,7 +267,7 @@ const styles = StyleSheet.create({
   },
   subButtonView: {
     position: "absolute",
-    bottom: 50,
+    top: customHeight,
     left: 16,
     right: 16,
     width: "100%",
