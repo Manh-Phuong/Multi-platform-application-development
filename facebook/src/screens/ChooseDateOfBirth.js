@@ -118,15 +118,13 @@ const ChooseDateOfBirth = () => {
               isFocusDate ? styles.focusedInput : null,
             ]}
           >
-            <TextInput
+            <Text
               style={[styles.textInput]}
-              placeholderTextColor="#888"
-              onFocus={() => {
-                Keyboard.dismiss();
+              onPress={() => {
                 handleFocusDate();
               }}
-              value={formatCustomDate(dateOfBirth)}
-            ></TextInput>
+              
+            >{formatCustomDate(dateOfBirth)}</Text>
           </View>
         </View>
         <View>
