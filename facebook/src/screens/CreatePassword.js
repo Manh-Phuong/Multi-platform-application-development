@@ -10,11 +10,17 @@ import {
   TouchableOpacity,
   Keyboard,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
+  Dimensions,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+
+const windowHeight = Dimensions.get("window").height;
+const customHeight = windowHeight - 30;
 
 const CreatePassword = () => {
   const navigation = useNavigation();
@@ -80,67 +86,69 @@ const CreatePassword = () => {
           },
         ]
       );
-    }
-    else {
-      navigation.navigate("SaveInfoConfirm")
+    } else {
+      navigation.navigate("SaveInfoConfirm");
     }
   };
 
   return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.createName}>
-          <TouchableOpacity onPress={goBackHandler}>
-            <Image
-              style={[styles.vectorIcon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/images/vector.png")}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <LinearGradient
+        colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.createName}
+      >
+        <TouchableOpacity onPress={goBackHandler}>
+          <Image
+            style={[styles.vectorIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/images/vector.png")}
+          />
+        </TouchableOpacity>
+        <Text style={[styles.bnTnG]}>Tạo mật khẩu</Text>
+        <Text style={[styles.nhpTnBn1]}>
+          Tạo mật khẩu gồm ít nhất 6 chữ cái hoặc chữ số. Bạn nên chọn mật khẩu
+          thật khó đoán.
+        </Text>
+        <Text style={[styles.label]}>Mật khẩu</Text>
+        <View>
+          <View style={styles.textInputContainer}>
+            <TextInput
+              ref={passWordInputRef}
+              style={[
+                styles.inputtextPosition1,
+                isFocusedPassword ? styles.focusedInput : null,
+              ]}
+              placeholder="Mật khẩu"
+              secureTextEntry={!isPasswordVisible}
+              value={password}
+              returnKeyType="done"
+              onChangeText={handlePasswordChange}
+              onFocus={handleFocusPassword}
+              onBlur={handleBlurPassword}
             />
-          </TouchableOpacity>
-          <Text style={[styles.bnTnG]}>Tạo mật khẩu</Text>
-          <Text style={[styles.nhpTnBn1]}>
-            Tạo mật khẩu gồm ít nhất 6 chữ cái hoặc chữ số. Bạn nên chọn mật
-            khẩu thật khó đoán.
-          </Text>
-          <View>
-            <View style={styles.textInputContainer}>
-              <TextInput
-                ref={passWordInputRef}
-                style={[
-                  styles.inputtextPosition1,
-                  isFocusedPassword ? styles.focusedInput : null,
-                ]}
-                placeholder="Mật khẩu"
-                secureTextEntry={!isPasswordVisible}
-                value={password}
-                returnKeyType='done'
-                onChangeText={handlePasswordChange}
-                onFocus={handleFocusPassword}
-                onBlur={handleBlurPassword}
+            {(isFocusedPassword || password.trim()) && (
+              <Icon
+                onPress={togglePasswordVisibility}
+                style={[styles.iconEye]}
+                name={isPasswordVisible ? "eye" : "eye-slash"}
+                size={20}
+                color="black"
               />
-              {(isFocusedPassword || password.trim()) && (
-                <Icon
-                  onPress={togglePasswordVisibility}
-                  style={[styles.iconEye]}
-                  name={isPasswordVisible ? "eye" : "eye-slash"}
-                  size={20}
-                  color="black"
-                />
-              )}
-            </View>
+            )}
           </View>
-
-          <View>
-            <TouchableOpacity
-              style={styles.buttonprimary}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.logIn}>Tiếp</Text>
-            </TouchableOpacity>
-          </View>
-
-          <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
         </View>
-      </TouchableWithoutFeedback>
+
+        <View>
+          <TouchableOpacity style={styles.buttonprimary} onPress={handleSubmit}>
+            <Text style={styles.logIn}>Tiếp</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -153,20 +161,29 @@ const styles = StyleSheet.create({
     left: 16,
     overflow: "hidden",
   },
+
+  buttonContainer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 18,
+    padding: 16, // Điều chỉnh khoảng cách từ bàn phím đến nút văn bản
+    backgroundColor: "transparent", // Đảm bảo nút văn bản không che kín màn hình
+  },
   button: {
     position: "absolute",
     left: "32%",
     width: "100%",
-    bottom: 18,
+    top: customHeight,
     color: "#0062e0",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   textInputContainer: {
     postion: "relative",
   },
   iconEye: {
     position: "absolute",
-    top: 162,
+    top: 172,
     right: 32,
   },
   bnTnGClr: {
@@ -174,9 +191,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
   },
+  label: {
+    top: 148,
+    fontSize: 16,
+    marginLeft: 16,
+  },
   inputtextPosition1: {
     height: 50,
-    top: 148,
+    top: 158,
     left: 16,
     position: "absolute",
     width: "92%",
@@ -212,7 +234,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   buttonprimary: {
-    bottom: -220,
+    bottom: -230,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
     alignItems: "center",

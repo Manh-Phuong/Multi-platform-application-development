@@ -12,12 +12,13 @@ import {
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const CreatePassword = () => {
   const navigation = useNavigation();
 
   const handleSubmit = () => {
-    navigation.navigate('PolicyConfirm')
+    navigation.navigate("PolicyConfirm");
   };
 
   const goBackHandler = () => {
@@ -25,39 +26,39 @@ const CreatePassword = () => {
   };
 
   return (
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-          <TouchableOpacity onPress={goBackHandler}>
-            <Image
-              style={[styles.vectorIcon, styles.iconLayout]}
-              contentFit="cover"
-              source={require("../assets/images/vector.png")}
-            />
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <LinearGradient
+        colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.container}
+      >
+        <TouchableOpacity onPress={goBackHandler}>
+          <Image
+            style={[styles.vectorIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/images/vector.png")}
+          />
+        </TouchableOpacity>
+        <Text style={[styles.bnTnG]}>Lưu thông tin đăng nhập?</Text>
+        <Text style={[styles.nhpTnBn1]}>
+          Chúng tôi sẽ lưu thông tin đăng nhập để bạn không cần nhập vào lần
+          sau.
+        </Text>
+
+        <View>
+          <TouchableOpacity style={styles.buttonprimary} onPress={handleSubmit}>
+            <Text style={styles.logIn}>Lưu</Text>
           </TouchableOpacity>
-          <Text style={[styles.bnTnG]}>Lưu thông tin đăng nhập?</Text>
-          <Text style={[styles.nhpTnBn1]}>
-            Chúng tôi sẽ lưu thông tin đăng nhập để bạn không cần nhập vào lần sau.
-          </Text>
-
-          <View>
-            <TouchableOpacity
-              style={styles.buttonprimary}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.logIn}>Lưu</Text>
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <TouchableOpacity
-                style={styles.buttonSub}
-                onPress={handleSubmit}
-                >
-                <Text style={styles.logIn2}>Lúc khác</Text>
-                </TouchableOpacity>
-          </View>
         </View>
-      </TouchableWithoutFeedback>
+
+        <View>
+          <TouchableOpacity style={styles.buttonSub} onPress={handleSubmit}>
+            <Text style={styles.logIn2}>Lúc khác</Text>
+          </TouchableOpacity>
+        </View>
+      </LinearGradient>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     width: "100%",
     bottom: 18,
     color: "#0062e0",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   bnTnGClr: {
     color: Color.colorBlack,

@@ -12,10 +12,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Dimensions 
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+
+const windowHeight = Dimensions.get('window').height;
+const customHeight = windowHeight - 30;
 
 const ChooseNumberPhone = () => {
   const navigation = useNavigation();
@@ -101,6 +105,7 @@ const ChooseNumberPhone = () => {
           Nhập địa chỉ email có thể dùng để liên hệ với bạn. Thông tin này sẽ
           không hiển thị với ai khác trên trang cá nhân của bạn.
         </Text>
+        <Text style={[styles.label]}>Địa chỉ email</Text>
         <View>
           <KeyboardAvoidingView>
             <TextInput
@@ -155,18 +160,22 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: "32%",
     width: "100%",
-    bottom: 18,
+    top: customHeight,
     color: "#0062e0",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   bnTnGClr: {
     color: Color.colorBlack,
     textAlign: "center",
     position: "absolute",
   },
+  label: {
+    top: 148,
+    fontSize: 16
+  },
   inputtextPosition1: {
     height: 50,
-    top: 148,
+    top: 158,
     position: "absolute",
     width: "100%",
     maxWidth: "100%",
@@ -207,7 +216,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   buttonprimary: {
-    bottom: -240,
+    bottom: -250,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
     alignItems: "center",
@@ -216,7 +225,7 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   buttonSub: {
-    bottom: -260,
+    bottom: -270,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.white,
     borderColor: "#ccc",
@@ -245,7 +254,7 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
   },
   nhpTnBn2: {
-    top: 215,
+    top: 225,
     fontSize: 15,
     width: "100%",
   },

@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     width: "100%",
     bottom: 18,
     color: "#0062e0",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   bnTnGClr: {
     color: Color.colorBlack,

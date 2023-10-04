@@ -55,12 +55,10 @@ const publicRoutes = [
     }, {
         name: "SaveInfoConfirm",
         component: SaveInfoConfirmScreen
-
     },
     {
         name: "PolicyConfirm",
         component: PolicyConfirmScreen
-
     },
 
 ];

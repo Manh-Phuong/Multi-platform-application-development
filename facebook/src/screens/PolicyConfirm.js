@@ -1,11 +1,19 @@
-import {React, useState} from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
+import { React, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const PolicyConfirm = () => {
-  const [positionCheckbox, setPositionCheckbox] = useState(-1)
+  const [positionCheckbox, setPositionCheckbox] = useState(-1);
   const navigation = useNavigation();
 
   const goBackHandler = () => {
@@ -18,26 +26,33 @@ const PolicyConfirm = () => {
     }
   };
   const handleCheckbox = (index) => {
-    setPositionCheckbox(index)
-  }
+    setPositionCheckbox(index);
+  };
   const validateCheckbox = () => {
     if (positionCheckbox == -1) {
-      Alert.alert("Giới tính trống.", 'Vui lòng chọn giới tính.', [{
-        text: 'OK',
-      },])
+      Alert.alert("Giới tính trống.", "Vui lòng chọn giới tính.", [
+        {
+          text: "OK",
+        },
+      ]);
       return false;
     }
     return true;
-  }
+  };
   return (
-    <View style={styles.container}>
-       <TouchableOpacity onPress={goBackHandler}>
-          <Image
-            style={[styles.vectorIcon, styles.iconLayout]}
-            contentFit="cover"
-            source={require("../assets/images/vector.png")}
-          />
-        </TouchableOpacity>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
       {/* <TouchableOpacity onPress={goBackHandler}>
         <View style={{ marginTop: 40 }}>
           <Icon name="angle-left" size={30} color="#000" />
@@ -45,12 +60,16 @@ const PolicyConfirm = () => {
       </TouchableOpacity> */}
 
       <View style={styles.headerText}>
-        <Text style={styles.mainText}>Đồng ý với điều khoản và chính sách của Facebook</Text>
-        <Text style={styles.subText}>
-          Những người dùng dịch vụ của chúng tôi có thể đã tải thông tin liên hệ của bạn lên Facebook.
+        <Text style={styles.mainText}>
+          Đồng ý với điều khoản và chính sách của Facebook
         </Text>
-        <Text style={[styles.subText, styles.marginTop12 ]}>
-          Bạn đồng ý với Điều khoản, Chính sách và Quyền riêng tư của chúng tôi nhé.
+        <Text style={styles.subText}>
+          Những người dùng dịch vụ của chúng tôi có thể đã tải thông tin liên hệ
+          của bạn lên Facebook.
+        </Text>
+        <Text style={[styles.subText, styles.marginTop12]}>
+          Bạn đồng ý với Điều khoản, Chính sách và Quyền riêng tư của chúng tôi
+          nhé.
         </Text>
       </View>
       <View>
@@ -58,7 +77,7 @@ const PolicyConfirm = () => {
           <Text style={styles.buttonText}>Tôi đồng ý</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -80,8 +99,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   subText: {
-    fontSize: 15
-  },    
+    fontSize: 15,
+  },
   checkboxField: {
     borderRadius: 16,
     backgroundColor: "white",
@@ -114,7 +133,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 16
+    fontSize: 16,
   },
   vectorIcon: {
     width: 20,

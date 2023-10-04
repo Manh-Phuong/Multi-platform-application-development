@@ -1,11 +1,19 @@
-import {React, useState} from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image } from "react-native";
+import { React, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Alert,
+  Image,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ChooseGender = () => {
-  const [positionCheckbox, setPositionCheckbox] = useState(-1)
+  const [positionCheckbox, setPositionCheckbox] = useState(-1);
   const navigation = useNavigation();
 
   const goBackHandler = () => {
@@ -18,26 +26,33 @@ const ChooseGender = () => {
     }
   };
   const handleCheckbox = (index) => {
-    setPositionCheckbox(index)
-  }
+    setPositionCheckbox(index);
+  };
   const validateCheckbox = () => {
     if (positionCheckbox == -1) {
-      Alert.alert("Giới tính trống.", 'Vui lòng chọn giới tính.', [{
-        text: 'OK',
-      },])
+      Alert.alert("Giới tính trống.", "Vui lòng chọn giới tính.", [
+        {
+          text: "OK",
+        },
+      ]);
       return false;
     }
     return true;
-  }
+  };
   return (
-    <View style={styles.container}>
-       <TouchableOpacity onPress={goBackHandler}>
-          <Image
-            style={[styles.vectorIcon, styles.iconLayout]}
-            contentFit="cover"
-            source={require("../assets/images/vector.png")}
-          />
-        </TouchableOpacity>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
+      <TouchableOpacity onPress={goBackHandler}>
+        <Image
+          style={[styles.vectorIcon, styles.iconLayout]}
+          contentFit="cover"
+          source={require("../assets/images/vector.png")}
+        />
+      </TouchableOpacity>
       {/* <TouchableOpacity onPress={goBackHandler}>
         <View style={{ marginTop: 40 }}>
           <Icon name="angle-left" size={30} color="#000" />
@@ -54,15 +69,36 @@ const ChooseGender = () => {
       <View style={styles.checkboxField}>
         <View style={styles.field}>
           <Text style={styles.fieldText}>Nữ</Text>
-          <CheckBox checkedIcon="dot-circle-o" onPress={() => {handleCheckbox(1)}} checked={positionCheckbox == 1} uncheckedIcon="circle-o" />
+          <CheckBox
+            checkedIcon="dot-circle-o"
+            onPress={() => {
+              handleCheckbox(1);
+            }}
+            checked={positionCheckbox == 1}
+            uncheckedIcon="circle-o"
+          />
         </View>
         <View style={styles.field}>
           <Text style={styles.fieldText}>Nam</Text>
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" onPress={() => {handleCheckbox(2)}} checked={positionCheckbox == 2}/>
+          <CheckBox
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            onPress={() => {
+              handleCheckbox(2);
+            }}
+            checked={positionCheckbox == 2}
+          />
         </View>
         <View style={[styles.field, styles.lastField]}>
-            <Text style={styles.fieldText}>Khác</Text>
-          <CheckBox checkedIcon="dot-circle-o" uncheckedIcon="circle-o" onPress={() => {handleCheckbox(0)}} checked={positionCheckbox == 0} />
+          <Text style={styles.fieldText}>Khác</Text>
+          <CheckBox
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            onPress={() => {
+              handleCheckbox(0);
+            }}
+            checked={positionCheckbox == 0}
+          />
         </View>
       </View>
       <View>
@@ -70,7 +106,7 @@ const ChooseGender = () => {
           <Text style={styles.buttonText}>Tiếp</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -123,7 +159,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontWeight: "700",
-    fontSize: 16
+    fontSize: 16,
   },
   vectorIcon: {
     width: 20,
@@ -138,8 +174,8 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   subText: {
-    fontSize: 15
-  }
+    fontSize: 15,
+  },
 });
 
 export default ChooseGender;

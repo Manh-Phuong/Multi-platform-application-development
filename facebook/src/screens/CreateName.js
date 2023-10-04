@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 // import LinearGradient from "react-native-linear-gradient";
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
 
 const CreateName = () => {
@@ -99,10 +99,7 @@ const CreateName = () => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={
-        Keyboard.dismiss
-    }
-    accessible={false}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <LinearGradient
         colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
         start={{ x: 0, y: 0 }}
@@ -121,31 +118,35 @@ const CreateName = () => {
         <Text style={[styles.nhpTnBn, styles.bnTnGClr]}>
           Nhập tên bạn sử dụng trong đời thực.
         </Text>
+        <View style={[styles.wrapLabel]}>
+          <Text>Tên</Text>
+          <Text>Họ</Text>
+        </View>
         <View style={[styles.wrapInput]}>
-            <TextInput
-              style={[styles.inputtextPosition1, inputBorderStyleName]}
-              placeholder="Tên"
-              ref={nameInputRef}
-              // keyboardType="default"
-              returnKeyType="next"
-              onSubmitEditing={() => surNameInputRef.current.focus()}
-              onChangeText={changeName}
-              onFocus={handleFocusName}
-              onBlur={handleBlurName}
-              autoFocus
-            />
+          <TextInput
+            style={[styles.inputtextPosition1, inputBorderStyleName]}
+            placeholder="Tên"
+            ref={nameInputRef}
+            // keyboardType="default"
+            returnKeyType="next"
+            onSubmitEditing={() => surNameInputRef.current.focus()}
+            onChangeText={changeName}
+            onFocus={handleFocusName}
+            onBlur={handleBlurName}
+            autoFocus
+          />
 
-            <TextInput
-              style={[styles.inputtextPosition2, inputBorderStyleSurName]}
-              placeholder="Họ"
-              ref={surNameInputRef}
-              // keyboardType="default"
-              returnKeyType="done"
-              // onSubmitEditing={() => surNameInputRef.current.focus()}
-              onChangeText={changeSurName}
-              onFocus={handleFocusSurName}
-              onBlur={handleBlurSurName}
-            />
+          <TextInput
+            style={[styles.inputtextPosition2, inputBorderStyleSurName]}
+            placeholder="Họ"
+            ref={surNameInputRef}
+            // keyboardType="default"
+            returnKeyType="done"
+            // onSubmitEditing={() => surNameInputRef.current.focus()}
+            onChangeText={changeSurName}
+            onFocus={handleFocusSurName}
+            onBlur={handleBlurSurName}
+          />
         </View>
 
         <TouchableOpacity onPress={handleSummit}>
@@ -173,21 +174,31 @@ const styles = StyleSheet.create({
     width: "100%",
     bottom: 18,
     color: "#0062e0",
-    fontWeight: 600,
+    fontWeight: "600",
   },
   bnTnGClr: {
     color: Color.colorBlack,
     textAlign: "center",
     position: "absolute",
   },
+  wrapLabel: {
+    top: 218,
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    paddingLeft: 16,
+    fontSize: 16,
+    gap: 168
+  },
   wrapInput: {
-    top: 208,
+    top: 248,
     position: "absolute",
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    paddingLeft: 16
+    paddingLeft: 16,
   },
   inputtextPosition1: {
     height: 50,
@@ -221,7 +232,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   buttonprimary: {
-    bottom: -270,
+    bottom: -310,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
     alignItems: "center",
