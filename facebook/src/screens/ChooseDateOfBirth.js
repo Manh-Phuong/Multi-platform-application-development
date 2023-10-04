@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 // import DateTimePicker from '@react-native-community/datetimepicker';
+import DatePicker from 'react-native-date-picker'
 
 import {
   StyleSheet,
@@ -145,6 +146,17 @@ const ChooseDateOfBirth = () => {
             is24Hour={true}
             display="spinner"
             onChange={handleChangeDate}/> }  */}
+
+<DatePicker
+        modal
+        date={dateOfBirth}
+        onConfirm={(date) => {
+          handleChangeDate(date)
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
       </LinearGradient>
     </TouchableWithoutFeedback>
   );
