@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,25 +7,102 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
+// import LinearGradient from "react-native-linear-gradient";
+import {LinearGradient} from 'expo-linear-gradient';
 import { useNavigation } from "@react-navigation/native";
 
 const CreateName = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [isFocusedName, setIsFocusedName] = useState(true);
+  const [isFocusedSurName, setIsFocusedSurName] = useState(false);
+
+  const nameInputRef = useRef(null);
+  const surNameInputRef = useRef(null);
+
+  const inputBorderStyleName = isFocusedName
+    ? { borderColor: "black", borderWidth: 1 }
+    : {};
+  const inputBorderStyleSurName = isFocusedSurName
+    ? { borderColor: "black", borderWidth: 1 }
+    : {};
+
+  const changeName = (newName) => {
+    setName(newName);
+  };
+
+  const changeSurName = (newSurName) => {
+    setSurName(newSurName);
+  };
+
+  const handleFocusSurName = () => {
+    setIsFocusedSurName(true);
+    setIsFocusedName(false);
+  };
+
+  const handleBlurSurName = () => {
+    setIsFocusedSurName(false);
+  };
+  const handleFocusName = () => {
+    setIsFocusedName(true);
+  };
+
+  const handleBlurName = () => {
+    setIsFocusedName(false);
+  };
+
+  const handleSummit = () => {
+    if (!name.trim()) {
+      Alert.alert(
+        "Tên không được để trống",
+        "Hãy nhập tên của bạn để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              nameInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else if (!surName.trim()) {
+      Alert.alert(
+        "Họ không được để trống",
+        "Hãy nhập họ của bạn để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              surNameInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else {
+      navigation.navigate("ChooseNumberPhone");
+    }
+  };
 
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
   };
 
   const goToNextScreen = () => {
-    navigation.navigate('ChooseDateOfBirth'); 
+    navigation.navigate("ChooseGender");
   };
 
   return (
-    <View style={styles.createName}>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.createName}
+    >
       <TouchableOpacity onPress={goBackHandler}>
         <Image
           style={[styles.vectorIcon, styles.iconLayout]}
@@ -37,25 +115,48 @@ const CreateName = () => {
       <Text style={[styles.nhpTnBn, styles.bnTnGClr]}>
         Nhập tên bạn sử dụng trong đời thực.
       </Text>
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition1]} placeholder="Tên" />
-        </KeyboardAvoidingView>
+      <View style={[styles.wrapInput]}>
+        <View>
+          <KeyboardAvoidingView>
+            <TextInput
+              style={[styles.inputtextPosition1, inputBorderStyleName]}
+              placeholder="Tên"
+              ref={nameInputRef}
+              // keyboardType="default"
+              returnKeyType="next"
+              onSubmitEditing={() => nameInputRef.current.focus()}
+              onChangeText={changeName}
+              onFocus={handleFocusName}
+              onBlur={handleBlurName}
+              autoFocus
+            />
+          </KeyboardAvoidingView>
+        </View>
+
+        <View>
+          <KeyboardAvoidingView>
+            <TextInput
+              style={[styles.inputtextPosition2, inputBorderStyleSurName]}
+              placeholder="Họ"
+              ref={surNameInputRef}
+              // keyboardType="default"
+              returnKeyType="next"
+              // onSubmitEditing={() => surNameInputRef.current.focus()}
+              onChangeText={changeSurName}
+              onFocus={handleFocusSurName}
+              onBlur={handleBlurSurName}
+            />
+          </KeyboardAvoidingView>
+        </View>
       </View>
 
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition2]} placeholder="Họ" />
-        </KeyboardAvoidingView>
-      </View>
-
-      <TouchableOpacity onPress={goToNextScreen}>
+      <TouchableOpacity onPress={handleSummit}>
         <View style={styles.buttonprimary}>
           <Text style={styles.logIn}>Tiếp</Text>
         </View>
       </TouchableOpacity>
       <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -81,11 +182,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
   },
+  wrapInput: {
+    top: 208,
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginLeft: 16,
+  },
   inputtextPosition1: {
     height: 50,
-    top: 208,
-    left: 16,
-    position: "absolute",
     minWidth: 170,
     maxWidth: 170,
     borderWidth: 1,
@@ -95,15 +202,13 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
-    top: 208,
-    left: 206,
-    position: "absolute",
     minWidth: 170,
     maxWidth: 170,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
     paddingHorizontal: 15,
+    marginRight: 32,
   },
   showTypo: {
     fontWeight: "500",
@@ -178,7 +283,7 @@ const styles = StyleSheet.create({
     left: 197,
   },
   createName: {
-    backgroundColor: Color.white,
+    // backgroundColor: "#f0f2f5",
     flex: 1,
     overflow: "hidden",
     width: "100%",

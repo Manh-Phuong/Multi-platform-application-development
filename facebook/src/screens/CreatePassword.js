@@ -1,5 +1,6 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
+
 import {
   Text,
   StyleSheet,
@@ -7,17 +8,65 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ChooseNumberPhone = () => {
   const navigation = useNavigation();
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+
+  const passwordInputRef = useRef(null);
+
+  const inputBorderStylePassword = isFocusedPassword
+    ? { borderColor: "black", borderWidth: 1 }
+    : {};
+
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
+  };
+
+  const goBackHandler = () => {
+    navigation.goBack(); // Quay lại màn hình trước đó
+  };
+
+  const handleSummit = () => {
+    if (!password.trim()) {
+      Alert.alert(
+        "Mật khẩu không được để trống",
+        "Hãy nhập mật khẩu của bạn để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              passwordInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else if (password.length < 6) {
+      Alert.alert("Mật khẩu quá ngắn", "Mật khẩu phải chứa ít nhất 6 ký tự.", [
+        {
+          text: "OK",
+          onPress: () => {
+            passwordInputRef.current.focus();
+          },
+        },
+      ]);
+    } else {
+      // navigation.navigate("");
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
@@ -30,12 +79,13 @@ const ChooseNumberPhone = () => {
     }
   };
 
-  const goBackHandler = () => {
-    navigation.goBack(); // Quay lại màn hình trước đó
-  };
-
   return (
-    <View style={styles.createName}>
+    <LinearGradient
+      colors={["#fffaf2", "#eef4fd", "#f0f3fb", "#ecf5fb"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.createName}
+    >
       <TouchableOpacity onPress={goBackHandler}>
         <Image
           style={[styles.vectorIcon, styles.iconLayout]}
@@ -51,11 +101,18 @@ const ChooseNumberPhone = () => {
       <View>
         <KeyboardAvoidingView>
           <TextInput
-            style={[styles.inputtextPosition1]}
+            style={[styles.inputtextPosition1, inputBorderStylePassword]}
             placeholder="Mật khẩu"
             secureTextEntry={!isPasswordVisible}
             value={password}
             onChangeText={handlePasswordChange}
+            ref={passwordInputRef}
+            // keyboardType="password"
+            returnKeyType="next"
+            onSubmitEditing={() => passwordInputRef.current.focus()}
+            onFocus={handleFocusPassword}
+            onBlur={handleBlurPassword}
+            autoFocus
           />
           {password.length > 0 && (
             <TouchableOpacity
@@ -72,12 +129,14 @@ const ChooseNumberPhone = () => {
         </KeyboardAvoidingView>
       </View>
 
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
-      </View>
+      <TouchableOpacity onPress={handleSummit}>
+        <View style={styles.buttonprimary}>
+          <Text style={styles.logIn}>Tiếp</Text>
+        </View>
+      </TouchableOpacity>
 
       <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -233,7 +292,7 @@ const styles = StyleSheet.create({
     left: 197,
   },
   createName: {
-    backgroundColor: Color.white,
+    // backgroundColor: "#f0f2f5",
     flex: 1,
     overflow: "hidden",
     width: "100%",
