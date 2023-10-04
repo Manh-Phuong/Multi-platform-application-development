@@ -1,14 +1,15 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   Text,
   StyleSheet,
   View,
   Image,
   TextInput,
-  KeyboardAvoidingView,
-  Platform,
+  TouchableWithoutFeedback,
   TouchableOpacity,
+  Keyboard,
+  Alert
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -18,9 +19,20 @@ const ChooseNumberPhone = () => {
   const navigation = useNavigation();
   const [password, setPassword] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+
+  const passWordInputRef = useRef(null)
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
+  };
+
+  const handleFocusPassword = () => {
+    setIsFocusedPassword(true);
+  };
+
+  const handleBlurPassword = () => {
+    setIsFocusedPassword(false);
   };
 
   const handlePasswordChange = (text) => {
@@ -30,54 +42,91 @@ const ChooseNumberPhone = () => {
     }
   };
 
+  function validatePassword(password) {
+    // Kiểm tra xem chuỗi có ít nhất 6 ký tự không và chứa cả chữ và số không
+    const regex = /^(?=.*[a-zA-Z])(?=.*\d).{6,}$/;
+    return regex.test(password);
+  }
+
+  const handleSubmit = () => {
+    validateData()
+  }
+
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
   };
 
+
+  const validateData = () => {
+    if (!password.trim()) {
+      Alert.alert("Cần có email", 'Nhập email của bạn để tiếp tục.', [{
+        text: 'OK',
+        onPress: () => {
+            passWordInputRef.current.focus()
+        }
+      },])
+    }
+    else if (password.trim() && !validatePassword(password)) {
+      Alert.alert("Mật khẩu quá ngắn.", 'Hãy tạo mật khẩu dài hơn gồm ít nhất 6 chữ số và chữ cái.', [{
+        text: 'OK',
+        onPress: () => {
+            passWordInputRef.current.focus()
+        }
+      },])
+    }
+  }
+
   return (
-    <View style={styles.createName}>
-      <TouchableOpacity onPress={goBackHandler}>
-        <Image
-          style={[styles.vectorIcon, styles.iconLayout]}
-          contentFit="cover"
-          source={require("../assets/images/vector.png")}
-        />
-      </TouchableOpacity>
-      <Text style={[styles.bnTnG]}>Tạo mật khẩu</Text>
-      <Text style={[styles.nhpTnBn1]}>
-        Tạo mật khẩu gồm ít nhất 6 chữ cái hoặc chữ số. Bạn nên chọn mật khẩu
-        thật khó đoán.
-      </Text>
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput
-            style={[styles.inputtextPosition1]}
-            placeholder="Mật khẩu"
-            secureTextEntry={!isPasswordVisible}
-            value={password}
-            onChangeText={handlePasswordChange}
+    <TouchableWithoutFeedback onPress={
+      Keyboard.dismiss
+    }
+    accessible={false}>
+      <View style={styles.createName}>
+        <TouchableOpacity onPress={goBackHandler}>
+          <Image
+            style={[styles.vectorIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/images/vector.png")}
           />
-          {password.length > 0 && (
-            <TouchableOpacity
-              onPress={togglePasswordVisibility}
-              style={[styles.iconEye]}
-            >
-              <Icon
-                name={isPasswordVisible ? "eye" : "eye-slash"}
-                size={20}
-                color="black"
+        </TouchableOpacity>
+        <Text style={[styles.bnTnG]}>Tạo mật khẩu</Text>
+        <Text style={[styles.nhpTnBn1]}>
+          Tạo mật khẩu gồm ít nhất 6 chữ cái hoặc chữ số. Bạn nên chọn mật khẩu
+          thật khó đoán.
+        </Text>
+        <View>
+            <View style={styles.textInputContainer}>
+              <TextInput
+                ref={passWordInputRef}
+                style={[styles.inputtextPosition1, isFocusedPassword ? styles.focusedInput : null]}
+                placeholder="Mật khẩu"
+                secureTextEntry={!isPasswordVisible}
+                value={password}
+                onChangeText={handlePasswordChange}
+                onFocus={handleFocusPassword}
+                onBlur={handleBlurPassword}
               />
+              {(isFocusedPassword || password.trim()) && (
+                <Icon
+                  onPress={togglePasswordVisibility}
+                  style={[styles.iconEye]}
+                  name={isPasswordVisible ? "eye" : "eye-slash"}
+                  size={20}
+                  color="black"
+                />
+              )}
+            </View>
+        </View>
+        
+          <View >
+            <TouchableOpacity style={styles.buttonprimary}  onPress={handleSubmit}>
+              <Text style={styles.logIn}>Tiếp</Text>
             </TouchableOpacity>
-          )}
-        </KeyboardAvoidingView>
-      </View>
+          </View>
 
-      <View style={styles.buttonprimary}>
-        <Text style={styles.logIn}>Tiếp</Text>
+        <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
       </View>
-
-      <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -98,10 +147,13 @@ const styles = StyleSheet.create({
     color: "#0062e0",
     fontWeight: 600,
   },
+  textInputContainer: {
+    postion: "relative"
+  },
   iconEye: {
-    position: "relative",
-    top: 165,
-    left: 330,
+    position: "absolute",
+    top: 162,
+    right: 32
   },
   bnTnGClr: {
     color: Color.colorBlack,
@@ -142,14 +194,14 @@ const styles = StyleSheet.create({
   logIn: {
     color: Color.white,
     textAlign: "center",
-    fontSize: FontSize.uI16Medium_size,
+    fontSize: 16,
     fontWeight: "800",
   },
   logIn2: {
     color: Color.colorBlack,
     textAlign: "center",
     fontSize: FontSize.uI16Medium_size,
-    fontWeight: "800",
+    fontWeight: "500",
   },
   buttonprimary: {
     bottom: -220,
@@ -238,6 +290,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     width: "100%",
   },
+  focusedInput: {
+    borderColor: "black"
+  }
 });
 
 export default ChooseNumberPhone;

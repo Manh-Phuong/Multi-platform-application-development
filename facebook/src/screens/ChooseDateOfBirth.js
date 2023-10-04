@@ -8,7 +8,7 @@ import {
     View,
     TextInput,
     TouchableOpacity,
-    Alert,
+    Image,
     Keyboard,
     TouchableWithoutFeedback,
     Animated
@@ -79,13 +79,24 @@ const ChooseDateOfBirth = () => {
         <View style={
             styles.container
         }>
-            <View style={
-                {marginTop: 40}
-            } >
-                <Icon onPress={goBackHandler} name="angle-left"
-                    size={30}
-                    color="#000"/>
-            </View>
+            {/* <TouchableOpacity onPress={goBackHandler}>
+                <View style={
+                    {marginTop: 40}
+                } >
+                    <Icon name="angle-left"
+                        size={30}
+                        color="#000"/>
+                </View>
+            </TouchableOpacity> */}
+
+        <TouchableOpacity onPress={goBackHandler}>
+          <Image
+            style={[styles.vectorIcon, styles.iconLayout]}
+            contentFit="cover"
+            source={require("../assets/images/vector.png")}
+          />
+        </TouchableOpacity>
+
             <View style={
                 styles.headerText
             }>
@@ -176,7 +187,7 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "50%"
+        borderRadius: "999"
     },
     buttonText: {
         color: "white",
@@ -187,7 +198,7 @@ const styles = StyleSheet.create({
         borderColor: "#0063e0", // Màu của viền
         borderWidth: 1, // Độ dày của viền
         padding: 10, // Khoảng cách giữa viền và văn bản
-        borderRadius: "50%",
+        borderRadius: "999",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -226,7 +237,7 @@ const styles = StyleSheet.create({
         marginLeft: 12
     },
     headerText: {
-        marginTop: 12,
+        marginTop: 100,
         marginBottom: 20
     },
     mainText: {
@@ -244,7 +255,20 @@ const styles = StyleSheet.create({
     },
     focusedInput: {
         borderColor: "black"
-    }
+    },
+    vectorIcon: {
+        width: 20,
+        height: 20,
+        objectFit: "cover",
+    },
+    
+    iconLayout: {
+        maxHeight: "100%",
+        maxWidth: "100%",
+        position: "relative",
+        top: 70,
+        overflow: "hidden",
+    },
 });
 
 export default ChooseDateOfBirth;

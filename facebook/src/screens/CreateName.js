@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,21 +7,84 @@ import {
   Image,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 
 const CreateName = () => {
   const navigation = useNavigation();
+  const [name, setName] = useState("");
+  const [surName, setSurName] = useState("");
+  const [isFocusedName, setIsFocusedName] = useState(false);
+  const [isFocusedSurName, setIsFocusedSurName] = useState(false);
+
+  const nameInputRef = useRef(null);
+  const surNameInputRef = useRef(null);
+
+  const changeName = (newName) => {
+    setName(newName);
+  };
+
+  const changeSurName = (newSurName) => {
+    setSurName(newSurName);
+  };
+  
+
+  const handleFocusSurName = () => {
+    setIsFocusedSurName(true);
+  };
+
+  const handleBlurSurName = () => {
+    setIsFocusedSurName(false);
+  };
+  const handleFocusName = () => {
+    setIsFocusedName(true);
+  };
+
+  const handleBlurName = () => {
+    setIsFocusedName(false);
+  };
+
+  const handleSummit = () => {
+    if (!name.trim()) {
+      Alert.alert(
+        "Tên không được để trống",
+        "Hãy nhập tên của bạn để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              nameInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else if (!surName.trim()) {
+      Alert.alert(
+        "Họ không được để trống",
+        "Hãy nhập họ của bạn để tiếp tục.",
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              surNameInputRef.current.focus();
+            },
+          },
+        ]
+      );
+    } else {
+      navigation.navigate("ChooseDateOfBirth");
+    }
+  };
 
   const goBackHandler = () => {
     navigation.goBack(); // Quay lại màn hình trước đó
   };
 
   const goToNextScreen = () => {
-    navigation.navigate('ChooseDateOfBirth'); 
+    navigation.navigate("ChooseDateOfBirth");
   };
 
   return (
@@ -37,19 +101,41 @@ const CreateName = () => {
       <Text style={[styles.nhpTnBn, styles.bnTnGClr]}>
         Nhập tên bạn sử dụng trong đời thực.
       </Text>
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition1]} placeholder="Tên" />
-        </KeyboardAvoidingView>
+      <View style={[styles.wrapInput]}>
+        <View>
+          <KeyboardAvoidingView>
+            <TextInput
+              style={[styles.inputtextPosition1]}
+              placeholder="Tên"
+              ref={nameInputRef}
+              keyboardType="name"
+              returnKeyType="next"
+              onSubmitEditing={() => nameInputRef.current.focus()}
+              onChangeText={changeName}
+              onFocus={handleFocusName}
+              onBlur={handleBlurName}
+            />
+          </KeyboardAvoidingView>
+        </View>
+
+        <View>
+          <KeyboardAvoidingView>
+            <TextInput
+              style={[styles.inputtextPosition2]}
+              placeholder="Họ"
+              ref={surNameInputRef}
+              keyboardType="name"
+              returnKeyType="next"
+              // onSubmitEditing={() => surNameInputRef.current.focus()}
+              onChangeText={changeSurName}
+              onFocus={handleFocusSurName}
+              onBlur={handleBlurSurName}
+            />
+          </KeyboardAvoidingView>
+        </View>
       </View>
 
-      <View>
-        <KeyboardAvoidingView>
-          <TextInput style={[styles.inputtextPosition2]} placeholder="Họ" />
-        </KeyboardAvoidingView>
-      </View>
-
-      <TouchableOpacity onPress={goToNextScreen}>
+      <TouchableOpacity onPress={handleSummit}>
         <View style={styles.buttonprimary}>
           <Text style={styles.logIn}>Tiếp</Text>
         </View>
@@ -81,11 +167,17 @@ const styles = StyleSheet.create({
     textAlign: "center",
     position: "absolute",
   },
+  wrapInput: {
+    top: 208,
+    position: "absolute",
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginLeft: 16,
+  },
   inputtextPosition1: {
     height: 50,
-    top: 208,
-    left: 16,
-    position: "absolute",
     minWidth: 170,
     maxWidth: 170,
     borderWidth: 1,
@@ -95,15 +187,13 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
-    top: 208,
-    left: 206,
-    position: "absolute",
     minWidth: 170,
     maxWidth: 170,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
     paddingHorizontal: 15,
+    marginRight: 32,
   },
   showTypo: {
     fontWeight: "500",

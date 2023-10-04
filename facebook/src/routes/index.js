@@ -8,6 +8,7 @@ import ChooseNumberPhoneScreen from "../screens/ChooseNumberPhone";
 import CreatePasswordScreen from "../screens/CreatePassword";
 import ChooseDateOfBirthCreen from "../screens/ChooseDateOfBirth";
 import IntroCreateAccountScreen from "../screens/IntroCreateAccount";
+import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
 
 const publicRoutes = [
     {
@@ -40,6 +41,10 @@ const publicRoutes = [
     }, {
         name: "ChooseDateOfBirth",
         component: ChooseDateOfBirthCreen
+
+    }, {
+        name: "SaveAccountLogin",
+        component: SaveAccountLoginScreen
 
     },
 

@@ -51,21 +51,38 @@ const Login = () => {
     }
     const handleSummit = () => {
         if (!account.trim()) {
-            Alert.alert("Cần có email hoặc số di động", 'Nhập email và số di động của bạn để tiếp tục.', [{
+            Alert.alert("Cần có email", 'Nhập email của bạn để tiếp tục.', [{
                     text: 'OK',
                     onPress: () => {
                         accountInputRef.current.focus()
                     }
                 },])
-        } else if (!password.trim()) {
-            Alert.alert("Cần có mật khẩu", 'Nhập mật khẩu của bạn để tiếp tục.', [{
+        } 
+        else if (account.trim()) {
+            if (!isEmailValid(account)) {
+                Alert.alert("Email không đúng định dạng", 'Nhập email đúng dịnh dạng.', [{
                     text: 'OK',
                     onPress: () => {
-                        passwordInputRef.current.focus()
+                        accountInputRef.current.focus()
                     }
                 },])
+            }
+            else if (!password.trim()) {
+                Alert.alert("Cần có mật khẩu", 'Nhập mật khẩu của bạn để tiếp tục.', [{
+                        text: 'OK',
+                        onPress: () => {
+                            passwordInputRef.current.focus()
+                        }
+                    },])
+            }
         }
     };
+
+    const isEmailValid = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      };
+      
 
     return (<TouchableWithoutFeedback onPress={
             Keyboard.dismiss
@@ -77,9 +94,11 @@ const Login = () => {
             <View style={
                 {marginTop: 40}
             }>
-                <Icon name="angle-left"
-                    size={30}
-                    color="#000"/>
+                <TouchableOpacity onPress={() => navigation.navigate('SaveAccountLogin')}>
+                    <Icon name="angle-left"
+                        size={30}
+                        color="#000"/>
+                </TouchableOpacity>
             </View>
             <View style={
                 {
@@ -111,27 +130,25 @@ const Login = () => {
                 <Text style={
                     styles.textLabel
                 }>Email</Text>
-                <View style={styles.textInputContainer}>
-
-                <TextInput style={
-                        [
-                            styles.textInput,
-                            isFocusedAccount ? styles.focusedInput : null
-                        ]
-                    }
-                    ref={accountInputRef}
-                    keyboardType='email-address'
-                    returnKeyType='next'
-                    onSubmitEditing={
-                        () => passwordInputRef.current.focus()
-                    }
-                    placeholder="Nhập email"
-                    placeholderTextColor="#888"
-                    onChangeText={changeAccount}
-                    onFocus={handleFocusAccount}
-                    onBlur={handleBlurAccount}></TextInput>
-                                    </View>
-
+                <View style={[styles.textInputContainer, isFocusedAccount ? styles.focusedInput : null]}>
+                    <TextInput style={
+                            [
+                                styles.textInput,
+                            ]
+                        }
+                        ref={accountInputRef}
+                        keyboardType='email-address'
+                        returnKeyType='next'
+                        onSubmitEditing={
+                            () => passwordInputRef.current.focus()
+                        }
+                        placeholder="Nhập email"
+                        placeholderTextColor="#888"
+                        onChangeText={changeAccount}
+                        onFocus={handleFocusAccount}
+                        onBlur={handleBlurAccount}>
+                    </TextInput>
+                </View>
             </View>
             <View>
                 <Text style={
@@ -153,17 +170,18 @@ const Login = () => {
                         returnKeyType='done'
                         onChangeText={changePassword}
                         onFocus={handleFocusPassword}
-                        onBlur={handleBlurPassword}/>
-                        {(isFocusedPassword || password.trim()) && <Icon style={
-                                styles.eysIcon
-                            }
-                            onPress={handleTogglePassword}
-                            name={
-                                isShowPassword ? "eye" : "eye-slash"
-                            }
+                        onBlur={handleBlurPassword}
+                    />
+                    {(isFocusedPassword || password.trim()) && <Icon style={
+                            styles.eysIcon
+                        }
+                        onPress={handleTogglePassword}
+                        name={
+                            isShowPassword ? "eye" : "eye-slash"
+                        }
 
-                            size={20}
-                            color="#000"/>}
+                        size={20}
+                        color="#000"/>}
                 </View>
 
             </View>
@@ -229,7 +247,7 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        borderRadius: "50%"
+        borderRadius: "999"
     },
     buttonText: {
         color: "white",
@@ -240,7 +258,7 @@ const styles = StyleSheet.create({
         borderColor: "#0063e0", // Màu của viền
         borderWidth: 1, // Độ dày của viền
         padding: 10, // Khoảng cách giữa viền và văn bản
-        borderRadius: "50%",
+        borderRadius: "999",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -282,12 +300,10 @@ const styles = StyleSheet.create({
         position: "absolute",
         right: 12,
         top: 16
-    }
-    // focusedInput: {
-    //     paddingTop: 10,
-    //     fontSize:16,
-    //     placeholder: "none"
-    // },
+    },
+    focusedInput: {
+        borderColor: "black"
+    },
     // label: {
     //     position: "absolute",
     //     top: 8,
