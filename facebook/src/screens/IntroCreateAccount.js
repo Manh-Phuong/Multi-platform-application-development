@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
     position: "relative",
     top: 90,
-    left: 16,
     overflow: "hidden",
   },
   button: {
@@ -89,11 +88,10 @@ const styles = StyleSheet.create({
     top: 140,
   },
   bgIntro: {
-    width: 376,
+    width: "100%",
     height: 200,
     objectFit: "cover",
     borderRadius: 16,
-    marginLeft: 16,
   },
   bnTnGClr: {
     color: Color.colorBlack,
@@ -150,8 +148,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    marginLeft: 16,
-    marginRight: 16,
     position: "relative",
   },
   buttonSub: {
@@ -163,8 +159,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    marginLeft: 16,
-    marginRight: 16,
     position: "relative",
   },
   vectorIcon: {
@@ -174,7 +168,6 @@ const styles = StyleSheet.create({
   },
   bnTnG: {
     top: 117,
-    left: 16,
     fontSize: 24,
     width: "100%",
     height: 30,
@@ -191,9 +184,7 @@ const styles = StyleSheet.create({
   nhpTnBn2: {
     top: 165,
     fontSize: 15,
-    left: 16,
     maxWidth: "100%",
-    marginRight: 16,
   },
   bgIcon: {
     height: "100%",
@@ -229,6 +220,8 @@ const styles = StyleSheet.create({
     flex: 1,
     overflow: "hidden",
     width: "100%",
+    paddingLeft: 16, 
+    paddingRight: 16
   },
 });
 

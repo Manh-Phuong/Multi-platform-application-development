@@ -120,6 +120,7 @@ const ChooseDateOfBirth = () => {
           >
             <Text
               style={[styles.textInput]}
+              selectable={false}
               onPress={() => {
                 handleFocusDate();
               }}
@@ -159,8 +160,6 @@ const styles = StyleSheet.create({
   textInputContainer: {
     borderColor: "#ccc",
     borderWidth: 1,
-    paddingTop: 16,
-    paddingBottom: 16,
     paddingLeft: 16,
     paddingRight: 16,
     backgroundColor: "white",
@@ -170,6 +169,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     fontSize: 16,
+    lineHeight: 56
   },
   primaryButton: {
     backgroundColor: "#0063e0",
