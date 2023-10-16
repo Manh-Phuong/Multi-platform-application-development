@@ -9,7 +9,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="SaveAccountLogin"
+        // initialRouteName="SaveAccountLogin"
+        initialRouteName="CRUD"
         screenOptions={{ headerShown: false }}
       >
         {publicRoutes.map((route, index) => (
