@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import * as SQLite from "expo-sqlite";
 import * as FileSystem from "expo-file-system";
+import * as Sharing from 'expo-sharing';
 
 const db = SQLite.openDatabase("mydata.db");
 
@@ -152,19 +153,29 @@ export default function CRUD() {
   };
 
   // Hàm xuất dữ liệu ra tệp
-  const exportData = async () => {
-    const fileUri = `${FileSystem.documentDirectory}mydb.db`;
+  const exportDb = async () => {
+    if (Platform.OS === "android") {
+      const permissions = await FileSystem.StorageAccessFramework.requestDirectoryPermissionsAsync();
+      if (permissions.granted) {
+        const base64 = await FileSystem.readAsStringAsync(
+          FileSystem.documentDirectory + 'SQLite/mydata.db',
+          {
+            encoding: FileSystem.EncodingType.Base64
+          }
+        );
 
-    try {
-      await FileSystem.copyAsync({
-        from: "mydb.db",
-        to: fileUri,
-      });
-      console.log("Dữ liệu đã được xuất ra tệp:", fileUri);
-    } catch (error) {
-      console.error("Lỗi khi xuất dữ liệu:", error);
+        await FileSystem.StorageAccessFramework.createFileAsync(permissions.directoryUri, 'mydata.db', 'application/octet-stream')
+        .then(async (uri) => {
+          await FileSystem.writeAsStringAsync(uri, base64, { encoding : FileSystem.EncodingType.Base64 });
+        })
+        .catch((e) => console.log(e));
+      } else {
+        console.log("Permission not granted");
+      }
+    } else {
+      await Sharing.shareAsync(FileSystem.documentDirectory + 'SQLite/mydata.db');
     }
-  };
+  }
 
   return (
     <View style={styles.wrap}>
@@ -199,6 +210,7 @@ export default function CRUD() {
             ]}
           />
           <Button title="Thêm" onPress={addItem} />
+          <Button title="Xuất Dữ liệu" onPress={exportDb} />
         </View>
         <Text>Dữ liệu trong cơ sở dữ liệu SQLite:</Text>
         {items?.map((item, index) => (
@@ -266,7 +278,6 @@ export default function CRUD() {
             />
           </View>
         ))}
-        {/* <Button title="Xuất Dữ liệu" onPress={exportData} /> */}
       </ScrollView>
     </View>
   );
