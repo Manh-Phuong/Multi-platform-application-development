@@ -93,7 +93,7 @@ const SaveAccountLogin = () => {
           <TouchableOpacity
             onPress={() => navigation.navigate("IntroCreateAccount")}
           >
-            <Text>Tạo tài khoản mới</Text>
+            <Text style={{fontSize: 16, fontWeight: 600}}>Tạo tài khoản mới</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: 44,
+    height: 54,
   },
   subButtonText: {
     color: "#0063e0",
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     left: 16,
     right: 16,
     width: "100%",
-    height: 44,
+    height: 50,
   },
   linkText: {
     paddingTop: 20,

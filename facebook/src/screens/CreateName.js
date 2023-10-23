@@ -6,7 +6,7 @@ import {
   View,
   Image,
   TextInput,
-  KeyboardAvoidingView,
+  Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
@@ -16,6 +16,9 @@ import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 // import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+
+const windowHeight = Dimensions.get('window').height;
+const customHeight = windowHeight - 50; 
 
 const CreateName = () => {
   const navigation = useNavigation();
@@ -119,8 +122,8 @@ const CreateName = () => {
           Nhập tên bạn sử dụng trong đời thực.
         </Text>
         <View style={[styles.wrapLabel]}>
-          <Text>Tên</Text>
-          <Text>Họ</Text>
+          <Text style={styles.textLabel}>Tên</Text>
+          <Text style={styles.textLabel}>Họ</Text>
         </View>
         <View style={[styles.wrapInput]}>
           <TextInput
@@ -172,7 +175,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: "32%",
     width: "100%",
-    bottom: 18,
+    top: customHeight,
     color: "#0062e0",
     fontWeight: "600",
   },
@@ -202,8 +205,7 @@ const styles = StyleSheet.create({
   },
   inputtextPosition1: {
     height: 50,
-    minWidth: 180,
-    maxWidth: 180,
+    width: "48%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -211,8 +213,7 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
-    minWidth: 180,
-    maxWidth: 180,
+    width: "48%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
@@ -294,6 +295,10 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
     paddingRight: 12,
   },
+  textLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+  }
 });
 
 export default CreateName;

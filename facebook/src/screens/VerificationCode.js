@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     },
 
     inputtextCode: {
-        height: 50,
+        height: 54,
         paddingLeft: 15,
         top: 10,
         width: "100%",
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#ccc",
         borderRadius: 16,
+        fontSize: 16
     },
 
     primaryButton: {
@@ -146,17 +147,21 @@ const styles = StyleSheet.create({
         width: "100%",
         padding: 10,
         borderRadius: 999,
-        marginTop: 50,
-        height: 44
+        marginTop: 36,
+        height: 54,
+        display: "flex",
+        justifyContent: "center"
     },
     dontGiveCodeButton: {
         width: "100%",
         padding: 10,
         marginTop: 12,
-        height: 44,
+        height: 54,
         borderWidth: 1,
         borderColor: "#ccc",
         borderRadius: 999,
+        display: "flex",
+        justifyContent: "center"
     },
     logIn: {
         color: Color.white,
@@ -173,6 +178,7 @@ const styles = StyleSheet.create({
     textLabel: {
         color: "black",
         fontSize: 16,
+        fontWeight: "bold"
     },
     focusedInput: {
         borderColor: "black"

@@ -192,7 +192,7 @@ const Login = () => {
         </View>
 
         <View style={styles.linkText}>
-          <Text>Quên mật khẩu?</Text>
+          <Text style={{fontSize: 16, fontWeight: 600}}>Quên mật khẩu?</Text>
         </View>
 
         <View style={styles.subButtonView}>
@@ -234,15 +234,17 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: "#0063e0",
     width: "100%",
-    height: 44,
+    height: 54,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
+    marginTop: 16
   },
   buttonText: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "600",
+    fontSize: 16
   },
   subButton: {
     borderColor: "#0063e0", // Màu của viền
@@ -252,7 +254,7 @@ const styles = StyleSheet.create({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    height: 44,
+    height: 54,
   },
   subButtonText: {
     color: "#0063e0",

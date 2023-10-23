@@ -149,12 +149,13 @@ const styles = StyleSheet.create({
   primaryButton: {
     backgroundColor: "#0063e0",
     width: "100%",
-    height: 44,
+    height: 54,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
     marginTop: 20,
+    fontSize: 16
   },
   buttonText: {
     color: "white",
