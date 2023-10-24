@@ -140,11 +140,9 @@ const CreatePassword = () => {
           </View>
         </View>
 
-        <View>
           <TouchableOpacity style={styles.buttonprimary} onPress={handleSubmit}>
-            <Text style={styles.logIn}>Tiếp</Text>
+            <View><Text style={styles.logIn}>Tiếp</Text></View>
           </TouchableOpacity>
-        </View>
 
         <Text style={[styles.button]}>Bạn đã có tài khoản ư?</Text>
       </LinearGradient>
@@ -195,6 +193,7 @@ const styles = StyleSheet.create({
     top: 148,
     fontSize: 16,
     marginLeft: 16,
+    fontWeight: "bold"
   },
   inputtextPosition1: {
     height: 50,
