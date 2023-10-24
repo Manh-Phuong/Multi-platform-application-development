@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View, BackHandler, Button, StyleSheet } from "react-native";
-import Comment from "./Comment";
+import Comment from "../components/Comment";
 
 const CommentHome = () => {
   const [showComments, setShowComments] = useState(false);

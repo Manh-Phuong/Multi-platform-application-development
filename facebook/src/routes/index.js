@@ -13,7 +13,7 @@ import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
 import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
-import CommentScreen from "../screens/Comment";
+import CommentScreen from "../comment/Comment";
 import CommentHomeSreen from "../screens/CommentHome";
 import CRUD from "../screens/CRUD";
 import Post from "../components/Post";

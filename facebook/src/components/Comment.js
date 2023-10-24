@@ -33,6 +33,30 @@ const Comment = () => {
       nickname: "Nguyễn Văn B",
       text: "Bình luận 2",
     },
+    {
+      nickname: "Nguyễn Văn A",
+      text: "Bình luận 1",
+    },
+    {
+      nickname: "Nguyễn Văn B",
+      text: "Bình luận 2",
+    },
+    {
+      nickname: "Nguyễn Văn A",
+      text: "Bình luận 1",
+    },
+    {
+      nickname: "Nguyễn Văn B",
+      text: "Bình luận 2",
+    },
+    {
+      nickname: "Nguyễn Văn A",
+      text: "Bình luận 1",
+    },
+    {
+      nickname: "Nguyễn Văn B",
+      text: "Bình luận 2",
+    },
     // ...Thêm bình luận khác nếu cần
   ]);
 
