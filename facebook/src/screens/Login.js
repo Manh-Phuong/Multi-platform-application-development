@@ -85,6 +85,8 @@ const Login = () => {
             },
           },
         ]);
+      } else {
+        navigation.navigate("Home")
       }
     }
   };

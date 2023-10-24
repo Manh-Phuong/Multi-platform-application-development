@@ -14,6 +14,8 @@ import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
 import CreatePostScreen from "../screens/CreatePost";
+import CRUD from "../screens/CRUD";
+import Post from "../components/Post";
 
 const publicRoutes = [
     {
@@ -67,6 +69,14 @@ const publicRoutes = [
     {
         name: "CreatePost",
         component: CreatePostScreen
+    },
+    {
+        name: "CRUD",
+        component: CRUD
+    },
+    {
+        name: "Post",
+        component: Post
     },
 
 ];
