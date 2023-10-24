@@ -3,6 +3,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { publicRoutes } from "./src/routes";
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { faSquareCheck } from '@fortawesome/free-solid-svg-icons/faSquareCheck'
+
+library.add(fab, faSquareCheck)
+
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -10,7 +17,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator
         // initialRouteName="SaveAccountLogin"
-        initialRouteName="CRUD"
+        initialRouteName="SaveAccountLogin"
         screenOptions={{ headerShown: false }}
       >
         {publicRoutes.map((route, index) => (
