@@ -13,6 +13,7 @@ import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
 import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
+import CreatePostScreen from "../screens/CreatePost";
 
 const publicRoutes = [
     {
@@ -62,6 +63,10 @@ const publicRoutes = [
     }, {
         name: "VerificationCode",
         component: VerificationCodeScreen
+    },
+    {
+        name: "CreatePost",
+        component: CreatePostScreen
     },
 
 ];
