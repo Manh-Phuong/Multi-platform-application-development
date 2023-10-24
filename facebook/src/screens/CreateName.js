@@ -118,36 +118,40 @@ const CreateName = () => {
         <Text style={[styles.nhpTnBn, styles.bnTnGClr]}>
           Nhập tên bạn sử dụng trong đời thực.
         </Text>
-        <View style={[styles.wrapLabel]}>
-          <Text>Tên</Text>
-          <Text>Họ</Text>
-        </View>
-        <View style={[styles.wrapInput]}>
-          <TextInput
-            style={[styles.inputtextPosition1, inputBorderStyleName]}
-            placeholder="Tên"
-            ref={nameInputRef}
-            // keyboardType="default"
-            returnKeyType="next"
-            onSubmitEditing={() => surNameInputRef.current.focus()}
-            onChangeText={changeName}
-            onFocus={handleFocusName}
-            onBlur={handleBlurName}
-            autoFocus
-          />
 
-          <TextInput
-            style={[styles.inputtextPosition2, inputBorderStyleSurName]}
-            placeholder="Họ"
-            ref={surNameInputRef}
-            // keyboardType="default"
-            returnKeyType="done"
-            // onSubmitEditing={() => surNameInputRef.current.focus()}
-            onChangeText={changeSurName}
-            onFocus={handleFocusSurName}
-            onBlur={handleBlurSurName}
-          />
+        <View style={styles.input}>
+          <View style={styles.input__box}>
+            <Text style={styles.labelInput}>Tên</Text>
+            <TextInput
+              style={[styles.inputtextPosition1, inputBorderStyleName]}
+              placeholder="Tên"
+              ref={nameInputRef}
+              // keyboardType="default"
+              returnKeyType="next"
+              onSubmitEditing={() => surNameInputRef.current.focus()}
+              onChangeText={changeName}
+              onFocus={handleFocusName}
+              onBlur={handleBlurName}
+              autoFocus
+            />
+          </View>
+          <View style={styles.input__box}>
+            <Text style={styles.labelInput}>Họ</Text>
+            <TextInput
+              style={[styles.inputtextPosition2, inputBorderStyleSurName]}
+              placeholder="Họ"
+              ref={surNameInputRef}
+              // keyboardType="default"
+              returnKeyType="done"
+              // onSubmitEditing={() => surNameInputRef.current.focus()}
+              onChangeText={changeSurName}
+              onFocus={handleFocusSurName}
+              onBlur={handleBlurSurName}
+            />
+          </View>
         </View>
+
+
 
         <TouchableOpacity onPress={handleSummit}>
           <View style={styles.buttonprimary}>
@@ -165,44 +169,19 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     maxWidth: "100%",
     position: "relative",
-    top: 90,
-    overflow: "hidden",
+    marginTop: 40,
   },
   button: {
     position: "absolute",
-    left: "32%",
     width: "100%",
     bottom: 18,
     color: "#0062e0",
     fontWeight: "600",
-  },
-  bnTnGClr: {
-    color: Color.colorBlack,
     textAlign: "center",
-    position: "absolute",
-  },
-  wrapLabel: {
-    top: 218,
-    position: "absolute",
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    paddingLeft: 16,
-    fontSize: 16,
-    gap: 168
-  },
-  wrapInput: {
-    top: 248,
-    position: "absolute",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    paddingLeft: 16,
+
   },
   inputtextPosition1: {
     height: 50,
-    minWidth: 180,
     maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -211,19 +190,11 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
-    minWidth: 180,
     maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 16,
     paddingHorizontal: 15,
-  },
-  showTypo: {
-    fontWeight: "500",
-    top: "50%",
-    marginTop: -9,
-    fontSize: FontSize.uI16Medium_size,
-    position: "absolute",
   },
   logIn: {
     color: Color.white,
@@ -232,13 +203,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   buttonprimary: {
-    bottom: -310,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
-    alignItems: "center",
-    paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    position: "relative",
+    marginTop: 20,
   },
   vectorIcon: {
     width: 20,
@@ -246,54 +214,34 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   bnTnG: {
-    top: 137,
     fontSize: 24,
-    width: 142,
-    height: 30,
     fontWeight: "600",
     color: Color.colorBlack,
+    marginTop: 20,
   },
   nhpTnBn: {
-    top: 175,
     fontSize: 15,
-    left: 16,
-  },
-  bgIcon: {
-    height: "100%",
-    top: "0%",
-    right: "0%",
-    bottom: "0%",
-    left: "0%",
-    borderRadius: Border.br_5xs,
-    width: "100%",
-    maxWidth: "100%",
-  },
-  email: {
-    color: Color.gray03,
-    textAlign: "left",
-    left: 16,
-  },
-  show: {
-    color: Color.greenPrimary,
-    textAlign: "right",
-    display: "none",
-    right: 16,
   },
   inputtext: {
     right: 195,
     left: 16,
   },
-  inputtext1: {
-    right: 14,
-    left: 197,
-  },
   createName: {
-    flex: 1,
-    overflow: "hidden",
-    width: "100%",
-    paddingLeft: 12,
-    paddingRight: 12,
+    padding: 10,
+    height: "100%",
   },
+  input: {
+    marginTop: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  input__box: {
+    width: "48%"
+  },
+  labelInput: {
+    paddingLeft: 14,
+  }
 });
 
 export default CreateName;

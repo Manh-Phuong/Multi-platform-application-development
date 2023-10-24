@@ -4,9 +4,6 @@ import {
   StyleSheet,
   View,
   Image,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
   TouchableOpacity,
 } from "react-native";
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
@@ -69,65 +66,16 @@ const IntroCreateAccount = () => {
 
 const styles = StyleSheet.create({
   iconLayout: {
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "relative",
-    top: 90,
-    overflow: "hidden",
-  },
-  button: {
-    position: "absolute",
-    left: "32%",
-    width: "100%",
-    bottom: 18,
-    color: "#0062e0",
-    fontWeight: "600",
+    marginTop: 90,
   },
   wrapIntro: {
-    position: "relative",
-    top: 140,
+    marginTop: 20,
   },
   bgIntro: {
     width: "100%",
     height: 200,
     objectFit: "cover",
     borderRadius: 16,
-  },
-  bnTnGClr: {
-    color: Color.colorBlack,
-    textAlign: "center",
-    position: "absolute",
-  },
-  inputtextPosition1: {
-    height: 50,
-    top: 148,
-    left: 16,
-    position: "absolute",
-    width: "92%",
-    maxWidth: "100%",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 16,
-    paddingHorizontal: 15,
-  },
-  inputtextPosition2: {
-    height: 50,
-    top: 148,
-    left: 206,
-    position: "absolute",
-    minWidth: 170,
-    maxWidth: 170,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 16,
-    paddingHorizontal: 15,
-  },
-  showTypo: {
-    fontWeight: "500",
-    top: "50%",
-    marginTop: -9,
-    fontSize: FontSize.uI16Medium_size,
-    position: "absolute",
   },
   logIn: {
     color: Color.white,
@@ -142,16 +90,14 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   buttonprimary: {
-    bottom: -190,
+    marginTop: 20,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.colorRoyalblue_200,
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    position: "relative",
   },
   buttonSub: {
-    bottom: -210,
     borderRadius: Border.br_81xl,
     backgroundColor: Color.white,
     borderColor: "#ccc",
@@ -159,7 +105,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: Padding.p_13xl,
     paddingVertical: Padding.p_base,
-    position: "relative",
+    marginTop: 15,
   },
   vectorIcon: {
     width: 20,
@@ -167,61 +113,20 @@ const styles = StyleSheet.create({
     objectFit: "cover",
   },
   bnTnG: {
-    top: 117,
+    marginTop: 20,
     fontSize: 24,
     width: "100%",
-    height: 30,
     fontWeight: "800",
     color: Color.colorBlack,
   },
-  nhpTnBn1: {
-    top: 125,
-    fontSize: 14,
-    left: 16,
-    maxWidth: "100%",
-    marginRight: 16,
-  },
   nhpTnBn2: {
-    top: 165,
     fontSize: 15,
     maxWidth: "100%",
-  },
-  bgIcon: {
-    height: "100%",
-    top: "0%",
-    right: "0%",
-    bottom: "0%",
-    left: "0%",
-    borderRadius: Border.br_5xs,
-    width: "100%",
-    maxWidth: "100%",
-  },
-  email: {
-    color: Color.gray03,
-    textAlign: "left",
-    left: 16,
-  },
-  show: {
-    color: Color.greenPrimary,
-    textAlign: "right",
-    display: "none",
-    right: 16,
-  },
-  inputtext: {
-    right: 195,
-    left: 16,
-  },
-  inputtext1: {
-    right: 14,
-    left: 197,
+    marginTop: 20,
   },
   createName: {
-    // backgroundColor: Color.white,
-    flex: 1,
-    overflow: "hidden",
-    width: "100%",
-    paddingLeft: 16, 
-    paddingRight: 16
+    padding: 10,
+    height: "100%"
   },
 });
 

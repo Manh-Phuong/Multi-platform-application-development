@@ -81,7 +81,7 @@ const SaveAccountLogin = () => {
         <View style={styles.subButtonView}>
           <TouchableOpacity
             style={styles.subButton}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("CommentHome")}//Login
           >
             <Text style={styles.subButtonText}>
               Đăng nhập bằng tài khoản khác
@@ -91,7 +91,7 @@ const SaveAccountLogin = () => {
 
         <View style={styles.linkText}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("IntroCreateAccount")}
+            onPress={() => navigation.navigate("Comment")}//IntroCreateAccount
           >
             <Text>Tạo tài khoản mới</Text>
           </TouchableOpacity>
@@ -104,9 +104,9 @@ const SaveAccountLogin = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: "#f0f2f5",
+    // backgroundColor: "#f0f2f5",
     height: "100%",
-    position: "relative",
+    // position: "relative",
   },
   textInputContainer: {
     borderColor: "#ccc",

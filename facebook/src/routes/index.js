@@ -13,6 +13,8 @@ import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
 import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
+import CommentScreen from "../screens/Comment";
+import CommentHomeSreen from "../screens/CommentHome";
 
 const publicRoutes = [
     {
@@ -62,8 +64,13 @@ const publicRoutes = [
     }, {
         name: "VerificationCode",
         component: VerificationCodeScreen
+    },  {
+        name: "Comment",
+        component: CommentScreen
+    },{
+        name: "CommentHome",
+        component: CommentHomeSreen
     },
-
 ];
 
 const privateRoutes = [];
