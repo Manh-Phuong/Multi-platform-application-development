@@ -136,7 +136,7 @@ const Header = () => (
 
         {listNews?.map((item) => {
           return (
-            <View style={styles.newsItem}>
+            <View key={item.id} style={styles.newsItem}>
               <Image
                 style={styles.imageNews}
                 source={{
