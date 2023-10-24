@@ -15,6 +15,8 @@ import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
 import CommentScreen from "../screens/Comment";
 import CommentHomeSreen from "../screens/CommentHome";
+import CRUD from "../screens/CRUD";
+import Post from "../components/Post";
 
 const publicRoutes = [
     {
@@ -71,6 +73,16 @@ const publicRoutes = [
         name: "CommentHome",
         component: CommentHomeSreen
     },
+    {
+        name: "CRUD",
+        component: CRUD
+    },
+    
+    {
+        name: "Post",
+        component: Post
+    },
+
 ];
 
 const privateRoutes = [];

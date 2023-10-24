@@ -6,7 +6,7 @@ import {
   View,
   Image,
   TextInput,
-  KeyboardAvoidingView,
+  Dimensions,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
@@ -16,6 +16,9 @@ import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 // import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+
+const windowHeight = Dimensions.get('window').height;
+const customHeight = windowHeight - 50; 
 
 const CreateName = () => {
   const navigation = useNavigation();
@@ -118,40 +121,36 @@ const CreateName = () => {
         <Text style={[styles.nhpTnBn, styles.bnTnGClr]}>
           Nhập tên bạn sử dụng trong đời thực.
         </Text>
-
-        <View style={styles.input}>
-          <View style={styles.input__box}>
-            <Text style={styles.labelInput}>Tên</Text>
-            <TextInput
-              style={[styles.inputtextPosition1, inputBorderStyleName]}
-              placeholder="Tên"
-              ref={nameInputRef}
-              // keyboardType="default"
-              returnKeyType="next"
-              onSubmitEditing={() => surNameInputRef.current.focus()}
-              onChangeText={changeName}
-              onFocus={handleFocusName}
-              onBlur={handleBlurName}
-              autoFocus
-            />
-          </View>
-          <View style={styles.input__box}>
-            <Text style={styles.labelInput}>Họ</Text>
-            <TextInput
-              style={[styles.inputtextPosition2, inputBorderStyleSurName]}
-              placeholder="Họ"
-              ref={surNameInputRef}
-              // keyboardType="default"
-              returnKeyType="done"
-              // onSubmitEditing={() => surNameInputRef.current.focus()}
-              onChangeText={changeSurName}
-              onFocus={handleFocusSurName}
-              onBlur={handleBlurSurName}
-            />
-          </View>
+        <View style={[styles.wrapLabel]}>
+          <Text>Tên</Text>
+          <Text>Họ</Text>
         </View>
+        <View style={[styles.wrapInput]}>
+          <TextInput
+            style={[styles.inputtextPosition1, inputBorderStyleName]}
+            placeholder="Tên"
+            ref={nameInputRef}
+            // keyboardType="default"
+            returnKeyType="next"
+            onSubmitEditing={() => surNameInputRef.current.focus()}
+            onChangeText={changeName}
+            onFocus={handleFocusName}
+            onBlur={handleBlurName}
+            autoFocus
+          />
 
-
+          <TextInput
+            style={[styles.inputtextPosition2, inputBorderStyleSurName]}
+            placeholder="Họ"
+            ref={surNameInputRef}
+            // keyboardType="default"
+            returnKeyType="done"
+            // onSubmitEditing={() => surNameInputRef.current.focus()}
+            onChangeText={changeSurName}
+            onFocus={handleFocusSurName}
+            onBlur={handleBlurSurName}
+          />
+        </View>
 
         <TouchableOpacity onPress={handleSummit}>
           <View style={styles.buttonprimary}>
@@ -174,7 +173,7 @@ const styles = StyleSheet.create({
   button: {
     position: "absolute",
     width: "100%",
-    bottom: 18,
+    top: customHeight,
     color: "#0062e0",
     fontWeight: "600",
     textAlign: "center",
@@ -182,6 +181,7 @@ const styles = StyleSheet.create({
   },
   inputtextPosition1: {
     height: 50,
+    minWidth: 180,
     maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
   },
   inputtextPosition2: {
     height: 50,
+    minWidth: 180,
     maxWidth: 180,
     borderWidth: 1,
     borderColor: "#ccc",
@@ -227,21 +228,12 @@ const styles = StyleSheet.create({
     left: 16,
   },
   createName: {
-    padding: 10,
-    height: "100%",
+    flex: 1,
+    overflow: "hidden",
+    width: "100%",
+    paddingLeft: 12,
+    paddingRight: 12,
   },
-  input: {
-    marginTop: 20,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  input__box: {
-    width: "48%"
-  },
-  labelInput: {
-    paddingLeft: 14,
-  }
 });
 
 export default CreateName;

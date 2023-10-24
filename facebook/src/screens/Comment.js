@@ -1,17 +1,21 @@
-// CommentsComponent.js
 import React, { useState } from "react";
 import {
   View,
   Text,
   TextInput,
-  Button,
   FlatList,
   StyleSheet,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const Comment = () => {
+  const [like, setLike] = useState(false);
+  const toggleLike = () => {
+    setLike(!like);
+  }
+  const colorLike = like ? styles.likeButton : styles.dontLikeButton;
   const [comments, setComments] = useState([
     {
       nickname: "Nguyễn Văn A",
@@ -22,13 +26,13 @@ const Comment = () => {
       text: "Bình luận 2",
     },
     {
-        nickname: "Nguyễn Văn A",
-        text: "Bình luận 1",
-      },
-      {
-        nickname: "Nguyễn Văn B",
-        text: "Bình luận 2",
-      },
+      nickname: "Nguyễn Văn A",
+      text: "Bình luận 1",
+    },
+    {
+      nickname: "Nguyễn Văn B",
+      text: "Bình luận 2",
+    },
     // ...Thêm bình luận khác nếu cần
   ]);
 
@@ -36,7 +40,7 @@ const Comment = () => {
 
   const addComment = () => {
     if (newComment) {
-      setComments([...comments, { id: comments.length + 1, text: newComment }]);
+      setComments([...comments, { nickname: "Tuấn Bùi", text: newComment }]);
       setNewComment("");
     }
   };
@@ -51,9 +55,9 @@ const Comment = () => {
           <Text style={{ margin: 5 }}>146</Text>
           <Icon name="angle-right" size={30} color="#000" />
         </View>
-        <View>
-          <Icon name="thumbs-up" size={40} color="#646668" />
-        </View>
+        <TouchableOpacity onPress={toggleLike}>
+          <Icon name="thumbs-up" size={40} style={colorLike} />
+        </TouchableOpacity>
       </View>
       <View style={styles.main}>
         <View style={styles.containerflex}>
@@ -64,7 +68,7 @@ const Comment = () => {
           data={comments}
           showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
           renderItem={({ item }) => (
-            <View style={styles.containerflex}>
+            <View style={[styles.containerflex, { marginTop: 10 }]}>
               {/* avatar user comment */}
               <Image
                 style={styles.accountImage}
@@ -85,21 +89,22 @@ const Comment = () => {
                 </View>
               </View>
             </View>
-
-            //   <View style={styles.commentContainer}>
-            //     <Text style={styles.commentText}>{item.text}</Text>
-            //   </View>
           )}
         />
       </View>
-      <View>
+      <View style={styles.commentinput}>
+        <TouchableOpacity style={styles.addextens}>
+          <Icon name="plus" size={30} color="white" />
+        </TouchableOpacity>
         <TextInput
           style={styles.input}
-          placeholder="Thêm bình luận..."
+          placeholder="Viết bình luận..."
           value={newComment}
           onChangeText={setNewComment}
         />
-        <Button title="Gửi" onPress={addComment} />
+        <TouchableOpacity style={styles.send} onPress={addComment}>
+          <Icon name="send" size={30} color="#0063e0" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -109,11 +114,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingVertical: 12,
+    paddingBottom: 0,
     backgroundColor: "#fff",
     height: "100%",
-    display: "flex"
-    // overflow: "scroll"
-    // top: "5%",
+    display: "flex",
   },
   main: {
     flex: 1,
@@ -134,11 +138,11 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 8,
-    marginBottom: 8,
+    borderRadius: 30,
+    paddingLeft: 5,
+    backgroundColor: "#F1F2F6",
+    flex: 1,
+    marginHorizontal: 3,
   },
   containerflex: {
     display: "flex",
@@ -147,12 +151,17 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: "space-between",
-    // backgroundColor: "#857877",
   },
   icon: {
-    backgroundColor: "#319FFE",
+    backgroundColor: "#0063e0",
     padding: 5,
     borderRadius: 20,
+  },
+  likeButton: {
+    color: "#0063e0",
+  },
+  dontLikeButton: {
+    color: "#646668",
   },
   angledown: {
     marginBottom: 5,
@@ -172,6 +181,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#F1F2F6",
     borderRadius: 10,
     padding: 10,
+    paddingTop: 5,
+  },
+  commentinput: {
+    borderTopWidth: 1,
+    borderTopColor: "#ccc",
+    width: "100%",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 5,
+  },
+  send: {
+    right: 0,
+  },
+  addextens: {
+    backgroundColor: "#0063e0",
+    paddingHorizontal: 3,
+    borderRadius: 90,
   },
 });
 
