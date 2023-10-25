@@ -14,6 +14,7 @@ import {
   Image,
   FlatList,
   Animated,
+  Easing,
   BackHandler,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
@@ -284,18 +285,40 @@ export default function Home() {
     setShowHeader(isScrollingUp);
     setLastOffset(currentOffset);
   };
+  const animatedValue = useRef(new Animated.Value(0)).current;
 
   // Hung start
   const [showComments, setShowComments] = useState(false);
   const toggleComments = () => {
-    setShowComments(!showComments);
+    // setShowComments(!showComments);
+    if (showComments) {
+      // Ẩn giao diện comment với animation khi người dùng nhấn "Hide Comments"
+      Animated.timing(animatedValue, {
+        toValue: 0,
+        duration: 150,
+        useNativeDriver: true,
+      }).
+      start(() => {
+        setShowComments(false);
+      })
+      ;
+    } else {
+      setShowComments(true);
+      // Hiển thị giao diện comment với animation khi người dùng nhấn "View Comments"
+      Animated.timing(animatedValue, {
+        toValue: 1,
+        duration: 200,
+        useNativeDriver: true,
+      }).start();
+    }
   };
   // Quay lại -> ẩn comment
   useEffect(() => {
     const handleBackPress = () => {
       if (showComments) {
         // Nếu giao diện comment đang hiển thị, ẩn nó và ngăn sự kiện "Quay lại" mặc định
-        setShowComments(false);
+        // setShowComments(false);
+        toggleComments();
         return true;
       }
       return false;
@@ -309,7 +332,9 @@ export default function Home() {
     return () => {
       backHandler.remove();
     };
-  }, [showComments]);
+  }, [showComments, ]);
+    //Nháy vào comment thì đổi background
+    const colorBackGround = showComments ? styles.colorChange : styles.colorwhite;
   // Hung end
 
   return (
@@ -377,7 +402,29 @@ export default function Home() {
         onScroll={handleScroll}
       />
       {/* Khi showComments = true, thì hiện <Comment/> */}
-      <View style={styles.viewcomment}>{showComments && <Comment />}</View>
+      {/* <View style={styles.viewcomment}> */}
+        {showComments && (
+          <Animated.View
+            style={[
+              styles.viewcomment,
+              {
+                transform: [
+                  {
+                    translateY: animatedValue.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [800, 0],
+                    }),
+                  },
+                ],
+                
+              },
+              
+            ]}
+          >
+            <Comment />
+          </Animated.View>
+        )}
+      {/* </View> */}
     </View>
   );
 }
@@ -524,9 +571,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   viewcomment: {
-    height: "99%",
+    height: "98%",
     width: "100%",
     position: "absolute",
     bottom: 0,
+  },
+  colorwhite: {
+    backgroundColor: "#fff",
+  },
+  colorChange: {
+    backgroundColor: "#333",
   },
 });

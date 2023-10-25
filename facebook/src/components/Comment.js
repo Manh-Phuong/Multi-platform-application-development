@@ -18,7 +18,6 @@ const Comment = () => {
   const toggleLike = () => {
     setLike(!like);
   };
-  const colorLike = like ? styles.likeButton : styles.dontLikeButton;
   const [comments, setComments] = useState([
     {
       nickname: "Nguyễn Văn A",
@@ -76,9 +75,6 @@ const Comment = () => {
     <View style={styles.container}>
       <View style={[styles.containerflex, styles.header]}>
         <View style={styles.containerflex}>
-          {/* <View style={styles.icon}>
-            <Icon name="thumbs-up" size={15} color="#fff" />
-          </View> */}
           <Image
             style={{ width: 20, height: 20 }}
             contentFit="cover"
@@ -88,8 +84,6 @@ const Comment = () => {
           <Icon name="angle-right" size={30} color="#000" />
         </View>
         <TouchableOpacity onPress={toggleLike}>
-          {/* <Icon name="thumbs-up" size={40} style={colorLike} /> */}
-
           {like ? (
             <Image
               style={{ width: 36, height: 36 }}
@@ -139,11 +133,8 @@ const Comment = () => {
         />
       </View>
       <View style={styles.commentinput}>
-        {/* <TouchableOpacity style={styles.addextens}> */}
         <TouchableOpacity>
-          {/* <Icon name="plus" size={30} color="white" /> */}
           <View style={styles.wrapIconNews}>
-            {/* <Icon name="plus" size={24} color="white" /> */}
             <FontAwesomeIcon icon={faPlus} size={22} color="white" />
           </View>
         </TouchableOpacity>
@@ -154,7 +145,6 @@ const Comment = () => {
           onChangeText={setNewComment}
         />
         <TouchableOpacity style={styles.send} onPress={addComment}>
-          {/* <Icon name="send" size={30} color="#0063e0" /> */}
           <SendIcon
             width="24"
             height="24"
@@ -169,7 +159,7 @@ const Comment = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 0,
     paddingBottom: 0,
     backgroundColor: "#fff",
     height: "100%",
@@ -207,17 +197,12 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: "space-between",
+    marginTop: 10,
   },
   icon: {
     backgroundColor: "#0063e0",
     padding: 5,
     borderRadius: 20,
-  },
-  likeButton: {
-    color: "#0063e0",
-  },
-  dontLikeButton: {
-    color: "#646668",
   },
   angledown: {
     marginBottom: 5,
