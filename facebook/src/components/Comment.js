@@ -8,7 +8,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { SendIcon } from "../assets/icons";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Comment = () => {
   const [like, setLike] = useState(false);
@@ -73,23 +76,33 @@ const Comment = () => {
     <View style={styles.container}>
       <View style={[styles.containerflex, styles.header]}>
         <View style={styles.containerflex}>
-          <View style={styles.icon}>
+          {/* <View style={styles.icon}>
             <Icon name="thumbs-up" size={15} color="#fff" />
-          </View>
+          </View> */}
+          <Image
+            style={{ width: 20, height: 20 }}
+            contentFit="cover"
+            source={require("../assets/icons/likeIconColor.png")}
+          />
           <Text style={{ margin: 5 }}>146</Text>
           <Icon name="angle-right" size={30} color="#000" />
         </View>
         <TouchableOpacity onPress={toggleLike}>
-          <Icon name="thumbs-up" size={40} style={colorLike} />
-          {/* {like ? <Image
-            style={{ width: 36, height: 36 }}
-            contentFit="cover"
-            source={require("../assets/icons/likedIcon.png")}
-          /> : <Image
-            style={{ width: 36, height: 36 }}
-            contentFit="cover"
-            source={require("../assets/icons/likeIcon.png")}
-          />} */}
+          {/* <Icon name="thumbs-up" size={40} style={colorLike} /> */}
+
+          {like ? (
+            <Image
+              style={{ width: 36, height: 36 }}
+              contentFit="cover"
+              source={require("../assets/icons/likedIcon.png")}
+            />
+          ) : (
+            <Image
+              style={{ width: 36, height: 36, marginTop: 2, marginBottom: -2 }}
+              contentFit="cover"
+              source={require("../assets/icons/likeIcon.png")}
+            />
+          )}
         </TouchableOpacity>
       </View>
       <View style={styles.main}>
@@ -126,8 +139,13 @@ const Comment = () => {
         />
       </View>
       <View style={styles.commentinput}>
-        <TouchableOpacity style={styles.addextens}>
-          <Icon name="plus" size={30} color="white" />
+        {/* <TouchableOpacity style={styles.addextens}> */}
+        <TouchableOpacity>
+          {/* <Icon name="plus" size={30} color="white" /> */}
+          <View style={styles.wrapIconNews}>
+            {/* <Icon name="plus" size={24} color="white" /> */}
+            <FontAwesomeIcon icon={faPlus} size={22} color="white" />
+          </View>
         </TouchableOpacity>
         <TextInput
           style={styles.input}
@@ -136,7 +154,12 @@ const Comment = () => {
           onChangeText={setNewComment}
         />
         <TouchableOpacity style={styles.send} onPress={addComment}>
-          <Icon name="send" size={30} color="#0063e0" />
+          {/* <Icon name="send" size={30} color="#0063e0" /> */}
+          <SendIcon
+            width="24"
+            height="24"
+            fill={newComment.trim().length > 0 ? "#0866ff" : "#ccc"}
+          />
         </TouchableOpacity>
       </View>
     </View>
@@ -232,6 +255,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#0063e0",
     paddingHorizontal: 3,
     borderRadius: 90,
+  },
+  wrapIconNews: {
+    backgroundColor: "#0866ff",
+    width: 32,
+    height: 32,
+    borderRadius: 38,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
