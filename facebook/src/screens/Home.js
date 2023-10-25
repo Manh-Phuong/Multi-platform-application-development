@@ -1,4 +1,4 @@
-import React, { useState, useRef , useEffect} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -36,6 +36,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
+import Report from "../components/Report";
 
 withScreen = Dimensions.get("window").width;
 heightScreen = Dimensions.get("window").height;
@@ -270,12 +271,40 @@ export default function Home() {
   const toggleComments = () => {
     setShowComments(!showComments);
   };
+ 
   // Quay lại -> ẩn comment
   useEffect(() => {
     const handleBackPress = () => {
       if (showComments) {
         // Nếu giao diện comment đang hiển thị, ẩn nó và ngăn sự kiện "Quay lại" mặc định
         setShowComments(false);
+        return true;
+      }
+      return false;
+    };
+
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [showComments]);
+  // Hung end
+   //Tuong
+   const [showReport, setShowReport] = useState(false);
+   const toggleReport = () => {
+     setShowReport(!showReport);
+   };
+  //Tuong start
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (showReport) {
+        // Nếu giao diện report đang hiển thị, ẩn nó và ngăn sự kiện "Quay lại" mặc định
+        setShowReport(false);
         return true;
       }
       return false;
@@ -289,9 +318,7 @@ export default function Home() {
     return () => {
       backHandler.remove();
     };
-  }, [showComments]);
-  // Hung end
-
+  }, [showReport]);
   return (
     <View style={styles.container}>
       <Collapsible collapsed={!showHeader}>
@@ -348,7 +375,7 @@ export default function Home() {
           <View>
             {/* <Post item={item} /> */}
             {/* oncommentPress -> toggleComments */}
-            <Post item={item} onCommentPress={toggleComments} />
+            <Post item={item} onReportPress={toggleReport} onCommentPress={toggleComments} />
 
             <View style={styles.divLarge}></View>
           </View>
@@ -357,6 +384,7 @@ export default function Home() {
       />
       {/* Khi showComments = true, thì hiện <Comment/> */}
       <View style={styles.viewcomment}>{showComments && <Comment />}</View>
+      <View style={styles.viewReport}>{showReport && <Report />}</View>
     </View>
   );
 }
@@ -504,6 +532,12 @@ const styles = StyleSheet.create({
   },
   viewcomment: {
     height: "99%",
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
+  },
+  viewReport: {
+    height: "90%",
     width: "100%",
     position: "absolute",
     bottom: 0,

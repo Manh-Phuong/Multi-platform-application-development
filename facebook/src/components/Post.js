@@ -38,7 +38,7 @@ heightScreen = Dimensions.get("window").height;
 // const widthImage = withScreen;
 // const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
-export default function Post({ onCommentPress, ...props }) {
+export default function Post({ onReportPress,onCommentPress, ...props }) {
 //   console.log(props);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
@@ -91,7 +91,9 @@ export default function Post({ onCommentPress, ...props }) {
           </View>
         </View>
         <View style={{ flexDirection: "row" }}>
-          <FontAwesomeIcon icon={faEllipsis} size={24} color="#65676b" />
+          <TouchableOpacity onPress={onReportPress}>
+            <FontAwesomeIcon icon={faEllipsis} size={24} color="#65676b" />
+            </TouchableOpacity>
           <FontAwesomeIcon
             style={{ marginLeft: 12 }}
             icon={faXmark}
