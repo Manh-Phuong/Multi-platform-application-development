@@ -16,7 +16,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="CreatePost" 
+        initialRouteName="Home" 
         screenOptions={{ headerShown: false }}
       >
         {publicRoutes.map((route, index) => (

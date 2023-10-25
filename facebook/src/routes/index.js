@@ -16,6 +16,7 @@ import VerificationCodeScreen from "../screens/VerificationCode";
 import CreatePostScreen from "../screens/CreatePost";
 import CRUD from "../screens/CRUD";
 import Post from "../components/Post";
+import ChooseEmoji from "../screens/ChooseEmoji";
 
 const publicRoutes = [
     {
@@ -77,6 +78,10 @@ const publicRoutes = [
     {
         name: "Post",
         component: Post
+    },
+    {
+        name: "ChooseEmoji",
+        component: ChooseEmoji
     },
 
 ];
