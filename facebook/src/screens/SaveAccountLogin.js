@@ -104,9 +104,9 @@ const SaveAccountLogin = () => {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: "#f0f2f5",
+    // backgroundColor: "#f0f2f5",
     height: "100%",
-    position: "relative",
+    // position: "relative",
   },
   textInputContainer: {
     borderColor: "#ccc",

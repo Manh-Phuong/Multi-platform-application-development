@@ -13,6 +13,7 @@ import {
   Dimensions,
   Image,
   FlatList,
+  BackHandler,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -37,7 +38,7 @@ heightScreen = Dimensions.get("window").height;
 // const widthImage = withScreen;
 // const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
-export default function Post(props) {
+export default function Post({ onCommentPress, ...props }) {
 //   console.log(props);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
@@ -174,15 +175,18 @@ export default function Post(props) {
             Thích
           </Text>
         </View>
-        <View style={styles.footerItem}>
-          <Image
-            style={{ width: 26, height: 26 }}
-            contentFit="cover"
-            source={require("../assets/icons/commentIcon.png")}
-          />
-          <Text style={{ marginLeft: 4, fontSize: 15, color: "#65676b" }}>
-            Bình luận
-          </Text>
+        <View  >
+          {/* onpress -> oncommentPress */}
+          <TouchableOpacity style={styles.footerItem} onPress={onCommentPress}>
+            <Image
+              style={{ width: 26, height: 26 }}
+              contentFit="cover"
+              source={require("../assets/icons/commentIcon.png")}
+            />
+            <Text style={{ marginLeft: 4, fontSize: 15, color: "#65676b" }}>
+              Bình luận
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.footerItem}>
           <Image
@@ -195,6 +199,7 @@ export default function Post(props) {
           </Text>
         </View>
       </View>
+      
     </View>
   );
 }
@@ -205,6 +210,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 4,
     paddingBottom: 0,
+    // position: "relative",
   },
   header: {
     flexDirection: "row",
@@ -281,4 +287,5 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  
 });
