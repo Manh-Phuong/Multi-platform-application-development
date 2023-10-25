@@ -19,6 +19,7 @@ import CreatePostScreen from "../screens/CreatePost";
 import CRUD from "../screens/CRUD";
 import Post from "../components/Post";
 import ChooseEmoji from "../screens/ChooseEmoji";
+import MenuScreen from "../screens/Menu";
 
 const publicRoutes = [
     {
@@ -90,6 +91,10 @@ const publicRoutes = [
     {
         name: "ChooseEmoji",
         component: ChooseEmoji
+    },
+    {
+        name: "Menu",
+        component: MenuScreen
     },
 
 ];

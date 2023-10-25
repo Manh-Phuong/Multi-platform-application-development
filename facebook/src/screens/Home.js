@@ -37,6 +37,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
+import Menu from "./Menu";
 
 withScreen = Dimensions.get("window").width;
 heightScreen = Dimensions.get("window").height;
@@ -199,7 +200,7 @@ const Header = () => {
           style={styles.wrapAvatar}
           source={require("../assets/images/avatar-sample.png")}
         ></Image> */}
-  
+
         <TouchableOpacity onPress={() => navigation.navigate("CreatePost")}>
           <View style={styles.youThink}>
             <Text style={{ fontSize: 16, fontWeight: 500 }}>
@@ -207,15 +208,15 @@ const Header = () => {
             </Text>
           </View>
         </TouchableOpacity>
-  
+
         <Image
           style={{ height: 26, width: 26, objectFit: "cover" }}
           source={require("../assets/icons/iconImage.png")}
         ></Image>
       </View>
-  
+
       <View style={styles.divLarge}></View>
-  
+
       <View>
         <ScrollView horizontal={true} style={styles.newsList}>
           <View style={styles.newsItem}>
@@ -240,7 +241,7 @@ const Header = () => {
               <Text style={{ fontWeight: 600, fontSize: 18 }}>Tạo tin</Text>
             </View>
           </View>
-  
+
           {listNews?.map((item) => {
             return (
               <View key={item.id} style={styles.newsItem}>
@@ -273,12 +274,33 @@ const Header = () => {
       <View style={styles.divLarge}></View>
     </View>
   );
-}
+};
 
 export default function Home() {
   const [showHeader, setShowHeader] = useState(true);
   const [lastOffset, setLastOffset] = useState(0);
   const navigation = useNavigation();
+  const [active, setActive] = useState({
+    home: true,
+    video: false,
+    friend: false,
+    market: false,
+    notification: false,
+    menu: false,
+  });
+
+  const handleActive = (detailName) => {
+    setActive((prevState) => ({
+      home: false,
+      video: false,
+      friend: false,
+      market: false,
+      notification: false,
+      menu: false,
+      [detailName]: true,
+    }));
+  };
+
   const handleScroll = (event) => {
     const currentOffset = event.nativeEvent.contentOffset.y;
     const isScrollingUp = currentOffset < lastOffset;
@@ -297,11 +319,9 @@ export default function Home() {
         toValue: 0,
         duration: 150,
         useNativeDriver: true,
-      }).
-      start(() => {
+      }).start(() => {
         setShowComments(false);
-      })
-      ;
+      });
     } else {
       setShowComments(true);
       // Hiển thị giao diện comment với animation khi người dùng nhấn "View Comments"
@@ -332,9 +352,9 @@ export default function Home() {
     return () => {
       backHandler.remove();
     };
-  }, [showComments, ]);
-    //Nháy vào comment thì đổi background
-    const colorBackGround = showComments ? styles.colorChange : styles.colorwhite;
+  }, [showComments]);
+  //Nháy vào comment thì đổi background
+  const colorBackGround = showComments ? styles.colorChange : styles.colorwhite;
   // Hung end
 
   return (
@@ -362,68 +382,166 @@ export default function Home() {
       </Collapsible>
 
       <View style={styles.nav}>
-        <View style={styles.wrapIconNav}>
-          <HomeIcon fill="#0866ff" />
-        </View>
-        <View style={styles.wrapIconNav}>
-          <VideoIcon fill="#65676b" />
-        </View>
-        <View style={styles.wrapIconNav}>
-          <FriendIcon fill="#65676b" />
-        </View>
-        <View style={styles.wrapIconNav}>
-          <MarketIcon fill="#65676b" />
-        </View>
-        <View style={styles.wrapIconNav}>
-          <FontAwesomeIcon icon={faBell} size={26} color="#65676b" />
-        </View>
-        <View style={styles.wrapIconNav}>
-          <Icon name="bars" size={26} color="#65676b" />
-        </View>
+        <TouchableOpacity onPress={() => handleActive("home")}>
+          <View style={styles.wrapIconNav}>
+            <HomeIcon fill={active.home ? "#0866ff" : "#65676b"} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => handleActive("video")}>
+          <View style={styles.wrapIconNav}>
+            <VideoIcon fill={active.video ? "#0866ff" : "#65676b"} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => handleActive("friend")}>
+          <View style={styles.wrapIconNav}>
+            <FriendIcon fill={active.friend ? "#0866ff" : "#65676b"} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => handleActive("market")}>
+          <View style={styles.wrapIconNav}>
+            <MarketIcon fill={active.market ? "#0866ff" : "#65676b"} />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => handleActive("notification")}>
+          <View style={styles.wrapIconNav}>
+            <FontAwesomeIcon
+              icon={faBell}
+              size={26}
+              color={active.notification ? "#0866ff" : "#65676b"}
+            />
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => handleActive("menu")}>
+          <View style={styles.wrapIconNav}>
+            <Icon
+              name="bars"
+              size={26}
+              color={active.menu ? "#0866ff" : "#65676b"}
+            />
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.divSmall}>
-        <View style={styles.active}></View>
+        {active.home && (
+          <View
+            style={{
+              height: 2,
+              width: withScreen / 6 - 2,
+              backgroundColor: "blue",
+              position: "relative",
+              marginLeft: 8,
+            }}
+          ></View>
+        )}
+
+        {active.video && (
+          <View
+            style={{
+              height: 2,
+              width: withScreen / 6 - 2,
+              backgroundColor: "blue",
+              position: "relative",
+              marginLeft: 8 + withScreen / 6,
+            }}
+          ></View>
+        )}
+
+        {active.friend && (
+          <View
+            style={{
+              height: 2,
+              width: withScreen / 6 - 6,
+              backgroundColor: "blue",
+              position: "relative",
+              marginLeft: 6 + (2 * withScreen) / 6,
+            }}
+          ></View>
+        )}
+
+        {active.market && (
+          <View
+            style={{
+              height: 2,
+              width: withScreen / 6 - 8,
+              backgroundColor: "blue",
+              position: "relative",
+              marginLeft: 4 + (3 * withScreen) / 6,
+            }}
+          ></View>
+        )}
+
+        {active.notification && (
+          <View
+            style={{
+              height: 2,
+              width: withScreen / 6 - 10,
+              backgroundColor: "blue",
+              position: "relative",
+              marginLeft: 2 + (4 * withScreen) / 6,
+            }}
+          ></View>
+        )}
+
+        {active.menu && (
+          <View
+            style={{
+              height: 2,
+              width: withScreen / 6 - 12,
+              backgroundColor: "blue",
+              position: "relative",
+              marginLeft: (5 * withScreen) / 6,
+            }}
+          ></View>
+        )}
       </View>
 
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
-        ListHeaderComponent={<Header />}
-        renderItem={({ item }) => (
-          <View>
-            {/* <Post item={item} /> */}
-            {/* oncommentPress -> toggleComments */}
-            <Post item={item} onCommentPress={toggleComments} />
+      {active.home && (
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id}
+          ListHeaderComponent={<Header />}
+          renderItem={({ item }) => (
+            <View>
+              {/* <Post item={item} /> */}
+              {/* oncommentPress -> toggleComments */}
+              <Post item={item} onCommentPress={toggleComments} />
 
-            <View style={styles.divLarge}></View>
-          </View>
-        )}
-        onScroll={handleScroll}
-      />
+              <View style={styles.divLarge}></View>
+            </View>
+          )}
+          onScroll={handleScroll}
+        />
+      )}
+
+      {active.menu && <Menu />}
+
       {/* Khi showComments = true, thì hiện <Comment/> */}
       {/* <View style={styles.viewcomment}> */}
-        {showComments && (
-          <Animated.View
-            style={[
-              styles.viewcomment,
-              {
-                transform: [
-                  {
-                    translateY: animatedValue.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [800, 0],
-                    }),
-                  },
-                ],
-                
-              },
-              
-            ]}
-          >
-            <Comment />
-          </Animated.View>
-        )}
+      {showComments && (
+        <Animated.View
+          style={[
+            styles.viewcomment,
+            {
+              transform: [
+                {
+                  translateY: animatedValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [800, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <Comment />
+        </Animated.View>
+      )}
       {/* </View> */}
     </View>
   );
