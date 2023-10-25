@@ -32,13 +32,25 @@ import { faEllipsis, faXmark } from "@fortawesome/free-solid-svg-icons";
 withScreen = Dimensions.get("window").width;
 heightScreen = Dimensions.get("window").height;
 
-const imageUrl = require("../assets/images/bg-intro.jpg");
-const imageSource = Image.resolveAssetSource(imageUrl);
+// const imageUrl = require("../assets/images/bg-intro.jpg");
+// const imageSource = Image.resolveAssetSource(imageUrl);
 
-const widthImage = withScreen;
-const heightImage = (withScreen * imageSource.height) / imageSource.width;
+// const widthImage = withScreen;
+// const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
-export default function Post({ onCommentPress }) {
+export default function Post({ onCommentPress, ...props }) {
+//   console.log(props);
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+
+  useEffect(() => {
+    Image.getSize(props.item.image, (width, height) => {
+      const aspectRatio = width / height;
+      const widthImage = withScreen; // Thay đổi kích thước theo nhu cầu
+      const heightImage = widthImage / aspectRatio;
+      setImageSize({ width: widthImage, height: heightImage });
+    });
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -50,7 +62,9 @@ export default function Post({ onCommentPress }) {
           <Image
             style={styles.wrapAvatar}
             source={{
-              uri: "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/356150905_221055794134074_7342427060415828020_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=qsmztDXjbrgAX-UdlbA&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDT1VZf8gV7mZsMT07r4iENKWnEi-KoIXCYDju-9BcRlw&oe=653C4A7B",
+              uri:
+                props.item.avatar ||
+                "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/356150905_221055794134074_7342427060415828020_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=qsmztDXjbrgAX-UdlbA&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDT1VZf8gV7mZsMT07r4iENKWnEi-KoIXCYDju-9BcRlw&oe=653C4A7B",
             }}
           />
 
@@ -61,7 +75,7 @@ export default function Post({ onCommentPress }) {
                 ellipsizeMode="tail"
                 style={{ fontWeight: 600, fontSize: 18 }}
               >
-                Mạnh Phương
+                {props.item.owner}
               </Text>
             </View>
             <View>
@@ -93,19 +107,17 @@ export default function Post({ onCommentPress }) {
           ellipsizeMode="tail"
           style={{ fontWeight: 400, fontSize: 15, color: "#65676b" }}
         >
-          Thầy chuẩn bị vào live buổi Đánh Giá Tư Duy Bách Khoa cho các bạn IMO
-          2K6 Nếu tính thêm buổi tối mai nữa là tuần này thầy dạy 8 ca cho 2K6
-          Vậy là đã nhẹ nhàng hơn tuần trước rồi, tuần trước thầy dạy 10 ca cho
-          2K6 Tuần sau thầy dự định đầu tư hơn nữa mảng đánh giá năng lực và
-          đánh giá tư duy cho học sinh IMO, trước hết ở các tài liệu xịn xò và
-          các bài giảng chất lượng
+          {props.item.content}
         </Text>
       </View>
       <View>
         <Image
-          style={[styles.wrapImage]}
+          style={[
+            styles.wrapImage,
+            { width: imageSize.width, height: imageSize.height },
+          ]}
           contentFit="cover"
-          source={require("../assets/images/bg-intro.jpg")}
+          source={{ uri: props.item.image }}
         />
       </View>
 
@@ -228,8 +240,6 @@ const styles = StyleSheet.create({
   },
 
   wrapImage: {
-    width: widthImage,
-    height: heightImage,
     resizeMode: "cover",
   },
 

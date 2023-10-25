@@ -14,7 +14,7 @@ const Comment = () => {
   const [like, setLike] = useState(false);
   const toggleLike = () => {
     setLike(!like);
-  }
+  };
   const colorLike = like ? styles.likeButton : styles.dontLikeButton;
   const [comments, setComments] = useState([
     {
@@ -81,6 +81,15 @@ const Comment = () => {
         </View>
         <TouchableOpacity onPress={toggleLike}>
           <Icon name="thumbs-up" size={40} style={colorLike} />
+          {/* {like ? <Image
+            style={{ width: 36, height: 36 }}
+            contentFit="cover"
+            source={require("../assets/icons/likedIcon.png")}
+          /> : <Image
+            style={{ width: 36, height: 36 }}
+            contentFit="cover"
+            source={require("../assets/icons/likeIcon.png")}
+          />} */}
         </TouchableOpacity>
       </View>
       <View style={styles.main}>
