@@ -349,6 +349,7 @@ export default function Home() {
             {/* <Post item={item} /> */}
             {/* oncommentPress -> toggleComments */}
             <Post item={item} onCommentPress={toggleComments} />
+
             <View style={styles.divLarge}></View>
           </View>
         )}
