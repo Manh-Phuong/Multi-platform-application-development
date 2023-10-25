@@ -13,6 +13,7 @@ import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
 import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
+import MenuScreen from "../screens/FacebookMenu";
 
 const publicRoutes = [
     {
@@ -63,7 +64,10 @@ const publicRoutes = [
         name: "VerificationCode",
         component: VerificationCodeScreen
     },
-
+    {
+        name: "ContentMenu",
+        component: MenuScreen
+    },
 ];
 
 const privateRoutes = [];
