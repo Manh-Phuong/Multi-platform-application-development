@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef , useEffect} from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -14,6 +14,7 @@ import {
   Image,
   FlatList,
   Animated,
+  BackHandler,
 } from "react-native";
 import Collapsible from "react-native-collapsible";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -34,6 +35,7 @@ import {
 import { ScrollView } from "react-native-gesture-handler";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
 import Post from "../components/Post";
+import Comment from "../components/Comment";
 
 withScreen = Dimensions.get("window").width;
 heightScreen = Dimensions.get("window").height;
@@ -221,7 +223,7 @@ const Header = () => (
 
         {listNews?.map((item) => {
           return (
-            <View style={styles.newsItem}>
+            <View key={item.id} style={styles.newsItem}>
               <Image
                 style={styles.imageNews}
                 source={{
@@ -262,6 +264,33 @@ export default function Home() {
     setShowHeader(isScrollingUp);
     setLastOffset(currentOffset);
   };
+
+  // Hung start
+  const [showComments, setShowComments] = useState(false);
+  const toggleComments = () => {
+    setShowComments(!showComments);
+  };
+  // Quay lại -> ẩn comment
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (showComments) {
+        // Nếu giao diện comment đang hiển thị, ẩn nó và ngăn sự kiện "Quay lại" mặc định
+        setShowComments(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [showComments]);
+  // Hung end
 
   return (
     <View style={styles.container}>
@@ -317,18 +346,23 @@ export default function Home() {
         ListHeaderComponent={<Header />}
         renderItem={({ item }) => (
           <View>
-            <Post item={item} />
+            {/* <Post item={item} /> */}
+            {/* oncommentPress -> toggleComments */}
+            <Post item={item} onCommentPress={toggleComments} />
             <View style={styles.divLarge}></View>
           </View>
         )}
         onScroll={handleScroll}
       />
+      {/* Khi showComments = true, thì hiện <Comment/> */}
+      <View style={styles.viewcomment}>{showComments && <Comment />}</View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: "100%",
     flex: 1,
     backgroundColor: "#fff",
     paddingTop: 12,
@@ -466,5 +500,11 @@ const styles = StyleSheet.create({
     borderRadius: 38,
     justifyContent: "center",
     alignItems: "center",
+  },
+  viewcomment: {
+    height: "99%",
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
   },
 });
