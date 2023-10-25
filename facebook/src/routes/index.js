@@ -14,9 +14,12 @@ import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
 import PolicyConfirmScreen from "../screens/PolicyConfirm";
 import VerificationCodeScreen from "../screens/VerificationCode";
 import CommentScreen from "../components/Comment";
-import CommentHomeSreen from "../screens/CommentHome";
+import CommentHomeScreen from "../screens/CommentHome";
+import CreatePostScreen from "../screens/CreatePost";
 import CRUD from "../screens/CRUD";
 import Post from "../components/Post";
+import ChooseEmoji from "../screens/ChooseEmoji";
+import MenuScreen from "../screens/Menu";
 
 const publicRoutes = [
     {
@@ -71,16 +74,27 @@ const publicRoutes = [
         component: CommentScreen
     },{
         name: "CommentHome",
-        component: CommentHomeSreen
+        component: CommentHomeScreen
+    },
+    {
+        name: "CreatePost",
+        component: CreatePostScreen
     },
     {
         name: "CRUD",
         component: CRUD
     },
-    
     {
         name: "Post",
         component: Post
+    },
+    {
+        name: "ChooseEmoji",
+        component: ChooseEmoji
+    },
+    {
+        name: "Menu",
+        component: MenuScreen
     },
 
 ];
