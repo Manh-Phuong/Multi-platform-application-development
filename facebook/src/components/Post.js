@@ -39,7 +39,7 @@ heightScreen = Dimensions.get("window").height;
 // const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
 
-export default function Post(props) {
+export default function Post({ onCommentPress, ...props }) {
 //   console.log(props);
   const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
 
