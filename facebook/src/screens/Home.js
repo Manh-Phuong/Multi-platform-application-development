@@ -317,7 +317,7 @@ export default function Home() {
       // Ẩn giao diện comment với animation khi người dùng nhấn "Hide Comments"
       Animated.timing(animatedValue, {
         toValue: 0,
-        duration: 150,
+        duration: 250,
         useNativeDriver: true,
       }).start(() => {
         setShowComments(false);
@@ -327,7 +327,7 @@ export default function Home() {
       // Hiển thị giao diện comment với animation khi người dùng nhấn "View Comments"
       Animated.timing(animatedValue, {
         toValue: 1,
-        duration: 200,
+        duration: 300,
         useNativeDriver: true,
       }).start();
     }
@@ -356,7 +356,6 @@ export default function Home() {
   //Nháy vào comment thì đổi background
   const colorBackGround = showComments ? styles.colorChange : styles.colorwhite;
   // Hung end
-
   return (
     <View style={styles.container}>
       {/* <Collapsible collapsed={!showHeader}> */}
@@ -539,7 +538,8 @@ export default function Home() {
             },
           ]}
         >
-          <Comment />
+          {/* hiddenComment */}
+          <Comment hiddenComment={toggleComments} />
         </Animated.View>
       )}
       {/* </View> */}
@@ -552,7 +552,7 @@ const styles = StyleSheet.create({
     height: "100%",
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 12,
+    paddingTop: 40,
   },
   header: {
     flexDirection: "row",
@@ -614,7 +614,7 @@ const styles = StyleSheet.create({
     height: 10,
     width: withScreen,
     backgroundColor: "#f0f2f5",
-    marginTop: 10,
+    // marginTop: 10,
   },
 
   underNav: {

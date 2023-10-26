@@ -17,6 +17,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
+import { Shadow } from 'react-native-shadow-2';
 
 const CreatePost = () => {
   const navigation = useNavigation();
@@ -24,6 +25,7 @@ const CreatePost = () => {
   const [isShowTagPart, setIsShowTagPart] = useState(true);
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [image, setImage] = useState(null);
+  const [textInput, setTextInput] = useState('');
   const showAlert = () => {
     Alert.alert(
       "Lưu bài viết này dưới dạng bản nháp?",
@@ -99,8 +101,11 @@ const CreatePost = () => {
     }
   };
 
+  const changeInput = (newInput) => {
+    setTextInput(newInput)
+  }
   return (
-    <KeyboardAvoidingView behavior="padding">
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "padding" : ""}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={[styles.container, isShowKeyBoard && styles.showKeyBoard]}>
           <View style={styles.header}>
@@ -110,8 +115,8 @@ const CreatePost = () => {
             />
             {/* <Icon name="close" size={24} color="black" onPress={showAlert} /> */}
             <Text style={styles.textBigBold}>Tạo bài viết</Text>
-            <TouchableOpacity>
-              <Text style={styles.textBigBold}>Đăng</Text>
+            <TouchableOpacity style={[!textInput.length || !(image && image.length) ? styles.buttonDisable: '', textInput.length || (image && image.length) ? styles.buttonNotDisable: '']} disabled={!textInput.length && !(image && image.length)}>
+              <Text style={[styles.textBigBold, !textInput.length && !(image && image.length) ? styles.textDisable: {color: "white"}]}>Đăng</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.body}>
@@ -131,7 +136,7 @@ const CreatePost = () => {
                 </View>
               </View>
             </View>
-            <TextInput style={styles.input} placeholder={image && image.length > 0 ? "Hãy nói gì đó về bức ảnh này..." : "Bạn đang nghĩ gì?"} 
+            <TextInput onChangeText={changeInput} style={styles.input} placeholder={image && image.length > 0 ? "Hãy nói gì đó về bức ảnh này..." : "Bạn đang nghĩ gì?"} 
               editable multiline numberOfLines={4} onPressIn={hideTagPart}></TextInput>
           </View>
 
@@ -166,109 +171,116 @@ const CreatePost = () => {
           <Text>Bạn muốn hoàn thành bài viết của mình sau?</Text>
           <Text>Lưu bản nháp hoặc bạn có thể tiếp tục chỉnh sửa</Text>
         </View> */}
-          <View style={[styles.boxShadowContainer, styles.boxShadow]}>
-            <View style={[styles.tagPart]}>
-              <View
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                }}
-                onTouchEnd={toggleTagPart}
-              >
-                {isShowTagPart && (
-                  <Icon name="caret-up" size={28} color="black" />
-                )}
-                {!isShowTagPart && (
-                  <Icon name="caret-down" size={28} color="black" />
-                )}
-              </View>
-              {isShowTagPart && (
-                <View>
-                  <TouchableOpacity>
-                    <View
-                      style={[styles.groupIcon, styles.firstGroupIcon]}
-                      onTouchEnd={pickImage}
-                    >
-                      {/* <Icon name="image" size={20} color="#41bd5f" /> */}
-                      <Image
-                        style={{ height: 20, width: 20, objectFit: "cover" }}
-                        source={require("../assets/icons/iconImage.png")}
-                      ></Image>
-                      <Text style={styles.textMedium}>Ảnh/video</Text>
-                    </View>
-                  </TouchableOpacity>
-                 
-                  <View style={styles.groupIcon}>
-                    {/* <Icon name="user" size={24} color="#1278ef" /> */}
-                    <Image
-                      style={{ height: 20, width: 20, objectFit: "cover" }}
-                      source={require("../assets/icons/tagIcon.png")}
-                    ></Image>
-                    <Text style={styles.textMedium}>Gắn thẻ người khác</Text>
-                  </View>
-                  <View style={styles.groupIcon}>
-                    <Image
-                      style={styles.icon}
-                      source={require("../assets/icons/smileIcon.png")}
-                    ></Image>
-                    <Text style={styles.textMedium}>Cảm xúc/hoạt động</Text>
-                  </View>
-                  <View style={styles.groupIcon}>
-                    <Image
-                      style={styles.icon}
-                      source={require("../assets/icons/checkInIcon.png")}
-                    ></Image>
-                    <Text style={styles.textMedium}>Check in</Text>
-                  </View>
-                  <View style={styles.groupIcon}>
-                    {/* <Icon name="camera" size={20} color="#1278ef" /> */}
-                    <Image
-                      style={styles.icon}
-                      source={require("../assets/icons/streamIcon.png")}
-                    ></Image>
-                    <Text style={styles.textMedium}>Video trực tiếp</Text>
-                  </View>
-                </View>
-              )}
-              {!isShowTagPart && (
+          {/* <View style={{position: 'relative', bottom: 0}}> */}
+          {/* <Shadow style={{width: '100%', position: 'absolute', bottom: 0, backgroundColor: 'red'}}> */}
+            <View style={[styles.boxShadowContainer, styles.boxShadow]}>
+              <View style={[styles.tagPart]}>
                 <View
                   style={{
                     display: "flex",
+                    justifyContent: "center",
                     flexDirection: "row",
-                    justifyContent: "space-between",
-                    paddingLeft: 24,
-                    paddingRight: 24,
-                    paddingBottom: 16,
                   }}
+                  onTouchEnd={toggleTagPart}
                 >
-                  <TouchableOpacity onPress={pickImage}>
-                    <Image
-                      style={{ height: 20, width: 20, resizeMode: "cover" }}
-                      source={require("../assets/icons/iconImage.png")}
-                    />
-                  </TouchableOpacity>
-                  <Image
-                    style={{ height: 20, width: 20, objectFit: "cover" }}
-                    source={require("../assets/icons/tagIcon.png")}
-                  ></Image>
-                  <Image
-                    style={styles.icon}
-                    source={require("../assets/icons/smileIcon.png")}
-                  ></Image>
-                  <Image
-                    style={styles.icon}
-                    source={require("../assets/icons/checkInIcon.png")}
-                  ></Image>
-                  <Image
-                    style={styles.icon}
-                    source={require("../assets/icons/streamIcon.png")}
-                  ></Image>
+                  {isShowTagPart && (
+                    <Icon name="caret-up" size={28} color="black" />
+                  )}
+                  {!isShowTagPart && (
+                    <Icon name="caret-down" size={28} color="black" />
+                  )}
                 </View>
-              )}
+                {isShowTagPart && (
+                  <View>
+                    <TouchableOpacity>
+                      <View
+                        style={[styles.groupIcon, styles.firstGroupIcon]}
+                        onTouchEnd={pickImage}
+                      >
+                        {/* <Icon name="image" size={20} color="#41bd5f" /> */}
+                        <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/iconImage.png")}
+                        ></Image>
+                        <Text style={styles.textMedium}>Ảnh/video</Text>
+                      </View>
+                    </TouchableOpacity>
+                  
+                    <View style={styles.groupIcon}>
+                      {/* <Icon name="user" size={24} color="#1278ef" /> */}
+                      <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/tagIcon.png")}
+                      ></Image>
+                      <Text style={styles.textMedium}>Gắn thẻ người khác</Text>
+                    </View>
+                    <View style={styles.groupIcon}>
+                      <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/smileIcon.png")}
+                      ></Image>
+                      <Text style={styles.textMedium}>Cảm xúc/hoạt động</Text>
+                    </View>
+                    <View style={styles.groupIcon}>
+                      <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/checkInIcon.png")}
+                      ></Image>
+                      <Text style={styles.textMedium}>Check in</Text>
+                    </View>
+                    <View style={styles.groupIcon}>
+                      {/* <Icon name="camera" size={20} color="#1278ef" /> */}
+                      <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/streamIcon.png")}
+                      ></Image>
+                      <Text style={styles.textMedium}>Video trực tiếp</Text>
+                    </View>
+                  </View>
+                )}
+                {!isShowTagPart && (
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-between",
+                      paddingLeft: 24,
+                      paddingRight: 24,
+                      paddingBottom: 12,
+                      paddingTop: 12,
+                      borderColor: "#dfe1e4", 
+                      borderTopWidth: 1
+                    }}
+                  >
+                    <TouchableOpacity onPress={pickImage}>
+                      <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/iconImage.png")}
+                      />
+                    </TouchableOpacity>
+                    <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/tagIcon.png")}
+                    ></Image>
+                    <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/smileIcon.png")}
+                    ></Image>
+                    <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/checkInIcon.png")}
+                    ></Image>
+                    <Image
+                          style={{ height: 24, width: 24, objectFit: "cover" }}
+                          source={require("../assets/icons/streamIcon.png")}
+                    ></Image>
+                  </View>
+                )}
+              </View>
             </View>
+          {/* </Shadow> */}
           </View>
-        </View>
+        {/* </View> */}
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -285,11 +297,12 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: 54,
+    paddingBottom: 12,
     paddingLeft: 16,
     paddingRight: 16,
-    backgroundColor: "rgba(162,162,164,0.2)",
+    backgroundColor: "rgba(162,162,164,0.1)",
+    alignItems: "center",
   },
   textBigBold: {
     fontSize: 18,
@@ -348,11 +361,13 @@ const styles = StyleSheet.create({
   groupIcon: {
     display: "flex",
     flexDirection: "row",
-    marginLeft: 12,
-    marginTop: 20,
-    marginBottom: 20,
+    paddingLeft: 12,
+    paddingTop: 14,
+    paddingBottom: 14,
     columnGap: 12,
     alignItems: "center",
+    borderWidth: 0.6,
+    borderColor: "#dfe1e4",
   },
   textMedium: {
     fontSize: 16,
@@ -365,9 +380,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   boxShadow: {
-    shadowColor: "#333333",
-    shadowOpacity: 0.6,
-    shadowRadius: 4,
+    // shadowColor: "#333333",
+    // shadowOpacity: 0.2,
+    // shadowRadius: 4,
+
+  //   shadowColor: 'black',
+  // shadowOpacity: 1,
+  // shadowOffset: { width: 4, height: 8},
+  // shadowRadius: 20,
+  // elevation: 10,
+  // backgroundColor: 'white'
   },
   boxShadowContainer: {
     backgroundColor: "white",
@@ -429,6 +451,25 @@ const styles = StyleSheet.create({
     left: -22, // Dịch chuyển hình ảnh sang trái 22px
     top: -110, // Dịch chuyển hình ảnh lên trên 110px
   },
+  buttonDisable: {
+    backgroundColor: "rgba(166, 167, 171, 0.4)",
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 14,
+    paddingRight: 14,
+    borderRadius: 8
+  },
+  buttonNotDisable: {
+    backgroundColor: "#0866ff",
+    paddingTop: 8,
+    paddingBottom: 8,
+    paddingLeft: 14,
+    paddingRight: 14,
+    borderRadius: 8
+  },  
+  textDisable: {
+    color: "#8b8d91"
+  }
 });
 
 export default CreatePost;

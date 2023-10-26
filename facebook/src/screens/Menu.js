@@ -11,14 +11,14 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 const Menu = () => {
   const data = [
-    { id: "1", title: "Video", icon: "play" },
-    { id: "2", title: "Nhóm", icon: "group" },
-    { id: "3", title: "Đã lưu", icon: "bookmark" },
-    { id: "4", title: "Maketplace", icon: "home" },
-    { id: "5", title: "Bạn bè", icon: "user" },
-    { id: "6", title: "Kỷ niệm", icon: "history" },
-    { id: "7", title: "Bảng feed", icon: "list-alt" },
-    { id: "8", title: " Sự kiện", icon: "calendar" },
+    { id: "1", title: "Video", iconLink: require("../assets/icons/videoIcon.png") },
+    { id: "2", title: "Nhóm", iconLink: require("../assets/icons/groupIcon.png") },
+    { id: "3", title: "Đã lưu", iconLink: require("../assets/icons/savedIcon.png") },
+    { id: "4", title: "Maketplace", iconLink: require("../assets/icons/marketPlaceIcon.png") },
+    { id: "5", title: "Bạn bè", iconLink: require("../assets/icons/timBanBeIcon.png") },
+    { id: "6", title: "Kỷ niệm", iconLink: require("../assets/icons/kyNiemIcon.png") },
+    { id: "7", title: "Bảng feed", iconLink: require("../assets/icons/bangFeedIcon.png") },
+    { id: "8", title: " Sự kiện", iconLink: require("../assets/icons/suKienIcon.png") },
   ];
   return (
     <View style={styles.container}>
@@ -70,12 +70,20 @@ const Menu = () => {
           numColumns={2}
           renderItem={({ item }) => (
             <View style={styles.menuItemLT}>
-              <Icon style={{ color: "#228CE6" }} name={item.icon} size={20} />
+              {/* <Icon style={{ color: "#228CE6" }} name={item.icon} size={20} /> */}
+              <Image source={item.iconLink} style={{ width: 26, height: 26 }} />
               <Text style={styles.menuText}>{item.title}</Text>
             </View>
           )}
           keyExtractor={(item) => item.id}
         />
+        {/* <View style={{width: "100%", height: 200, backgroundColor: "red", display: 'flex', flexDirection: "row"}}>
+          {data && data.map((item) => ( 
+            <View style={styles.menuItemLT} key={item.id}>
+             <Icon style={{ color: "#228CE6" }} name={item.icon} size={20} />
+             <Text style={styles.menuText}>{item.title}</Text>
+            </View>))}
+        </View> */}
         <View style={styles.menuContainer}>
           <View style={styles.menuItem}>
             <Icon name="question" size={20} />
@@ -119,6 +127,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: 20,
+    backgroundColor: '#f3f2f7'
   },
   header: {
     padding: 15,

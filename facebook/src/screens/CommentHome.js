@@ -33,7 +33,7 @@ const CommentHome = () => {
       <View style={styles.viewcommentbtn}>
         <Button title="View Comments" onPress={toggleComments} />
       </View>
-      <View style={styles.viewcomment}>{showComments && <Comment />}</View>
+      <View style={styles.viewcomment}>{showComments && <Comment toggleComments={toggleComments}/>}</View>
     </View>
   );
 };

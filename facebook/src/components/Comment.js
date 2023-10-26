@@ -7,13 +7,19 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform
 } from "react-native";
 import { SendIcon } from "../assets/icons";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { useNavigation } from "@react-navigation/native";
 
-const Comment = () => {
+
+const Comment = ({hiddenComment}) => {
   const [like, setLike] = useState(false);
   const toggleLike = () => {
     setLike(!like);
@@ -64,6 +70,9 @@ const Comment = () => {
 
   const [newComment, setNewComment] = useState("");
 
+  const navigation = useNavigation();
+
+
   const addComment = () => {
     if (newComment) {
       setComments([...comments, { nickname: "Tuấn Bùi", text: newComment }]);
@@ -72,87 +81,92 @@ const Comment = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.containerflex, styles.header]}>
-        <View style={styles.containerflex}>
-          <Image
-            style={{ width: 20, height: 20 }}
-            contentFit="cover"
-            source={require("../assets/icons/likeIconColor.png")}
-          />
-          <Text style={{ margin: 5 }}>146</Text>
-          <Icon name="angle-right" size={30} color="#000" />
-        </View>
-        <TouchableOpacity onPress={toggleLike}>
-          {like ? (
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? "padding" : ""}>
+      <View style={styles.container}>
+        <View style={[styles.containerflex, styles.header]}>
+          <View style={styles.containerflex}>
+            <TouchableOpacity style={styles.angleleft} onPress={hiddenComment}>
+              <Icon name="angle-left" size={30} color="#000" />
+            </TouchableOpacity>
             <Image
-              style={{ width: 36, height: 36 }}
+              style={{ width: 20, height: 20, marginLeft: 20 }}
               contentFit="cover"
-              source={require("../assets/icons/likedIcon.png")}
+              source={require("../assets/icons/likeIconColor.png")}
             />
-          ) : (
-            <Image
-              style={{ width: 36, height: 36, marginTop: 2, marginBottom: -2 }}
-              contentFit="cover"
-              source={require("../assets/icons/likeIcon.png")}
-            />
-          )}
-        </TouchableOpacity>
-      </View>
-      <View style={styles.main}>
-        <View style={styles.containerflex}>
-          <Text style={styles.title}>Phù hợp nhất</Text>
-          <Icon style={styles.angledown} name="angle-down" size={20} />
-        </View>
-        <FlatList
-          data={comments}
-          showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
-          renderItem={({ item }) => (
-            <View style={[styles.containerflex, { marginTop: 10 }]}>
-              {/* avatar user comment */}
+            <Text style={{ margin: 5 }}>146</Text>
+          </View>
+          <TouchableOpacity onPress={toggleLike}>
+            {like ? (
               <Image
-                style={styles.accountImage}
-                source={require("../assets/images/avatar-sample.png")}
-              ></Image>
-              {/* phần text bình luận */}
-              <View style={{ flex: 1 }}>
-                {/* phần bình luận */}
-                <View style={styles.textcomment}>
-                  <Text style={styles.nickname}>{item.nickname}</Text>
-                  <Text>{item.text}</Text>
-                </View>
-                {/* Biểu tượng thích, phản hồi */}
-                <View style={styles.containerflex}>
-                  <Text>20p</Text>
-                  <Text style={{ marginLeft: 20, marginRight: 20 }}>Thích</Text>
-                  <Text>Phản hồi</Text>
+                style={{ width: 24, height: 24 }}
+                contentFit="cover"
+                source={require("../assets/icons/likedIcon.png")}
+              />
+            ) : (
+              <Image
+                style={{ width: 24, height: 24, marginTop: 2, marginBottom: -2 }}
+                contentFit="cover"
+                source={require("../assets/icons/likeIcon.png")}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.main}>
+          <View style={styles.containerflex}>
+            <Text style={styles.title}>Hiển thị bình luận trước...</Text>
+            {/* <Icon style={styles.angledown} name="angle-down" size={20} /> */}
+          </View>
+          <FlatList
+            data={comments}
+            showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
+            renderItem={({ item }) => (
+              <View style={[styles.containerflex, { marginTop: 10 }]}>
+                {/* avatar user comment */}
+                <Image
+                  style={styles.accountImage}
+                  source={require("../assets/images/avatar-sample.png")}
+                ></Image>
+                {/* phần text bình luận */}
+                <View style={{ flex: 1 }}>
+                  {/* phần bình luận */}
+                  <View style={styles.textcomment}>
+                    <Text style={styles.nickname}>{item.nickname}</Text>
+                    <Text>{item.text}</Text>
+                  </View>
+                  {/* Biểu tượng thích, phản hồi */}
+                  <View style={styles.containerflex}>
+                    <Text>20p</Text>
+                    <Text style={{ marginLeft: 20, marginRight: 20 }}>Thích</Text>
+                    <Text>Phản hồi</Text>
+                  </View>
                 </View>
               </View>
-            </View>
-          )}
-        />
-      </View>
-      <View style={styles.commentinput}>
-        <TouchableOpacity>
-          <View style={styles.wrapIconNews}>
-            <FontAwesomeIcon icon={faPlus} size={22} color="white" />
-          </View>
-        </TouchableOpacity>
-        <TextInput
-          style={styles.input}
-          placeholder="Viết bình luận..."
-          value={newComment}
-          onChangeText={setNewComment}
-        />
-        <TouchableOpacity style={styles.send} onPress={addComment}>
-          <SendIcon
-            width="24"
-            height="24"
-            fill={newComment.trim().length > 0 ? "#0866ff" : "#ccc"}
+            )}
           />
-        </TouchableOpacity>
-      </View>
+        </View>
+        <View style={styles.commentinput}>
+          <TouchableOpacity>
+            <View style={styles.wrapIconNews}>
+              <FontAwesomeIcon icon={faPlus} size={22} color="white" />
+            </View>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.input}
+            placeholder="Viết bình luận..."
+            value={newComment}
+            onChangeText={setNewComment}
+          />
+          <TouchableOpacity style={styles.send} onPress={addComment}>
+            <SendIcon
+              width="24"
+              height="24"
+              fill={newComment.trim().length > 0 ? "#0866ff" : "#ccc"}
+            />
+          </TouchableOpacity>
+        </View>
     </View>
+    </KeyboardAvoidingView>
+    
   );
 };
 
@@ -160,10 +174,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
     paddingVertical: 0,
-    paddingBottom: 0,
+    paddingBottom: 10,
     backgroundColor: "#fff",
     height: "100%",
-    display: "flex",
+    position: "relative",
   },
   main: {
     flex: 1,
@@ -249,6 +263,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  angleleft:{
+    paddingHorizontal: 8
+  }
 });
 
 export default Comment;
