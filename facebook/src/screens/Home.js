@@ -537,9 +537,10 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   viewReport: {
-    height: "90%",
-    width: "100%",
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
+    width: '100%',
+    height: '90%',
+    
   },
 });

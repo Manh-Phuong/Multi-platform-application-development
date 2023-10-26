@@ -93,7 +93,7 @@ export default function Post({ onReportPress,onCommentPress, ...props }) {
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity onPress={onReportPress}>
             <FontAwesomeIcon icon={faEllipsis} size={24} color="#65676b" />
-            </TouchableOpacity>
+            </TouchableOpacity> 
           <FontAwesomeIcon
             style={{ marginLeft: 12 }}
             icon={faXmark}

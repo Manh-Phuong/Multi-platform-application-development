@@ -10,14 +10,19 @@ withScreen = Dimensions.get("window").width;
 heightScreen = Dimensions.get("window").height;
 
 const Report = () => {
-  return (<View style={styles.container}>
+  return (
+  <View style={styles.container}>
+    <View style={styles.iconTop}>
+     <Image style={styles.iconInside} source={require("../assets/icons/ngang.png")}></Image>
+    </View>
+    
     <View>
       <View style={[styles.backGround, { marginTop: 20 }]}>
         <View style={styles.boxA}>
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/images/add.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Hiển thị thêm</Text>
             <Text style={styles.textBottom}>Bạn sẽ nhìn thấy nhiều bài viết tương tự hơn</Text>
           </View>
@@ -26,7 +31,7 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/minus.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Ẩn bớt</Text>
             <Text style={styles.textBottom}>Tại sao tôi nhìn thấy bài viết này?</Text>
           </View>
@@ -43,7 +48,7 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/save.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Lưu bài viết</Text>
             <Text style={styles.textBottom}>Thêm vào danh sách các mục đã lưu</Text>
           </View>
@@ -52,7 +57,7 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/share.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Sao chép liên kết</Text>
           </View>
         </View>
@@ -60,25 +65,27 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/delete.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Ẩn bài viết</Text>
             <Text style={styles.textBottom}>Ẩn bớt các bài viết tương tự</Text>
           </View>
         </View>
+        {/* <TouchableOpacity onPress={() => {}}> */}
         <View style={styles.boxA}>
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/warning.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Báo cáo bài viết</Text>
             <Text style={styles.textBottom}>Chúng tôi sẽ không cho Tiến biết ai đã báo cáo</Text>
           </View>
         </View>
+         {/* </TouchableOpacity> */}
         <View style={styles.boxA}>
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/notification.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Bật thông báo bài viết này</Text>
           </View>
         </View>
@@ -88,7 +95,7 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/logout.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Rời khỏi Cafe đường phố</Text>
             <Text style={styles.textBottom}>Không nhìn thấy bài viết nữa và rời khỏi nhóm</Text>
           </View>
@@ -97,7 +104,7 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/delete.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Ẩn tất cả từ Tiến</Text>
             <Text style={styles.textBottom}>Không xem bài viết từ người này nữa</Text>
           </View>
@@ -106,16 +113,16 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/time.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Tạm ẩn Cafe đường phố trong 30 ngày</Text>
-            <Text style={styles.textBottom}>Tạm thời không xem bài viết nữa nhưng vẫn ở trong nhóm</Text>
+            <Text style={styles.textBottom}>Tạm thời không xem bài viết nữa</Text>
           </View>
         </View>
         <View style={styles.boxA}>
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/delete.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Bỏ theo dõi Cafe đường phố </Text>
             <Text style={styles.textBottom}>Không xem bài viết nữa nhưng vẫn ở trong nhóm</Text>
           </View>
@@ -128,7 +135,7 @@ const Report = () => {
           <View style={styles.leftContainer}>
             <Image style={styles.imageIcon} source={require("../assets/icons/checklist.png")} />
           </View>
-          <View>
+          <View style={styles.rightContainer}>
             <Text style={styles.textTop}>Quản lí Bảng feed </Text>
           </View>
         </View>
@@ -155,14 +162,41 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginHorizontal: 15
   },
+  
+  iconTop:{
+    display: 'flex',
+    flexDirection:'row',
+    textAlign:'center',
+    justifyContent:"center",
+    alignContent:"center",
+    paddingTop:1,
+    height:10
+    
+  },
+  iconInside:{
+    // color:"#423647"
+  },
   boxA:{
     flexDirection: "row",
-    // alignItems: "center",
+    alignItems: "center",
+    marginBottom:8
+  },
+  leftContainer:{
+      height:40,
+      width:40,
+      justifyContent:"center",
+      alignContent:"center"
+  },
+  rightContainer:{
+    marginLeft:10
   },
   imageIcon: {
-    width: 10,
-    height: 10,
-    marginLeft: 20
+    width: 25,
+    height: 25,
+    marginLeft: 10,
+    justifyContent:'center',
+    alignContent:'center'
+    
   },
   textTop: {
     fontSize:16,
@@ -172,9 +206,6 @@ const styles = StyleSheet.create({
     fontSize:14,
     opacity: 0.5
   },
-  // leftContainer: {
-  //   flex: 1,
-  // },
   textNothing:{
     color:"blue"
   }
