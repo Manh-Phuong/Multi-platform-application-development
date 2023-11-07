@@ -22,14 +22,14 @@ import {
 } from "@firebase/auth";
 import { initializeApp } from "firebase/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getDatabase, ref, set } from "@firebase/database";
-// import database from "@firebase/database";
-// import auth from '@firebase/auth';
+import { getDatabase, ref, set, push } from "@firebase/database";
+import Constants from "expo-constants";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDztY_LDzeyw4cSVO16aRIwOPHJ9lMf-YE",
   authDomain: "facebook-192d6.firebaseapp.com",
-  databaseURL: "https://facebook-192d6-default-rtdb.asia-southeast1.firebasedatabase.app",
+  databaseURL:
+    "https://facebook-192d6-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "facebook-192d6",
   storageBucket: "facebook-192d6.appspot.com",
   messagingSenderId: "102938601110",
@@ -40,6 +40,7 @@ initializeApp(firebaseConfig);
 
 const auth = getAuth();
 const database = getDatabase();
+const deviceId = Constants.installationId;
 
 const windowHeight = Dimensions.get("window").height;
 const customHeight = windowHeight - 100;
@@ -90,21 +91,31 @@ const Login = () => {
       );
       const user = userCredential.user;
       console.log("Đăng nhập thành công:", user);
+      console.log("deviceId", deviceId);
 
       if (user) {
         const userId = user.uid;
         const userRef = ref(database, `users/${userId}`);
-        await set(userRef, {
+
+        // Tạo một khóa phiên đăng nhập mới
+        const sessionRef = push(userRef);
+
+        // Lưu thông tin phiên đăng nhập vào Firebase Realtime Database
+        await set(sessionRef, {
+          deviceID: deviceId || "null",
+          loginTime: new Date().toLocaleTimeString(),
+          loginDate: new Date().toLocaleDateString(),
           email: email,
-          // Thêm các thông tin khác của người dùng nếu cần
         });
-        console.log("Thông tin đăng nhập đã được lưu trong Firebase Realtime Database.");
+
+        console.log(
+          "Thông tin đăng nhập đã được lưu trong Firebase Realtime Database."
+        );
       } else {
         console.log("lỗi Firebase Realtime Database.");
       }
-      
+
       navigation.navigate("Home");
-      
     } catch (error) {
       console.error("Lỗi đăng nhập:", error);
     }
