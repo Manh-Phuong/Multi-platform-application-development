@@ -10,12 +10,39 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { LinearGradient } from "expo-linear-gradient";
-const windowHeight = Dimensions.get('window').height;
-const customHeight = windowHeight - 100; 
+import firebase from "firebase/app";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "@firebase/auth";
+import { initializeApp } from "firebase/app";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getDatabase, ref, set } from "@firebase/database";
+// import database from "@firebase/database";
+// import auth from '@firebase/auth';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDztY_LDzeyw4cSVO16aRIwOPHJ9lMf-YE",
+  authDomain: "facebook-192d6.firebaseapp.com",
+  databaseURL: "https://facebook-192d6-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "facebook-192d6",
+  storageBucket: "facebook-192d6.appspot.com",
+  messagingSenderId: "102938601110",
+  appId: "1:102938601110:android:f32a95205c6add51ac04b7",
+};
+
+initializeApp(firebaseConfig);
+
+const auth = getAuth();
+const database = getDatabase();
+
+const windowHeight = Dimensions.get("window").height;
+const customHeight = windowHeight - 100;
 const Login = () => {
   const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
@@ -52,6 +79,37 @@ const Login = () => {
   const handleTogglePassword = () => {
     setIsShowPassword(!isShowPassword);
   };
+
+  // Đăng nhập người dùng
+  const loginUser = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      console.log("Đăng nhập thành công:", user);
+
+      if (user) {
+        const userId = user.uid;
+        const userRef = ref(database, `users/${userId}`);
+        await set(userRef, {
+          email: email,
+          // Thêm các thông tin khác của người dùng nếu cần
+        });
+        console.log("Thông tin đăng nhập đã được lưu trong Firebase Realtime Database.");
+      } else {
+        console.log("lỗi Firebase Realtime Database.");
+      }
+      
+      navigation.navigate("Home");
+      
+    } catch (error) {
+      console.error("Lỗi đăng nhập:", error);
+    }
+  };
+
   const handleSummit = () => {
     if (!account.trim()) {
       Alert.alert("Cần có email", "Nhập email của bạn để tiếp tục.", [
@@ -86,7 +144,8 @@ const Login = () => {
           },
         ]);
       } else {
-        navigation.navigate("Home")
+        loginUser(account, password);
+        // navigation.navigate("Home")
       }
     }
   };
@@ -194,7 +253,7 @@ const Login = () => {
         </View>
 
         <View style={styles.linkText}>
-          <Text style={{fontSize: 16, fontWeight: 600}}>Quên mật khẩu?</Text>
+          <Text style={{ fontSize: 16, fontWeight: 600 }}>Quên mật khẩu?</Text>
         </View>
 
         <View style={styles.subButtonView}>
@@ -241,12 +300,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 999,
-    marginTop: 16
+    marginTop: 16,
   },
   buttonText: {
     color: "white",
     fontWeight: "600",
-    fontSize: 16
+    fontSize: 16,
   },
   subButton: {
     borderColor: "#0063e0", // Màu của viền

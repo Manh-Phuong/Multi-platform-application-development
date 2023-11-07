@@ -16,7 +16,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home" 
+        // initialRouteName="Home"
+        initialRouteName="Login" 
         screenOptions={{ headerShown: false }}
       >
         {publicRoutes.map((route, index) => (
