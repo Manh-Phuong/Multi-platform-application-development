@@ -6,20 +6,64 @@ import {
   ScrollView,
   Image,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useAuth } from "../contexts/AuthContext";
+import Constants from "expo-constants";
+
+const deviceId = Constants.installationId;
+
 
 const Menu = () => {
+  const { logoutUser } = useAuth();
+
   const data = [
-    { id: "1", title: "Video", iconLink: require("../assets/icons/videoIcon.png") },
-    { id: "2", title: "Nhóm", iconLink: require("../assets/icons/groupIcon.png") },
-    { id: "3", title: "Đã lưu", iconLink: require("../assets/icons/savedIcon.png") },
-    { id: "4", title: "Maketplace", iconLink: require("../assets/icons/marketPlaceIcon.png") },
-    { id: "5", title: "Bạn bè", iconLink: require("../assets/icons/timBanBeIcon.png") },
-    { id: "6", title: "Kỷ niệm", iconLink: require("../assets/icons/kyNiemIcon.png") },
-    { id: "7", title: "Bảng feed", iconLink: require("../assets/icons/bangFeedIcon.png") },
-    { id: "8", title: " Sự kiện", iconLink: require("../assets/icons/suKienIcon.png") },
+    {
+      id: "1",
+      title: "Video",
+      iconLink: require("../assets/icons/videoIcon.png"),
+    },
+    {
+      id: "2",
+      title: "Nhóm",
+      iconLink: require("../assets/icons/groupIcon.png"),
+    },
+    {
+      id: "3",
+      title: "Đã lưu",
+      iconLink: require("../assets/icons/savedIcon.png"),
+    },
+    {
+      id: "4",
+      title: "Maketplace",
+      iconLink: require("../assets/icons/marketPlaceIcon.png"),
+    },
+    {
+      id: "5",
+      title: "Bạn bè",
+      iconLink: require("../assets/icons/timBanBeIcon.png"),
+    },
+    {
+      id: "6",
+      title: "Kỷ niệm",
+      iconLink: require("../assets/icons/kyNiemIcon.png"),
+    },
+    {
+      id: "7",
+      title: "Bảng feed",
+      iconLink: require("../assets/icons/bangFeedIcon.png"),
+    },
+    {
+      id: "8",
+      title: " Sự kiện",
+      iconLink: require("../assets/icons/suKienIcon.png"),
+    },
   ];
+
+  const handleLogout = () => {
+    logoutUser(deviceId);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -113,9 +157,11 @@ const Menu = () => {
               }}
               style={styles.menuIcon}
             />
-            <Text style={{ marginLeft: 10, fontWeight: "bold" }}>
-              Đăng xuất
-            </Text>
+            <TouchableOpacity onPress={handleLogout}>
+              <Text style={{ marginLeft: 10, fontWeight: "bold" }}>
+                Đăng xuất
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
@@ -127,7 +173,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingBottom: 20,
-    backgroundColor: '#f3f2f7'
+    backgroundColor: "#f3f2f7",
   },
   header: {
     padding: 15,
