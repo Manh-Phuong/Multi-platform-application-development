@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "102938601110",
+    "project_id": "facebook-192d6",
+    "storage_bucket": "facebook-192d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:102938601110:android:f32a95205c6add51ac04b7",
+        "android_client_info": {
+          "package_name": "com.ManhPhuong23.facebook"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDztY_LDzeyw4cSVO16aRIwOPHJ9lMf-YE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

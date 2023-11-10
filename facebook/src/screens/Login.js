@@ -15,32 +15,8 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "../contexts/AuthContext";
-// import firebase from "firebase/app";
-// import {
-//   getAuth,
-//   signInWithEmailAndPassword,
-//   createUserWithEmailAndPassword,
-// } from "@firebase/auth";
-// import { initializeApp } from "firebase/app";
-// import AsyncStorage from "@react-native-async-storage/async-storage";
-// import { getDatabase, ref, set, push } from "@firebase/database";
 import Constants from "expo-constants";
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyDztY_LDzeyw4cSVO16aRIwOPHJ9lMf-YE",
-//   authDomain: "facebook-192d6.firebaseapp.com",
-//   databaseURL:
-//     "https://facebook-192d6-default-rtdb.asia-southeast1.firebasedatabase.app",
-//   projectId: "facebook-192d6",
-//   storageBucket: "facebook-192d6.appspot.com",
-//   messagingSenderId: "102938601110",
-//   appId: "1:102938601110:android:f32a95205c6add51ac04b7",
-// };
-
-// initializeApp(firebaseConfig);
-
-// const auth = getAuth();
-// const database = getDatabase();
 const deviceId = Constants.installationId;
 
 const windowHeight = Dimensions.get("window").height;

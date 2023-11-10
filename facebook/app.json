@@ -15,17 +15,43 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "supportsTablet": true,
+      "permissions": {
+        "allowAlert": true,
+        "allowBadge": true,
+        "allowSound": true
+      },
+      "bundleIdentifier": "y"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["INTERNET"]
+      "permissions": [
+        "INTERNET",
+        "NOTIFICATIONS"
+      ],
+      "package": "com.manhphuong.facebook"
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ce831993-19d8-40da-8442-ee6e5077472d"
+      }
     }
   }
 }
