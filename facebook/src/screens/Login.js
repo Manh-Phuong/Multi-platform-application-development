@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -16,6 +16,7 @@ import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set c
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "../contexts/AuthContext";
 import Constants from "expo-constants";
+import { AppState } from 'react-native';
 
 const deviceId = Constants.installationId;
 
@@ -32,7 +33,7 @@ const Login = () => {
   const passwordInputRef = useRef(null);
 
   const navigation = useNavigation();
-  const { loginUser } = useAuth();
+  const { loginUser, logoutUser } = useAuth();
 
   const changePassword = (newPassword) => {
     setPassword(newPassword);
@@ -58,6 +59,30 @@ const Login = () => {
   const handleTogglePassword = () => {
     setIsShowPassword(!isShowPassword);
   };
+
+  // const handleLogout = async () => {
+  //   console.log('handleLogout dang tat 1')
+  //   await logoutUser(deviceId);
+  //   console.log('handleLogout dang tat 2')
+
+  // };
+
+  // useEffect(() => {
+  //   const handleAppStateChange = (nextAppState) => {
+  //     if (nextAppState === 'background') {
+  //       // Ứng dụng đang ẩn hoặc bị tắt
+  //       handleLogout(); // Gọi hàm đăng xuất khi ứng dụng ẩn hoặc bị tắt
+  //     }
+  //   };
+  
+  //   // Đăng ký sự kiện thay đổi trạng thái ứng dụng
+  //   const appStateSubscription = AppState.addEventListener('change', handleAppStateChange);
+  
+  //   // Hủy đăng ký sự kiện khi component unmount
+  //   return () => {
+  //     appStateSubscription.remove();
+  //   };
+  // }, []);
 
   // Đăng nhập người dùng
   // const loginUser = async (email, password) => {

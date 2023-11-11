@@ -1,100 +1,109 @@
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigation } from "@react-navigation/native";
 // import firebase from "firebase/app";
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signOut
+  signOut,
 } from "@firebase/auth";
 import { initializeApp } from "firebase/app";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getDatabase, ref, set, push, remove, get } from "@firebase/database";
 import Constants from "expo-constants";
+import { AppState } from 'react-native';
 
-import * as Device from 'expo-device';
-import * as Notifications from 'expo-notifications';
+import * as Device from "expo-device";
+import * as Notifications from "expo-notifications";
 
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-    }),
-  });
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
-  async function sendPushNotification(expoPushToken) {
-    try {
-      console.log('sendPushNotification');
-      const message = {
-        to: expoPushToken,
-        sound: 'default',
-        title: 'Cảnh báo đăng nhập',
-        body: 'Có thiết bị khác đang đăng nhập vào tài khoản của bạn!',
-        data: { someData: 'goes here' },
-      };
-  
-      const response = await fetch('https://exp.host/--/api/v2/push/send', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Accept-encoding': 'gzip, deflate',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(message),
-      });
-  
-      if (!response.ok) {
-        // Xử lý lỗi ở đây, ví dụ in ra console
-        console.error(`Gửi push notification không thành công. Mã lỗi: ${response.status}`);
-      } else {
-        console.log('Push notification đã được gửi thành công.');
-      }
-    } catch (error) {
-      // Xử lý lỗi ở đây
-      console.error('Lỗi khi gửi push notification:', error);
-    }
-  }
-  
-  async function registerForPushNotificationsAsync() {
-    let token;
-  
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-  
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig.extra.eas.projectId,
-      });
-      console.log(token);
+async function sendPushNotification(expoPushToken) {
+  try {
+    console.log("sendPushNotification");
+    const message = {
+      to: expoPushToken,
+      sound: "default",
+      title: "Cảnh báo đăng nhập",
+      body: "Có thiết bị khác đang đăng nhập vào tài khoản của bạn!",
+      data: { someData: "goes here" },
+    };
+
+    const response = await fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Accept-encoding": "gzip, deflate",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(message),
+    });
+
+    if (!response.ok) {
+      // Xử lý lỗi ở đây, ví dụ in ra console
+      console.error(
+        `Gửi push notification không thành công. Mã lỗi: ${response.status}`
+      );
     } else {
-      // alert('Must use physical device for Push Notifications');
-      console.log('Must use physical device for Push Notifications');
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig.extra.eas.projectId,
-      });
-      console.log("token virtual machine", token);
+      console.log("Push notification đã được gửi thành công.");
     }
-  
-    return token.data;
+  } catch (error) {
+    // Xử lý lỗi ở đây
+    console.error("Lỗi khi gửi push notification:", error);
+  }
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
   }
 
+  if (Device.isDevice) {
+    const { status: existingStatus } =
+      await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
+    console.log(token);
+  } else {
+    // alert('Must use physical device for Push Notifications');
+    console.log("Must use physical device for Push Notifications");
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig.extra.eas.projectId,
+    });
+    console.log("token virtual machine", token);
+  }
+
+  return token.data;
+}
 
 const firebaseConfig = {
   apiKey: "AIzaSyDztY_LDzeyw4cSVO16aRIwOPHJ9lMf-YE",
@@ -125,33 +134,41 @@ export const AuthProvider = ({ children }) => {
 
   const navigation = useNavigation();
 
-  const [expoPushToken, setExpoPushToken] = useState('');
+  const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
- 
+
   useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
 
     return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
       Notifications.removeNotificationSubscription(responseListener.current);
     };
   }, []);
 
-
-
   const loginUser = async (email, password, deviceId) => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
       console.log("Đăng nhập thành công:", user);
       setUser(user);
@@ -167,23 +184,31 @@ export const AuthProvider = ({ children }) => {
           loginTime: new Date().toLocaleTimeString(),
           loginDate: new Date().toLocaleDateString(),
           email: email,
-          token: expoPushToken
+          token: expoPushToken,
         });
 
-        console.log("Thông tin đăng nhập đã được lưu trong Firebase Realtime Database.");
+        console.log(
+          "Thông tin đăng nhập đã được lưu trong Firebase Realtime Database."
+        );
         navigation.navigate("Home");
+        // await sendPushNotification(expoPushToken);
 
         const sessionsSnapshot = await get(userRef);
-        console.log('sessionsSnapshot', sessionsSnapshot)
+        const sessionsArray = [];
+        sessionsSnapshot.forEach((session) => {
+          sessionsArray.push(session.val());
+        });
+        console.log("sessionsSnapshot", sessionsSnapshot);
+        console.log("sessionsArray", sessionsArray);
 
-        sessionsSnapshot.forEach(async (session) => {
-          const sessionData = session.val();
-          console.log('sessionData', sessionData)
+        sessionsArray.forEach(async (session) => {
+          // const sessionData = session.val();
+          const sessionData = session;
+          console.log("sessionData", sessionData);
           if (sessionData.token !== expoPushToken) {
             await sendPushNotification(sessionData.token);
           }
-        });        
-
+        });
       } else {
         console.log("Lỗi Firebase Realtime Database.");
       }
@@ -196,8 +221,8 @@ export const AuthProvider = ({ children }) => {
     try {
       if (user) {
         const userId = user.uid;
-        console.log('userId', userId)
-        console.log('sessionRef', sessionRef)
+        console.log("userId", userId);
+        console.log("sessionRef", sessionRef);
 
         if (sessionRef) {
           // Xóa phiên đăng nhập tương ứng với sessionRef
