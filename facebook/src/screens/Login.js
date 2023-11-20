@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { LinearGradient } from "expo-linear-gradient";
+import axios from "axios";
 const windowHeight = Dimensions.get('window').height;
 const customHeight = windowHeight - 100; 
 const Login = () => {
@@ -86,7 +87,18 @@ const Login = () => {
           },
         ]);
       } else {
-        navigation.navigate("Home")
+        axios.post("https://it4788.catan.io.vn/login", {
+          "email": account,
+          "password": password,
+          "uuid": "string1"
+        })
+        .then(res => {
+          console.log(res.data);
+          navigation.navigate("Home")
+        })
+        .catch(err => {
+          console.log(err);
+        })
       }
     }
   };
