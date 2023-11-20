@@ -18,15 +18,22 @@ import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { setStorePassword } from "../feature/account";
+import { useDispatch, useSelector } from "react-redux";
 
 const windowHeight = Dimensions.get("window").height;
 const customHeight = windowHeight - 30;
 
 const CreatePassword = () => {
   const navigation = useNavigation();
-  const [password, setPassword] = useState("");
+  // const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const password = useSelector((state) => state.account.password)
+
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
+  // const passwordStore = useSelector(selectPassword);
+
 
   const passWordInputRef = useRef(null);
 
@@ -45,7 +52,7 @@ const CreatePassword = () => {
   const handlePasswordChange = (text) => {
     // Kiểm tra xem text có chứa khoảng trắng không
     if (!text?.includes(" ")) {
-      setPassword(text);
+      dispatch(setStorePassword(text));
     }
   };
 

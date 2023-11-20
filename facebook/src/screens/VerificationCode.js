@@ -12,10 +12,14 @@ import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set c
 import { useNavigation } from "@react-navigation/native";
 import { Color, FontFamily, FontSize } from "../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 
 
 const VerificationCode = () => {
+    const email = useSelector((state) => state.account.email)
+    const password = useSelector((state) => state.account.password)
     const navigation = useNavigation();
     const goBackHandler = () => {
         navigation.goBack(); // Quay lại màn hình trước đó
@@ -41,6 +45,24 @@ const VerificationCode = () => {
                     codeInputRef.current.focus()
                 }
             },])
+        }
+        else {
+            console.log({
+                "email": email,
+                "password": password,
+                "uuid": "string"
+            })
+            axios.post("https://it4788.catan.io.vn/signup", {
+                "email": email,
+                "password": password,
+                "uuid": "string"
+            })
+            .then(res => {
+                alert("Đăng ký thành công!")
+            })
+            .catch(err => {
+                console.log(err)
+            })
         }
     }
 

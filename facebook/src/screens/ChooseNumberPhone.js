@@ -17,16 +17,22 @@ import {
 import {Color, FontSize, Border, Padding} from "../GlobalStyles";
 import {useNavigation} from "@react-navigation/native";
 import {LinearGradient} from "expo-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
+import { getStoreEmail, setStoreEmail } from "../feature/account";
 
 const windowHeight = Dimensions.get('window').height;
 const customHeight = windowHeight - 30;
 
 const ChooseNumberPhone = () => {
     const navigation = useNavigation();
-    const [email, setEmail] = useState("");
+    // const [email, setEmail] = useState("");
+    const email = useSelector((state) => state.account.email)
+
     const [isFocusedEmail, setIsFocusedEmail] = useState(false);
 
     const emailInputRef = useRef(null);
+
+    const dispatch = useDispatch()
 
     const inputBorderStyleEmail = isFocusedEmail ? {
         borderColor: "black",
@@ -34,7 +40,7 @@ const ChooseNumberPhone = () => {
     } : {};
 
     const changeEmail = (newEmail) => {
-        setEmail(newEmail);
+        dispatch(setStoreEmail(newEmail));
     };
 
     const handleFocusEmail = () => {
