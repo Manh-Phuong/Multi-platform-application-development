@@ -37,7 +37,9 @@ import { ScrollView } from "react-native-gesture-handler";
 import { ScreenWidth } from "react-native-elements/dist/helpers";
 import Post from "../components/Post";
 import Comment from "../components/Comment";
+import Report from "../components/Report";
 import Menu from "./Menu";
+
 
 withScreen = Dimensions.get("window").width;
 heightScreen = Dimensions.get("window").height;
@@ -332,6 +334,7 @@ export default function Home() {
       }).start();
     }
   };
+ 
   // Quay lại -> ẩn comment
   useEffect(() => {
     const handleBackPress = () => {
@@ -343,6 +346,7 @@ export default function Home() {
       }
       return false;
     };
+
 
     const backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
@@ -356,6 +360,31 @@ export default function Home() {
   //Nháy vào comment thì đổi background
   const colorBackGround = showComments ? styles.colorChange : styles.colorwhite;
   // Hung end
+   //Tuong
+   const [showReport, setShowReport] = useState(false);
+   const toggleReport = () => {
+     setShowReport(!showReport);
+   };
+  //Tuong start
+  useEffect(() => {
+    const handleBackPress = () => {
+      if (showReport) {
+        // Nếu giao diện report đang hiển thị, ẩn nó và ngăn sự kiện "Quay lại" mặc định
+        setShowReport(false);
+        return true;
+      }
+      return false;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      handleBackPress
+    );
+
+    return () => {
+      backHandler.remove();
+    };
+  }, [showReport]);
   return (
     <View style={styles.container}>
       {/* <Collapsible collapsed={!showHeader}> */}
@@ -526,6 +555,10 @@ export default function Home() {
       {active.menu && <Menu />}
 
       {/* Khi showComments = true, thì hiện <Comment/> */}
+
+
+      {/* <View style={styles.viewReport}>{showReport && <Report />}</View> */}
+
       {/* <View style={styles.viewcomment}> */}
       {showComments && (
         <Animated.View
@@ -544,10 +577,11 @@ export default function Home() {
           ]}
         >
           {/* hiddenComment */}
-          <Comment hiddenComment={toggleComments} />
+          {/* <Comment hiddenComment={toggleComments} /> */}
         </Animated.View>
       )}
       {/* </View> */}
+
     </View>
   );
 }
@@ -699,10 +733,14 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
   },
-  colorwhite: {
-    backgroundColor: "#fff",
+
+  viewReport: {
+    height: "90%",
+    width: "100%",
+    position: "absolute",
+    bottom: 0,
   },
-  colorChange: {
-    backgroundColor: "#333",
-  },
+  
 });
+
+
