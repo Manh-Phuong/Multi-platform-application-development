@@ -21,6 +21,9 @@ import Collapsible from "react-native-collapsible";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import {
+  faCamera,
+  faComment,
+  faPen,
   faPlus,
   faStore,
   faUserGroup,
@@ -45,7 +48,7 @@ heightScreen = Dimensions.get("window").height;
 const data = [
   {
     id: "1",
-    owner: "Samsung",
+    name: "Samsung",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/369910721_10160974400856815_2716180799949117069_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=CcXwFrZErvQAX_Yp-Xt&_nc_ht=scontent.fhan15-1.fna&_nc_e2o=f&oh=00_AfDx4w4M8XVDrGAsp3dkQyjJ_mHy4wdsEVlMhOgYWQ3KQg&oe=653D275E",
     content:
@@ -55,7 +58,7 @@ const data = [
   },
   {
     id: "2",
-    owner: "XMEN - For Boss",
+    name: "XMEN - For Boss",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/358681064_279532781395858_6541355092957352746_n.png?stp=cp0_dst-png_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=kV-SiG8f4OMAX_O3YIG&_nc_oc=AQkmR5EOt0tYta1-jW3qZK8Tdtl-mKXrOyxfq9TsdA4TIk2Rd0BZ2gebff6-sGCnftpbqAOEdPnTg4DerXWYApN3&_nc_ht=scontent.fhan15-1.fna&_nc_e2o=f&oh=00_AfAK_g3aTwWZUasEUQR0sWnh4rTCCj128MKzLRV8ZjHQFQ&oe=653C9C31",
     content:
@@ -65,7 +68,7 @@ const data = [
   },
   {
     id: "3",
-    owner: "Recent",
+    name: "Recent",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/309658071_134569009335886_1161259950930816405_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=MaK2p23PPr0AX8RKYbG&_nc_ht=scontent.fhan15-1.fna&oh=00_AfCERp7xiSlMLkrQ3eRjYyzThfMMHBaOZqodsAy2Y11OVg&oe=653D33B7",
     content:
@@ -75,7 +78,7 @@ const data = [
   },
   {
     id: "4",
-    owner: "Study With Me",
+    name: "Study With Me",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/241357309_106468151792976_3114688578357951904_n.jpg?stp=c80.0.320.320a_dst-jpg_p320x320&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=yOpqaii7WM8AX_q0XQd&_nc_ht=scontent.fhan15-1.fna&oh=00_AfCrtyqfnW7f4byf6dmX8D7Vkndr8IOnyP9eC_SWPqYihQ&oe=653D5ED8",
     content: "Chúng ta luôn tốt lên từng ngày~",
@@ -84,7 +87,7 @@ const data = [
   },
   {
     id: "5",
-    owner: "Kiến Trúc Việt - Thiết Kế Thi Công Trọn Gói",
+    name: "Kiến Trúc Việt - Thiết Kế Thi Công Trọn Gói",
     avatar:
       "https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-1/305406546_1118571769035664_2586701446268501879_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=jXQa653iGm4AX-wxdnw&_nc_ht=scontent.fhan15-2.fna&oh=00_AfDCcCy-I1tMYiIl2B5Dy4tN6xaBmNLT_fR6fIqqgMuFjw&oe=653E1025",
     content: "Làm thiết kế xong ông bà không ưng 🥹",
@@ -93,7 +96,7 @@ const data = [
   },
   {
     id: "6",
-    owner: "Một chút decor",
+    name: "Một chút decor",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/329991810_565594582204694_5571908352438977267_n.jpg?stp=c53.0.320.320a_dst-jpg_p320x320&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=2XIpav4JB7cAX8glJNM&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDzr56Qev1G0szwS0CvdqveLJcrhvm7Ky0Lp8mcbrQkAQ&oe=653D9A88",
     content: "Một chiếc phòng tui luôn mơ ước 🥰",
@@ -102,7 +105,7 @@ const data = [
   },
   {
     id: "7",
-    owner: "Troll Cả Showbiz",
+    name: "Troll Cả Showbiz",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/380547481_740120898129984_7583509023442880520_n.jpg?stp=dst-jpg_p320x320&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=0f_3pflO6kYAX_hONK1&_nc_ht=scontent.fhan15-1.fna&oh=00_AfAMGzDRvDgoIF6O5GVqzizIQbTlX-Piws7MRYEzgo87Sg&oe=653D0CBB",
     content: "Cảnh phim bị cắt trong The Shining 1980 👻",
@@ -111,7 +114,7 @@ const data = [
   },
   {
     id: "8",
-    owner: "Anh Tùng Design - Kiến Trúc Nội Thất Thông Minh",
+    name: "Anh Tùng Design - Kiến Trúc Nội Thất Thông Minh",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/371098588_793859796077879_2506753863383987577_n.jpg?stp=dst-jpg_p320x320&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=_OAfq_YCLewAX-9aKgS&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDGvpwdGM9KrOLfQQfoiBFXQ422MBkNxNK2yvxF2CMjBQ&oe=653CE45D",
     content: `Bạn dám vẽ tôi dám làm 🤌
@@ -122,25 +125,17 @@ const data = [
   },
   {
     id: "9",
-    owner: "Trương Toàn - IPHONE SÓC TRĂNG",
+    name: "Trương Toàn - IPHONE SÓC TRĂNG",
     avatar:
       "https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-1/377779680_784875696987100_6321804957547872809_n.jpg?stp=cp6_dst-jpg_p60x60&_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_ohc=3NB_RallAboAX-QUWdy&_nc_ht=scontent.fhan15-2.fna&oh=00_AfC913AkTF8p-abQK55X1XlARieUbdIZWT99IgtGbOkHXg&oe=653E76AE",
     content: "cuối tuần ròi nghỉ ngơi thoi",
     image:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/394537012_810548441086492_4185753828941852292_n.jpg?stp=dst-jpg_s960x960&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_ohc=thPm4HsAJYAAX9aONiY&_nc_ht=scontent.fhan15-1.fna&oh=00_AfAHQW8o91PWku2DKV4McxMBNTkc8i68856Mqq86VVboBg&oe=653DA324",
   },
+  
   {
     id: "10",
-    owner: "Trương Toàn - IPHONE SÓC TRĂNG",
-    avatar:
-      "https://scontent.fhan15-2.fna.fbcdn.net/v/t39.30808-1/377779680_784875696987100_6321804957547872809_n.jpg?stp=cp6_dst-jpg_p60x60&_nc_cat=110&ccb=1-7&_nc_sid=5f2048&_nc_ohc=3NB_RallAboAX-QUWdy&_nc_ht=scontent.fhan15-2.fna&oh=00_AfC913AkTF8p-abQK55X1XlARieUbdIZWT99IgtGbOkHXg&oe=653E76AE",
-    content: "kém",
-    image:
-      "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/393689972_810200304454639_826145831067748735_n.jpg?stp=dst-jpg_s960x960&_nc_cat=102&ccb=1-7&_nc_sid=5f2048&_nc_ohc=dxR-qklsdM0AX8SVQNH&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDSPGASGCDc6K_IgVfkqvvQVBOoOtRkKKaoe9cpRkLW0g&oe=653DA0DD",
-  },
-  {
-    id: "11",
-    owner: "Đà Lạt Review Tất Tần Tật",
+    name: "Đà Lạt Review Tất Tần Tật",
     avatar:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/300433472_407878474778564_7824663035530571659_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=XGTjPsui3CUAX8AgEHn&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDUAyxFwrw8aDEZBLdqPmrfz1_EaGdDPFu3GWZum2cB_Q&oe=653D5E63",
     content: `Góc nhìn Đà Lạt về đêm 😍😍😍
@@ -149,6 +144,8 @@ const data = [
     image:
       "https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-6/395096585_666174282282314_5369529996375320568_n.jpg?stp=dst-jpg_p843x403&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=4HHeFRWwrbUAX-4Cpjp&_nc_ht=scontent.fhan15-1.fna&oh=00_AfAtyLffIIa8ZpRLW5r8MvGHnHmp8BRm_uGytPpqDvt_8A&oe=653CEC88",
   },
+  
+  
 ];
 
 const listNews = [
@@ -182,6 +179,13 @@ const listNews = [
     image:
       "https://keomoi.com/wp-content/uploads/2019/05/anh-gai-xinh-toc-ngan-de-thuong.jpg",
   },
+  ,
+  {
+    id: "6",
+    name: "Trà My",
+    image:
+      "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
+  },
 ];
 
 const Header = () => {
@@ -190,58 +194,29 @@ const Header = () => {
   return (
     <View>
       <View style={styles.underNav}>
-        <Image
-          style={styles.wrapAvatar}
-          source={{
-            uri: "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
-          }}
-        />
-        {/* <Image
-          style={styles.wrapAvatar}
-          source={require("../assets/images/avatar-sample.png")}
-        ></Image> */}
-
-        <TouchableOpacity onPress={() => navigation.navigate("CreatePost")}>
+        <TouchableOpacity>
           <View style={styles.youThink}>
-            <Text style={{ fontSize: 16, fontWeight: 500 }}>
-              Bạn đang nghĩ gì?
+            <Icon name="search" size={20} color="#65676b" />
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: 500,
+                color: "#65676b",
+                marginLeft: 12,
+              }}
+            >
+              Tìm kiếm
             </Text>
           </View>
         </TouchableOpacity>
-
-        <Image
-          style={{ height: 26, width: 26, objectFit: "cover" }}
-          source={require("../assets/icons/iconImage.png")}
-        ></Image>
       </View>
 
-      <View style={styles.divLarge}></View>
-
       <View>
-        <ScrollView horizontal={true} style={styles.newsList}>
-          <View style={styles.newsItem}>
-            <Image
-              style={styles.addNews}
-              source={{
-                uri: "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
-              }}
-            ></Image>
-            <View style={styles.wrapIconNews}>
-              {/* <Icon name="plus" size={24} color="white" /> */}
-              <FontAwesomeIcon icon={faPlus} size={22} color="white" />
-            </View>
-            <View
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginTop: heightScreen * 0.03,
-              }}
-            >
-              <Text style={{ fontWeight: 600, fontSize: 18 }}>Tạo tin</Text>
-            </View>
-          </View>
-
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.newsList}
+        >
           {listNews?.map((item) => {
             return (
               <View key={item.id} style={styles.newsItem}>
@@ -252,16 +227,15 @@ const Header = () => {
                   }}
                 ></Image>
                 <Text
-                  numberOfLines={2}
+                  numberOfLines={1}
                   ellipsizeMode="tail"
                   style={{
-                    position: "absolute",
-                    bottom: 8,
-                    left: 8,
-                    fontSize: 16,
-                    fontWeight: 600,
-                    width: withScreen * 0.26 - 8,
-                    color: "white",
+                    textAlign: "center",
+                    marginTop: 4,
+                    fontSize: 15,
+                    fontWeight: 400,
+                    width: withScreen * 0.22 - 8,
+                    color: "#000",
                   }}
                 >
                   {item.name}
@@ -271,35 +245,99 @@ const Header = () => {
           })}
         </ScrollView>
       </View>
-      <View style={styles.divLarge}></View>
     </View>
   );
 };
 
-export default function Home() {
+const Message = () => {
+  const navigation = useNavigation();
+
+  return (
+    <View style={{flex:1}}>
+      <FlatList
+        data={data}
+        keyExtractor={(item) => item.id}
+        ListHeaderComponent={<Header />}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 50 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => navigation.navigate("MessagePrimary")}>
+            <View style={styles.messageItem}>
+              <Image
+                style={styles.imageMessage}
+                source={{
+                  uri: item.avatar,
+                }}
+              ></Image>
+              <View style={styles.contentMessage}>
+                <View>
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{
+                      marginTop: 4,
+                      fontSize: 15,
+                      fontWeight: 700,
+                      width: withScreen * 0.7 - 8,
+                      color: "#000",
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    // justifyContent: "space-between",
+                    maxWidth: withScreen * 0.86 - 24,
+                  }}
+                >
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{
+                      maxWidth: withScreen * 0.6,
+                      marginTop: 4,
+                      fontSize: 15,
+                      fontWeight: 400,
+  
+                      // width: withScreen * 0.7 - 8,
+                      color: "#65676b",
+                    }}
+                  >
+                    {item.content}
+                  </Text>
+  
+                  <Text
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                    style={{
+                      maxWidth: withScreen * 0.2,
+                      marginTop: 4,
+                      fontSize: 15,
+                      fontWeight: 400,
+                      marginLeft: 12,
+                      color: "#65676b",
+                    }}
+                  >
+                    11 thg 9
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
+        // ItemSeparatorComponent={() => <View style={styles.separator} />}
+        // style={{paddingBottom: -2000}}
+      />
+    </View>
+  );
+};
+
+export default function MessageHome() {
   const [showHeader, setShowHeader] = useState(true);
   const [lastOffset, setLastOffset] = useState(0);
   const navigation = useNavigation();
-  const [active, setActive] = useState({
-    home: true,
-    video: false,
-    friend: false,
-    market: false,
-    notification: false,
-    menu: false,
-  });
-
-  const handleActive = (detailName) => {
-    setActive((prevState) => ({
-      home: false,
-      video: false,
-      friend: false,
-      market: false,
-      notification: false,
-      menu: false,
-      [detailName]: true,
-    }));
-  };
 
   const handleScroll = (event) => {
     const currentOffset = event.nativeEvent.contentOffset.y;
@@ -309,245 +347,57 @@ export default function Home() {
   };
   const animatedValue = useRef(new Animated.Value(0)).current;
 
-  // Hung start
-  const [showComments, setShowComments] = useState(false);
-  const toggleComments = () => {
-    // setShowComments(!showComments);
-    if (showComments) {
-      // Ẩn giao diện comment với animation khi người dùng nhấn "Hide Comments"
-      Animated.timing(animatedValue, {
-        toValue: 0,
-        duration: 250,
-        useNativeDriver: true,
-      }).start(() => {
-        setShowComments(false);
-      });
-    } else {
-      setShowComments(true);
-      // Hiển thị giao diện comment với animation khi người dùng nhấn "View Comments"
-      Animated.timing(animatedValue, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
-    }
-  };
-  // Quay lại -> ẩn comment
-  useEffect(() => {
-    const handleBackPress = () => {
-      if (showComments) {
-        // Nếu giao diện comment đang hiển thị, ẩn nó và ngăn sự kiện "Quay lại" mặc định
-        // setShowComments(false);
-        toggleComments();
-        return true;
-      }
-      return false;
-    };
-
-    const backHandler = BackHandler.addEventListener(
-      "hardwareBackPress",
-      handleBackPress
-    );
-
-    return () => {
-      backHandler.remove();
-    };
-  }, [showComments]);
-  //Nháy vào comment thì đổi background
-  const colorBackGround = showComments ? styles.colorChange : styles.colorwhite;
-  // Hung end
   return (
     <View style={styles.container}>
       {/* <Collapsible collapsed={!showHeader}> */}
       <Collapsible collapsed={false}>
         <View style={styles.header}>
-          <View>
-            <Text style={styles.logo}>facebook</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity onPress={() => navigation.navigate("MessageProfile")}>
+              <Image
+                style={styles.wrapAvatar}
+                source={{
+                  uri: "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
+                }}
+              />
+            </TouchableOpacity>
+            <Text style={styles.logo}>Chat</Text>
           </View>
           <View style={styles.rightButton}>
-            <TouchableOpacity onPress={() => navigation.navigate("CreatePost")}>
+            <TouchableOpacity onPress={() => navigation.navigate("CameraScreen")}>
               <View style={styles.wrapIcon}>
-                <Icon name="plus" size={24} color="black" />
+                <FontAwesomeIcon icon={faCamera} size={18} color="black" />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("MessageNew")}>
               <View style={styles.wrapIcon}>
-                <Icon name="search" size={22} color="black" />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("MessageHome")}>
-              <View style={styles.wrapIcon}>
-                <MessageIcon width="24" height="24" fill="#000" />
+                <FontAwesomeIcon icon={faPen} size={18} color="black" />
               </View>
             </TouchableOpacity>
           </View>
         </View>
       </Collapsible>
 
-      <View style={styles.nav}>
-        <TouchableOpacity onPress={() => handleActive("home")}>
-          <View style={styles.wrapIconNav}>
-            <HomeIcon fill={active.home ? "#0866ff" : "#65676b"} />
-          </View>
-        </TouchableOpacity>
+      {/* <Header /> */}
 
-        <TouchableOpacity onPress={() => handleActive("video")}>
-          <View style={styles.wrapIconNav}>
-            <VideoIcon fill={active.video ? "#0866ff" : "#65676b"} />
-          </View>
-        </TouchableOpacity>
+      <Message />
 
-        <TouchableOpacity onPress={() => handleActive("friend")}>
-          <View style={styles.wrapIconNav}>
-            <FriendIcon fill={active.friend ? "#0866ff" : "#65676b"} />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleActive("market")}>
-          <View style={styles.wrapIconNav}>
-            <MarketIcon fill={active.market ? "#0866ff" : "#65676b"} />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleActive("notification")}>
-          <View style={styles.wrapIconNav}>
-            <FontAwesomeIcon
-              icon={faBell}
-              size={26}
-              color={active.notification ? "#0866ff" : "#65676b"}
-            />
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => handleActive("menu")}>
-          <View style={styles.wrapIconNav}>
-            <Icon
-              name="bars"
-              size={26}
-              color={active.menu ? "#0866ff" : "#65676b"}
-            />
-          </View>
-        </TouchableOpacity>
+      <View style={styles.bottom}>
+        <View style={styles.wrapIconBottom}>
+          <FontAwesomeIcon icon={faComment} size={20} color="#373737" />
+          <Text style={{textAlign: "center", fontSize: 14, fontWeight: 500}}>Chat</Text>
+        </View>
+        <View style={styles.wrapIconBottom}>
+          <FontAwesomeIcon icon={faUserGroup} size={20} color="#a2a1a1" />
+          <Text style={{textAlign: "center", fontSize: 14, fontWeight: 500, color: "#a2a1a1"}}>Danh bạ</Text>
+        </View>
       </View>
-
-      <View style={styles.divSmall}>
-        {active.home && (
-          <View
-            style={{
-              height: 2,
-              width: withScreen / 6 - 2,
-              backgroundColor: "blue",
-              position: "relative",
-              marginLeft: 8,
-            }}
-          ></View>
-        )}
-
-        {active.video && (
-          <View
-            style={{
-              height: 2,
-              width: withScreen / 6 - 2,
-              backgroundColor: "blue",
-              position: "relative",
-              marginLeft: 8 + withScreen / 6,
-            }}
-          ></View>
-        )}
-
-        {active.friend && (
-          <View
-            style={{
-              height: 2,
-              width: withScreen / 6 - 6,
-              backgroundColor: "blue",
-              position: "relative",
-              marginLeft: 6 + (2 * withScreen) / 6,
-            }}
-          ></View>
-        )}
-
-        {active.market && (
-          <View
-            style={{
-              height: 2,
-              width: withScreen / 6 - 8,
-              backgroundColor: "blue",
-              position: "relative",
-              marginLeft: 4 + (3 * withScreen) / 6,
-            }}
-          ></View>
-        )}
-
-        {active.notification && (
-          <View
-            style={{
-              height: 2,
-              width: withScreen / 6 - 10,
-              backgroundColor: "blue",
-              position: "relative",
-              marginLeft: 2 + (4 * withScreen) / 6,
-            }}
-          ></View>
-        )}
-
-        {active.menu && (
-          <View
-            style={{
-              height: 2,
-              width: withScreen / 6 - 12,
-              backgroundColor: "blue",
-              position: "relative",
-              marginLeft: (5 * withScreen) / 6,
-            }}
-          ></View>
-        )}
-      </View>
-
-      {active.home && (
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id}
-          ListHeaderComponent={<Header />}
-          renderItem={({ item }) => (
-            <View>
-              {/* <Post item={item} /> */}
-              {/* oncommentPress -> toggleComments */}
-              {/* <Post item={item} onCommentPress={toggleComments} /> */}
-              <Post item={item} />
-
-              <View style={styles.divLarge}></View>
-            </View>
-          )}
-          onScroll={handleScroll}
-        />
-      )}
-
-      {active.menu && <Menu />}
-
-      {/* Khi showComments = true, thì hiện <Comment/> */}
-      {/* <View style={styles.viewcomment}> */}
-      {showComments && (
-        <Animated.View
-          style={[
-            styles.viewcomment,
-            {
-              transform: [
-                {
-                  translateY: animatedValue.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [800, 0],
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          {/* hiddenComment */}
-          <Comment hiddenComment={toggleComments} />
-        </Animated.View>
-      )}
-      {/* </View> */}
     </View>
   );
 }
@@ -563,16 +413,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: withScreen - 16,
-    paddingTop: 20,
-    marginLeft: 8,
-    marginRight: 8,
+    width: withScreen,
+    padding: 8,
   },
 
   logo: {
     fontSize: 28,
     fontWeight: "800",
-    color: "#0866ff",
+    color: "#000",
+    marginLeft: 16,
   },
 
   rightButton: {
@@ -627,14 +476,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: withScreen - 40,
-    paddingTop: 20,
-    marginLeft: 16,
+    paddingTop: 12,
+    marginLeft: 8,
     marginRight: 24,
   },
 
   wrapAvatar: {
-    width: 46,
-    height: 46,
+    width: 40,
+    height: 40,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
@@ -644,33 +493,41 @@ const styles = StyleSheet.create({
     borderColor: "#d0d0d0",
     borderWidth: 1,
     borderStyle: "solid",
+    backgroundColor: "#f0f2f5",
     padding: 8,
-    width: withScreen * 0.66,
+    width: withScreen - 16,
     borderRadius: 999,
     paddingLeft: 20,
+    display: "flex",
+    flexDirection: "row",
   },
 
   newsList: {
-    height: heightScreen * 0.28,
-    backgroundColor: "white",
+    height: heightScreen * 0.18,
+    marginLeft: withScreen * 0.02,
+    // marginBottom: 8,
+    // backgroundColor: '#ccc'
   },
 
   newsItem: {
-    height: heightScreen * 0.24,
-    width: withScreen * 0.26,
-    backgroundColor: "#eee",
-    marginTop: heightScreen * 0.02,
+    height: heightScreen * 0.18,
+    width: withScreen * 0.2,
+    // backgroundColor: "#bbb",
+    // marginTop: heightScreen * 0.02,
     borderRadius: 12,
-    marginLeft: withScreen * 0.02,
+    marginLeft: withScreen * 0.01,
     position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   imageNews: {
-    height: heightScreen * 0.24,
-    width: withScreen * 0.26,
+    height: withScreen * 0.16,
+    width: withScreen * 0.16,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 12,
+    borderRadius: 40,
   },
 
   addNews: {
@@ -693,16 +550,58 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  viewcomment: {
-    height: "98%",
-    width: "100%",
-    position: "absolute",
-    bottom: 0,
-  },
-  colorwhite: {
-    backgroundColor: "#fff",
-  },
   colorChange: {
     backgroundColor: "#333",
+  },
+  imageMessage: {
+    height: withScreen * 0.14,
+    width: withScreen * 0.14,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 40,
+  },
+  messageItem: {
+    height: withScreen * 0.16,
+    width: withScreen - 16,
+    marginLeft: 8,
+    // backgroundColor: "#ccc",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 8,
+  },
+  contentMessage: {
+    marginLeft: 8,
+  },
+  bottom: {
+    flexDirection: "row",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    height: withScreen * 0.12,
+    width: withScreen,
+    backgroundColor: "#fff",
+    position: "absolute",
+    bottom: 0,
+    borderTopWidth: 0.4,
+    borderTopColor: "#ccc",
+    shadowColor: "#000000",
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 4.59,
+    elevation: 5,
+  },
+  wrapIconBottom: {
+    width: 60,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  separator: {
+    height: 10,
+    backgroundColor: "transparent",
   },
 });

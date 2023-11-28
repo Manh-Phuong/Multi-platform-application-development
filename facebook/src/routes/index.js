@@ -20,6 +20,13 @@ import CRUD from "../screens/CRUD";
 import Post from "../components/Post";
 import ChooseEmoji from "../screens/ChooseEmoji";
 import MenuScreen from "../screens/Menu";
+import MessageHomeScreen from "../screens/MessageHome";
+import MessageNewScreen from "../screens/MessageNew";
+import MessagePrimaryScreen from "../screens/MessagePrimary";
+import MessageProfileScreen from "../screens/MessageProfile";
+import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
+import MessageWaitingScreen from "../screens/MessageWaiting";
+import CameraScreen from "../screens/CameraScreen";
 
 const publicRoutes = [
     {
@@ -95,6 +102,34 @@ const publicRoutes = [
     {
         name: "Menu",
         component: MenuScreen
+    },
+    {
+        name: "MessageHome",
+        component: MessageHomeScreen
+    },
+    {
+        name: "MessageNew",
+        component: MessageNewScreen
+    },
+    {
+        name: "MessagePrimary",
+        component: MessagePrimaryScreen
+    },
+    {
+        name: "MessageProfile",
+        component: MessageProfileScreen
+    },
+    {
+        name: "MessageRecipientInfo",
+        component: MessageRecipientInfoScreen
+    },
+    {
+        name: "MessageWaiting",
+        component: MessageWaitingScreen
+    },
+    {
+        name: "CameraScreen",
+        component: CameraScreen
     },
 
 ];
