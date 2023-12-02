@@ -1,0 +1,22 @@
+
+Jjavascript:S1128")Remove this unused import of 'TextInput'.(±…ìşÿÿÿÿ
+Ajavascript:S1128
+"%Remove this unused import of 'Alert'.(ê¥É
+Ijavascript:S1128"(Remove this unused import of 'Keyboard'.(Âÿïûúÿÿÿÿ
+Yjavascript:S1128"8Remove this unused import of 'TouchableWithoutFeedback'.(ãµµ³ıÿÿÿÿ
+Bjavascript:S1128"&Remove this unused import of 'Easing'.(«š‡í
+Hjavascript:S1128"'Remove this unused import of 'faStore'.(†Œÿÿÿÿÿ
+Ljavascript:S1128"+Remove this unused import of 'faUserGroup'.(õ½ÂŸüÿÿÿÿ
+Hjavascript:S1128"'Remove this unused import of 'faImage'.(É×”ıÿÿÿÿ
+Gjavascript:S1128%"+Remove this unused import of 'ScreenWidth'.(ÜÌÅÓ
+Cjavascript:S1128'"'Remove this unused import of 'Comment'.(¦ÇÚØ
+Bjavascript:S1128("&Remove this unused import of 'Report'.(É®Å¬
+|javascript:S2703,"`Add the "let", "const" or "var" keyword to this declaration of "withScreen" to make it explicit.(Ü–ÖÊ
+ƒjavascript:S2703-"bAdd the "let", "const" or "var" keyword to this declaration of "heightScreen" to make it explicit.(…ôŒ”şÿÿÿÿ
+]javascript:S1481š";Remove the declaration of the unused 'showHeader' variable.(Åá¼ßùÿÿÿÿ
+Zjavascript:S1854š"8Remove this useless assignment to variable "showHeader".(Åá¼ßùÿÿÿÿ
+;javascript:S125½"Remove this commented out code.(€„÷²
+bjavascript:S1481é"@Remove the declaration of the unused 'colorBackGround' variable.(“²¿şÿÿÿÿ
+_javascript:S1854é"=Remove this useless assignment to variable "colorBackGround".(“²¿şÿÿÿÿ
+Zjavascript:S1481í"=Remove the declaration of the unused 'toggleReport' variable.(âŸ±á
+Wjavascript:S1854í":Remove this useless assignment to variable "toggleReport".(âŸ±á

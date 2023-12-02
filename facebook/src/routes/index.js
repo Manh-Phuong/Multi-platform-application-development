@@ -27,7 +27,7 @@ import MessageProfileScreen from "../screens/MessageProfile";
 import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
 import MessageWaitingScreen from "../screens/MessageWaiting";
 import CameraScreen from "../screens/CameraScreen";
-
+import ProfileDetail from "../screens/ProfileDetail"
 const publicRoutes = [
     {
         name: "Home",
@@ -131,6 +131,10 @@ const publicRoutes = [
         name: "CameraScreen",
         component: CameraScreen
     },
+    {
+        name:"ProfileDetail",
+        component:ProfileDetail
+    }
 
 ];
 
