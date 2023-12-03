@@ -27,6 +27,7 @@ import MessageProfileScreen from "../screens/MessageProfile";
 import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
 import MessageWaitingScreen from "../screens/MessageWaiting";
 import CameraScreen from "../screens/CameraScreen";
+import SearchScreen from "../screens/Search"
 
 const publicRoutes = [
     {
@@ -131,6 +132,10 @@ const publicRoutes = [
         name: "CameraScreen",
         component: CameraScreen
     },
+    {
+        name: "Search",
+        component: SearchScreen
+    }
 
 ];
 
