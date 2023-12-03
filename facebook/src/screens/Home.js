@@ -401,7 +401,7 @@ export default function Home() {
                 <Icon name="plus" size={24} color="black" />
               </View>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Search")}>
               <View style={styles.wrapIcon}>
                 <Icon name="search" size={22} color="black" />
               </View>
