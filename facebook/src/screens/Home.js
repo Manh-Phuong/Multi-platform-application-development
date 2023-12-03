@@ -39,6 +39,8 @@ import Post from "../components/Post";
 import Comment from "../components/Comment";
 import Report from "../components/Report";
 import Menu from "./Menu";
+import Friend from './Friend'
+import Notification from './Notification'
 
 
 withScreen = Dimensions.get("window").width;
@@ -551,7 +553,8 @@ export default function Home() {
           onScroll={handleScroll}
         />
       )}
-
+      {active.friend && <Friend />}
+      {active.notification && <Notification />}
       {active.menu && <Menu />}
 
       {/* Khi showComments = true, thì hiện <Comment/> */}

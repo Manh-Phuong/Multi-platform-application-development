@@ -31,117 +31,131 @@ import SearchScreen from "../screens/Search"
 
 const publicRoutes = [
     {
-        name: "Home",
-        component: HomeScreen
+        name: 'Home',
+        component: HomeScreen,
     },
     {
-        name: "Login",
-        component: LoginScreen
+        name: 'Login',
+        component: LoginScreen,
     },
     {
-        name: "Policy",
-        component: PolicyScreen
+        name: 'Policy',
+        component: PolicyScreen,
     },
     {
-        name: "IntroCreateAccount",
-        component: IntroCreateAccountScreen
-    }, {
-        name: "ChooseGender",
-        component: ChooseGenderScreen
-    }, {
-        name: "CreateName",
-        component: CreateNameScreen
-    }, {
-        name: "ChooseAge",
-        component: ChooseAgeScreen
-    }, {
-        name: "ChooseNumberPhone",
-        component: ChooseNumberPhoneScreen
-    }, {
-        name: "CreatePassword",
-        component: CreatePasswordScreen
-    }, {
-        name: "ChooseDateOfBirth",
-        component: ChooseDateOfBirthScreen
-
-    }, {
-        name: "SaveAccountLogin",
-        component: SaveAccountLoginScreen
-
-    }, {
-        name: "SaveInfoConfirm",
-        component: SaveInfoConfirmScreen
-    }, {
-        name: "PolicyConfirm",
-        component: PolicyConfirmScreen
-    }, {
-        name: "VerificationCode",
-        component: VerificationCodeScreen
-    },  {
-        name: "Comment",
-        component: CommentScreen
-    },{
-        name: "CommentHome",
-        component: CommentHomeScreen
+        name: 'IntroCreateAccount',
+        component: IntroCreateAccountScreen,
     },
     {
-        name: "CreatePost",
-        component: CreatePostScreen
+        name: 'ChooseGender',
+        component: ChooseGenderScreen,
     },
     {
-        name: "CRUD",
-        component: CRUD
+        name: 'CreateName',
+        component: CreateNameScreen,
     },
     {
-        name: "Post",
-        component: Post
+        name: 'ChooseAge',
+        component: ChooseAgeScreen,
     },
     {
-        name: "ChooseEmoji",
-        component: ChooseEmoji
+        name: 'ChooseNumberPhone',
+        component: ChooseNumberPhoneScreen,
     },
     {
-        name: "Menu",
-        component: MenuScreen
+        name: 'CreatePassword',
+        component: CreatePasswordScreen,
     },
     {
-        name: "MessageHome",
-        component: MessageHomeScreen
+        name: 'ChooseDateOfBirth',
+        component: ChooseDateOfBirthScreen,
     },
     {
-        name: "MessageNew",
-        component: MessageNewScreen
+        name: 'SaveAccountLogin',
+        component: SaveAccountLoginScreen,
     },
     {
-        name: "MessagePrimary",
-        component: MessagePrimaryScreen
+        name: 'SaveInfoConfirm',
+        component: SaveInfoConfirmScreen,
     },
     {
-        name: "MessageProfile",
-        component: MessageProfileScreen
+        name: 'PolicyConfirm',
+        component: PolicyConfirmScreen,
     },
     {
-        name: "MessageRecipientInfo",
-        component: MessageRecipientInfoScreen
+        name: 'VerificationCode',
+        component: VerificationCodeScreen,
     },
     {
-        name: "MessageWaiting",
-        component: MessageWaitingScreen
+        name: 'Comment',
+        component: CommentScreen,
     },
     {
-        name: "CameraScreen",
-        component: CameraScreen
+        name: 'CommentHome',
+        component: CommentHomeScreen,
+    },
+    {
+        name: 'CreatePost',
+        component: CreatePostScreen,
+    },
+    {
+        name: 'CRUD',
+        component: CRUD,
+    },
+    {
+        name: 'Post',
+        component: Post,
+    },
+    {
+        name: 'ChooseEmoji',
+        component: ChooseEmoji,
+    },
+    {
+        name: 'Menu',
+        component: MenuScreen,
+    },
+    {
+        name: 'MessageHome',
+        component: MessageHomeScreen,
+    },
+    {
+        name: 'MessageNew',
+        component: MessageNewScreen,
+    },
+    {
+        name: 'MessagePrimary',
+        component: MessagePrimaryScreen,
+    },
+    {
+        name: 'MessageProfile',
+        component: MessageProfileScreen,
+    },
+    {
+        name: 'MessageRecipientInfo',
+        component: MessageRecipientInfoScreen,
+    },
+    {
+        name: 'MessageWaiting',
+        component: MessageWaitingScreen,
+    },
+    {
+        name: 'CameraScreen',
+        component: CameraScreen,
+    },
+    {
+        name: 'FriendLists',
+        component: FriendLists,
+    },
+    {
+        name: 'FriendSuggest',
+        component: FriendSuggest,
     },
     {
         name: "Search",
         component: SearchScreen
     }
-
 ];
 
 const privateRoutes = [];
 
-export {
-    publicRoutes,
-    privateRoutes
-};
+export { publicRoutes, privateRoutes };
