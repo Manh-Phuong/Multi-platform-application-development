@@ -7,10 +7,13 @@ import {
     View,
     TextInput,
     TouchableOpacity,
+    Alert,
     Keyboard,
+    TouchableWithoutFeedback,
     Dimensions,
     Image,
     FlatList,
+    BackHandler,
     KeyboardAvoidingView,
 } from 'react-native';
 import Collapsible from 'react-native-collapsible';
@@ -23,8 +26,8 @@ import { faAngleRight, faEllipsis, faLink, faPlus, faXmark } from '@fortawesome/
 import Modal from 'react-native-modal';
 import { faBell, faBookmark, faCircleQuestion, faClock, faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
 
-withScreen = Dimensions.get("window").width;
-heightScreen = Dimensions.get("window").height;
+withScreen = Dimensions.get('window').width;
+heightScreen = Dimensions.get('window').height;
 
 // const imageUrl = require("../assets/images/bg-intro.jpg");
 // const imageSource = Image.resolveAssetSource(imageUrl);
@@ -138,14 +141,14 @@ export default function Post({ onCommentPress, ...props }) {
             style={styles.wrapAvatar}
             source={require("../assets/images/avatar-sample.png")}
           ></Image> */}
-                    {/* <Image
+                    <Image
                         style={styles.wrapAvatar}
                         source={{
                             uri:
                                 props.item.avatar ||
                                 'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/356150905_221055794134074_7342427060415828020_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=qsmztDXjbrgAX-UdlbA&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDT1VZf8gV7mZsMT07r4iENKWnEi-KoIXCYDju-9BcRlw&oe=653C4A7B',
                         }}
-                    /> */}
+                    />
 
                     <View
                         style={{
@@ -162,7 +165,7 @@ export default function Post({ onCommentPress, ...props }) {
                                     fontSize: 18,
                                 }}
                             >
-                                {/* {props.item.owner}{' '} */}
+                                {props.item.owner}{' '}
                             </Text>
                         </View>
                         <View>
