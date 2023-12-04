@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
+import { WebView } from 'react-native-webview';
 import {
     StyleSheet,
     Text,
@@ -208,17 +208,23 @@ export default function Post({ onCommentPress, ...props }) {
                 </Text>
             </View>
             <View>
-                <Image
-                    style={[
-                        styles.wrapImage,
-                        {
-                            width: imageSize.width,
-                            height: imageSize.height,
-                        },
-                    ]}
-                    contentFit="cover"
-                    source={{ uri: props.item.image }}
-                />
+                {props.item.image ? (
+                    <Image
+                        style={[
+                            styles.wrapImage,
+                            {
+                                width: imageSize.width,
+                                height: imageSize.height,
+                            },
+                        ]}
+                        resizeMode="cover"
+                        source={{ uri: props.item.image }}
+                    />
+                ) : (
+                    <View style={styles.videoContainer}>
+                        <WebView source={{ uri: props.item.url }} style={styles.videoPlayer} />
+                    </View>
+                )}
             </View>
 
             <View
@@ -488,7 +494,7 @@ export default function Post({ onCommentPress, ...props }) {
                             marginLeft: 'auto',
                             marginRight: 'auto',
                             borderRadius: 4,
-                            marginBottom: 8
+                            marginBottom: 8,
                         }}
                     ></View>
                     <TouchableOpacity>
@@ -743,5 +749,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    videoContainer: {
+        marginBottom: 20,
+    },
+    videoPlayer: {
+        width: '100%',
+        aspectRatio: 476 / 476,
     },
 });
