@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-
+import { WebView } from 'react-native-webview';
 import {
     StyleSheet,
     Text,
@@ -22,7 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { HomeIcon, VideoIcon, FriendIcon, MarketIcon, MessageIcon, SendIcon } from '../assets/icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { faAngleRight, faEllipsis, faLink, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faEllipsis, faLink, faPlus, faXmark, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
 import { faBell, faBookmark, faCircleQuestion, faClock, faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
 
@@ -132,6 +132,7 @@ export default function Post({ onCommentPress, ...props }) {
     }, []);
 
     const modalHeight = isKeyboardOpen ? heightScreen * 0.5 : heightScreen * 0.9;
+    const height = props.item.image ? heightScreen * 0.8 : heightScreen * 0.3;
 
     return (
         <View style={styles.container}>
@@ -208,17 +209,23 @@ export default function Post({ onCommentPress, ...props }) {
                 </Text>
             </View>
             <View>
-                <Image
-                    style={[
-                        styles.wrapImage,
-                        {
-                            width: imageSize.width,
-                            height: imageSize.height,
-                        },
-                    ]}
-                    contentFit="cover"
-                    source={{ uri: props.item.image }}
-                />
+                {props.item.image ? (
+                    <Image
+                        style={[
+                            styles.wrapImage,
+                            {
+                                width: imageSize.width,
+                                height: imageSize.height,
+                            },
+                        ]}
+                        resizeMode="cover"
+                        source={{ uri: props.item.image }}
+                    />
+                ) : (
+                    <View style={styles.videoContainer}>
+                        <WebView source={{ uri: props.item.url }} style={styles.videoPlayer} />
+                    </View>
+                )}
             </View>
 
             <View
@@ -474,7 +481,7 @@ export default function Post({ onCommentPress, ...props }) {
                 <View
                     style={{
                         backgroundColor: 'white',
-                        height: heightScreen * 0.8,
+                        height: height,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
                         paddingTop: 12,
@@ -488,104 +495,157 @@ export default function Post({ onCommentPress, ...props }) {
                             marginLeft: 'auto',
                             marginRight: 'auto',
                             borderRadius: 4,
-                            marginBottom: 8
+                            marginBottom: 8,
                         }}
                     ></View>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faBookmark} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Lưu bài viết</Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Thêm vào danh sách các mục đã lưu
-                                    </Text>
+                    {props.item.image ? (
+                        <View>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faBookmark} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Lưu bài viết
+                                            </Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                Thêm vào danh sách các mục đã lưu
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Ẩn bài viết</Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Ẩn bớt các bài viết tương tự
-                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Ẩn bài viết
+                                            </Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                Ẩn bớt các bài viết tương tự
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faClock} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Tạm ẩn trong 30 ngày
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Tạm thời dừng xem bài viết
-                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faClock} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Tạm ẩn trong 30 ngày
+                                            </Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                Tạm thời dừng xem bài viết
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faCircleQuestion} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Tại sao tôi nhìn thấy bài viết này?
-                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faCircleQuestion} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Tại sao tôi nhìn thấy bài viết này?
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <Image
-                                    style={{ height: 20, width: 20, objectFit: 'cover' }}
-                                    source={require('../assets/icons/warning.png')}
-                                ></Image>
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Báo cáo bài viết
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Tôi lo ngại về bài viết này
-                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <Image
+                                            style={{ height: 20, width: 20, objectFit: 'cover' }}
+                                            source={require('../assets/icons/warning.png')}
+                                        ></Image>
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Báo cáo bài viết
+                                            </Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                Tôi lo ngại về bài viết này
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faBell} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Bật thông báo cho bài viết này
-                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faBell} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Bật thông báo cho bài viết này
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faLink} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Sao chép liên kết
-                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faLink} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Sao chép liên kết
+                                            </Text>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
+                    ) : (
+                        <View>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <Image
+                                            style={{ height: 20, width: 20, objectFit: 'cover' }}
+                                            source={require('../assets/icons/warning.png')}
+                                        ></Image>
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Báo cáo video
+                                            </Text>
+                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                Tôi lo ngại về video này
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faUserGroup} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Kết bạn với {props.item.owner}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity>
+                                <View style={styles.item}>
+                                    <View style={styles.flexRow}>
+                                        <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
+                                        <View>
+                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                Chặn {props.item.owner}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 </View>
             </Modal>
         </View>
@@ -743,5 +803,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
+    },
+    videoContainer: {
+        marginBottom: 20,
+    },
+    videoPlayer: {
+        width: '100%',
+        aspectRatio: 476 / 476,
     },
 });
