@@ -27,7 +27,9 @@ import MessageProfileScreen from "../screens/MessageProfile";
 import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
 import MessageWaitingScreen from "../screens/MessageWaiting";
 import CameraScreen from "../screens/CameraScreen";
-import SearchScreen from "../screens/Search"
+import SearchScreen from "../screens/Search";
+import FriendLists from "../screens/FriendLists"
+import FriendSuggest from "../screens/FriendSuggest";
 
 const publicRoutes = [
     {
