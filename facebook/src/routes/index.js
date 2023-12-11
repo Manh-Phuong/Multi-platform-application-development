@@ -34,6 +34,7 @@ import FriendSuggest from "../screens/FriendSuggest";
 import TabVideos from '../screens/TabVideos';
 import VideoScreen from '../screens/VideoScreen';
 import VideoActive from '../screens/VideoActive';
+import DetailActivity from "../screens/DetailActivity";
 
 const publicRoutes = [
     {
@@ -90,9 +91,9 @@ const publicRoutes = [
     },
     {
         name:"ProfileDetail",
-        component:ProfileDetail
-    }
-
+        component: ProfileDetail,
+    },
+    {
         name: 'VerificationCode',
         component: VerificationCodeScreen,
     },
@@ -180,6 +181,10 @@ const publicRoutes = [
         name: 'VideoActive',
         component: VideoActive,
     },
+    {
+        name: "DetailActivity",
+        component: DetailActivity
+    }
 ];
 
 const privateRoutes = [];
