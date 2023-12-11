@@ -19,7 +19,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home" 
+          initialRouteName="VideoScreen" 
           screenOptions={{ headerShown: false }}
         >
           {publicRoutes.map((route, index) => (

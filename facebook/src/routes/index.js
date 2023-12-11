@@ -1,4 +1,3 @@
-// publicRoutes.js
 import HomeScreen from "../screens/Home";
 import LoginScreen from "../screens/Login";
 import PolicyScreen from "../screens/Policy";
@@ -29,8 +28,12 @@ import MessageWaitingScreen from "../screens/MessageWaiting";
 import CameraScreen from "../screens/CameraScreen";
 import ProfileDetail from "../screens/ProfileDetail"
 import SearchScreen from "../screens/Search";
-import FriendLists from "../screens/FriendLists"
+import Friend from "../screens/Friend";
+import FriendLists from "../screens/FriendLists";
 import FriendSuggest from "../screens/FriendSuggest";
+import TabVideos from '../screens/TabVideos';
+import VideoScreen from '../screens/VideoScreen';
+import VideoActive from '../screens/VideoActive';
 
 const publicRoutes = [
     {
@@ -150,6 +153,10 @@ const publicRoutes = [
         component: CameraScreen,
     },
     {
+        name: 'Friend',
+        component: Friend,
+    },
+    {
         name: 'FriendLists',
         component: FriendLists,
     },
@@ -158,9 +165,21 @@ const publicRoutes = [
         component: FriendSuggest,
     },
     {
-        name: "Search",
-        component: SearchScreen
-    }
+        name: 'Search',
+        component: SearchScreen,
+    },
+    {
+        name: 'TabVideos',
+        component: TabVideos,
+    },
+    {
+        name: 'VideoScreen',
+        component: VideoScreen,
+    },
+    {
+        name: 'VideoActive',
+        component: VideoActive,
+    },
 ];
 
 const privateRoutes = [];
