@@ -22,8 +22,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { HomeIcon, VideoIcon, FriendIcon, MarketIcon, MessageIcon, SendIcon } from '../assets/icons';
 import { ScrollView } from 'react-native-gesture-handler';
-import { faAngleRight, faEllipsis, faLink, faPlus, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+    faAngleRight,
+    faEllipsis,
+    faLink,
+    faPlus,
+    faVolumeLow,
+    faVolumeXmark,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
+import { Video, ResizeMode } from 'expo-av';
+import Slider from '@react-native-community/slider';
 import { faBell, faBookmark, faCircleQuestion, faClock, faRectangleXmark } from '@fortawesome/free-regular-svg-icons';
 
 withScreen = Dimensions.get('window').width;
@@ -35,7 +45,94 @@ heightScreen = Dimensions.get('window').height;
 // const widthImage = withScreen;
 // const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
-export default function Post({ onCommentPress, ...props }) {
+const VideoPlay = ({ urlVideo, isMute, setIsMute, offsetY }) => {
+    const navigation = useNavigation();
+    const [volume, setVolume] = useState(1.0);
+    const [historyVolume, setHistoryVolume] = useState(1.0);
+    const video = useRef(null);
+
+    console.log('urlVideo', urlVideo);
+    console.log('offsetY', offsetY);
+
+    const handleChangeVolume = (value) => {
+        setVolume(value);
+        setHistoryVolume(value);
+    };
+
+    const handleClickVideo = () => {
+        // console.log('click roi')
+        navigation.navigate('VideoActive');
+    };
+
+    useEffect(() => {
+        const playTimeout = setTimeout(() => {
+            if (video.current) {
+                video.current.playAsync();
+            } else video.current.pauseAsync();
+        }, 3000); 
+
+        return () => {
+            video.current.pauseAsync();
+            clearTimeout(playTimeout);
+        };
+    }, [urlVideo]);
+
+    return (
+        <TouchableOpacity onPress={handleClickVideo}>
+            <View style={styles.videoContainer}>
+                <Video
+                    ref={video}
+                    style={styles.video}
+                    source={{
+                        // uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+                        uri: urlVideo,
+                    }}
+                    rate={1.0}
+                    volume={volume}
+                    isMuted={true}
+                    resizeMode="cover"
+                    shouldPlay={false}
+                    isLooping
+                    useNativeControls
+                />
+                <View style={styles.iconVolume}>
+                    {isMute ? (
+                        <TouchableOpacity
+                            onPress={() => {
+                                // setVolume(historyVolume);
+                                setVolume(1.0);
+                                setIsMute((prev) => !prev);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faVolumeXmark} size={24} color="white" />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity
+                            onPress={() => {
+                                setVolume(0.0);
+                                setIsMute((prev) => !prev);
+                            }}
+                        >
+                            <FontAwesomeIcon icon={faVolumeLow} size={24} color="white" />
+                        </TouchableOpacity>
+                    )}
+                </View>
+                {/* <View style={styles.sliderContainer}>
+                    <Text style={styles.sliderLabel}>Volume</Text>
+                    <Slider
+                        style={styles.slider}
+                        minimumValue={0}
+                        maximumValue={1}
+                        value={volume}
+                        onValueChange={(value) => setVolume(value)}
+                    />
+                </View> */}
+            </View>
+        </TouchableOpacity>
+    );
+};
+
+export default function Post({ onCommentPress, darkMode, isMute, setIsMute, offsetY, ...props }) {
     const navigation = useNavigation();
     const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
     const [isModalVisible, setModalVisible] = useState(false);
@@ -108,7 +205,7 @@ export default function Post({ onCommentPress, ...props }) {
     };
 
     useEffect(() => {
-        Image.getSize(props.item.image, (width, height) => {
+        Image.getSize(props.item?.image, (width, height) => {
             const aspectRatio = width / height;
             const widthImage = withScreen; // Thay đổi kích thước theo nhu cầu
             const heightImage = widthImage / aspectRatio;
@@ -134,7 +231,7 @@ export default function Post({ onCommentPress, ...props }) {
     const modalHeight = isKeyboardOpen ? heightScreen * 0.5 : heightScreen * 0.9;
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: darkMode ? '#242526' : '#fff' }]}>
             <View style={styles.header}>
                 <View style={styles.profile}>
                     {/* <Image
@@ -145,7 +242,7 @@ export default function Post({ onCommentPress, ...props }) {
                         style={styles.wrapAvatar}
                         source={{
                             uri:
-                                props.item.avatar ||
+                                props.item?.avatar ||
                                 'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/356150905_221055794134074_7342427060415828020_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=qsmztDXjbrgAX-UdlbA&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDT1VZf8gV7mZsMT07r4iENKWnEi-KoIXCYDju-9BcRlw&oe=653C4A7B',
                         }}
                     />
@@ -163,9 +260,10 @@ export default function Post({ onCommentPress, ...props }) {
                                 style={{
                                     fontWeight: 600,
                                     fontSize: 18,
+                                    color: darkMode ? '#fff' : '#000',
                                 }}
                             >
-                                {props.item.owner}{' '}
+                                {props.item?.owner}{' '}
                             </Text>
                         </View>
                         <View>
@@ -201,14 +299,14 @@ export default function Post({ onCommentPress, ...props }) {
                     style={{
                         fontWeight: 400,
                         fontSize: 15,
-                        color: '#65676b',
+                        color: darkMode ? '#fff' : '#65676b',
                     }}
                 >
-                    {props.item.content}{' '}
+                    {props.item?.content}{' '}
                 </Text>
             </View>
             <View>
-                {props.item.image ? (
+                {props.item?.image ? (
                     <Image
                         style={[
                             styles.wrapImage,
@@ -218,11 +316,12 @@ export default function Post({ onCommentPress, ...props }) {
                             },
                         ]}
                         resizeMode="cover"
-                        source={{ uri: props.item.image }}
+                        source={{ uri: props.item?.image }}
                     />
                 ) : (
-                    <View style={styles.videoContainer}>
-                        <WebView source={{ uri: props.item.url }} style={styles.videoPlayer} />
+                    <View>
+                        {/* <WebView source={{ uri: props.item.url }} style={styles.videoPlayer} /> */}
+                        <VideoPlay urlVideo={props.item?.video} isMute={isMute} setIsMute={setIsMute()} offsetY={offsetY} />
                     </View>
                 )}
             </View>
@@ -294,7 +393,7 @@ export default function Post({ onCommentPress, ...props }) {
                 </View>
             </View>
 
-            <View style={styles.divSmall}></View>
+            <View style={[styles.divSmall, { backgroundColor: darkMode ? '#242526' : '#f0f2f5' }]}></View>
 
             <View style={styles.footer}>
                 <View style={styles.footerItem}>
@@ -502,9 +601,12 @@ export default function Post({ onCommentPress, ...props }) {
                             <View style={styles.flexRow}>
                                 <FontAwesomeIcon icon={faBookmark} size={20} color="black" />
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Lưu bài viết</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        Lưu {props.item?.image ? <Text>bài viết</Text> : <Text>video</Text>}{' '}
+                                    </Text>
                                     <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Thêm vào danh sách các mục đã lưu
+                                        Thêm vào danh sách{' '}
+                                        {props.item?.image ? <Text>các mục</Text> : <Text>video</Text>} đã lưu
                                     </Text>
                                 </View>
                             </View>
@@ -602,8 +704,9 @@ const styles = StyleSheet.create({
     container: {
         width: withScreen,
         backgroundColor: 'white',
-        marginTop: 4,
+        paddingTop: 4,
         paddingBottom: 0,
+
         // position: "relative",
     },
     header: {
@@ -750,11 +853,37 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+    // videoContainer: {
+    //     marginBottom: 20,
+    // },
+    // videoPlayer: {
+    //     width: '100%',
+    //     aspectRatio: 476 / 476,
+    // },
     videoContainer: {
-        marginBottom: 20,
+        // position: 'relative',
     },
-    videoPlayer: {
-        width: '100%',
-        aspectRatio: 476 / 476,
+    video: {
+        alignSelf: 'center',
+        width: withScreen,
+        height: (withScreen * 9) / 16,
+        position: 'relative',
+    },
+    iconVolume: {
+        position: 'absolute',
+        right: 20,
+        bottom: 20,
+        zIndex: 2,
+    },
+    sliderContainer: {
+        marginTop: 20,
+        width: 200,
+    },
+    sliderLabel: {
+        textAlign: 'center',
+        marginBottom: 10,
+    },
+    slider: {
+        height: 40,
     },
 });

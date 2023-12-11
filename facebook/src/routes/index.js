@@ -1,35 +1,3 @@
-import HomeScreen from '../screens/Home';
-import LoginScreen from '../screens/Login';
-import PolicyScreen from '../screens/Policy';
-import ChooseGenderScreen from '../screens/ChooseGender';
-import CreateNameScreen from '../screens/CreateName';
-import ChooseAgeScreen from '../screens/ChooseAge';
-import ChooseNumberPhoneScreen from '../screens/ChooseNumberPhone';
-import CreatePasswordScreen from '../screens/CreatePassword';
-import ChooseDateOfBirthScreen from '../screens/ChooseDateOfBirth';
-import IntroCreateAccountScreen from '../screens/IntroCreateAccount';
-import SaveAccountLoginScreen from '../screens/SaveAccountLogin';
-import SaveInfoConfirmScreen from '../screens/SaveInfoConfirm';
-import PolicyConfirmScreen from '../screens/PolicyConfirm';
-import VerificationCodeScreen from '../screens/VerificationCode';
-import CommentScreen from '../components/Comment';
-import CommentHomeScreen from '../screens/CommentHome';
-import CreatePostScreen from '../screens/CreatePost';
-import CRUD from '../screens/CRUD';
-import Post from '../components/Post';
-import ChooseEmoji from '../screens/ChooseEmoji';
-import MenuScreen from '../screens/Menu';
-import MessageHomeScreen from '../screens/MessageHome';
-import MessageNewScreen from '../screens/MessageNew';
-import MessagePrimaryScreen from '../screens/MessagePrimary';
-import MessageProfileScreen from '../screens/MessageProfile';
-import MessageRecipientInfoScreen from '../screens/MessageRecipientInfo';
-import MessageWaitingScreen from '../screens/MessageWaiting';
-import CameraScreen from '../screens/CameraScreen';
-import SearchScreen from '../screens/Search';
-import FriendLists from '../screens/FriendLists';
-import FriendSuggest from '../screens/FriendSuggest';
-import TabVideos from '../screens/TabVideos';
 import HomeScreen from "../screens/Home";
 import LoginScreen from "../screens/Login";
 import PolicyScreen from "../screens/Policy";
@@ -59,8 +27,12 @@ import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
 import MessageWaitingScreen from "../screens/MessageWaiting";
 import CameraScreen from "../screens/CameraScreen";
 import SearchScreen from "../screens/Search";
-import FriendLists from "../screens/FriendLists"
+import Friend from "../screens/Friend";
+import FriendLists from "../screens/FriendLists";
 import FriendSuggest from "../screens/FriendSuggest";
+import TabVideos from '../screens/TabVideos';
+import VideoScreen from '../screens/VideoScreen';
+import VideoActive from '../screens/VideoActive';
 
 const publicRoutes = [
     {
@@ -176,6 +148,10 @@ const publicRoutes = [
         component: CameraScreen,
     },
     {
+        name: 'Friend',
+        component: Friend,
+    },
+    {
         name: 'FriendLists',
         component: FriendLists,
     },
@@ -186,6 +162,18 @@ const publicRoutes = [
     {
         name: 'Search',
         component: SearchScreen,
+    },
+    {
+        name: 'TabVideos',
+        component: TabVideos,
+    },
+    {
+        name: 'VideoScreen',
+        component: VideoScreen,
+    },
+    {
+        name: 'VideoActive',
+        component: VideoActive,
     },
 ];
 
