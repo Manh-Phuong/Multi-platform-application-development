@@ -17,7 +17,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { launchImageLibrary } from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
-import { Shadow } from 'react-native-shadow-2';
+import { useDispatch, useSelector } from "react-redux";
 
 const CreatePost = () => {
   const navigation = useNavigation();
@@ -26,6 +26,9 @@ const CreatePost = () => {
   const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
   const [image, setImage] = useState(null);
   const [textInput, setTextInput] = useState('');
+
+  const status = useSelector((state) => state.post.status)
+
   const showAlert = () => {
     Alert.alert(
       "Lưu bài viết này dưới dạng bản nháp?",
@@ -126,8 +129,9 @@ const CreatePost = () => {
                 source={require("../assets/images/avatar-sample.png")}
               ></Image>
               <View style={styles.right}>
-                <View>
+                <View style={{flexDirection: "row", alignItems: "center"}}>
                   <Text style={styles.textMediumBold}>Tuấn Bùi</Text>
+                  <Text style={{fontSize: 16}}> hiện đang cảm thấy {status}</Text>
                 </View>
                 <View style={styles.rightPublic}>
                   <Icon name="globe" size={12} color="#676669" />
@@ -214,13 +218,15 @@ const CreatePost = () => {
                       ></Image>
                       <Text style={styles.textMedium}>Gắn thẻ người khác</Text>
                     </View>
-                    <View style={styles.groupIcon}>
+                    <TouchableOpacity style={styles.groupIcon} onPress={() => {
+                      navigation.navigate("ChooseEmoji")
+                    }}>
                       <Image
                           style={{ height: 24, width: 24, objectFit: "cover" }}
                           source={require("../assets/icons/smileIcon.png")}
                       ></Image>
                       <Text style={styles.textMedium}>Cảm xúc/hoạt động</Text>
-                    </View>
+                    </TouchableOpacity>
                     <View style={styles.groupIcon}>
                       <Image
                           style={{ height: 24, width: 24, objectFit: "cover" }}
@@ -343,6 +349,7 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingBottom: 3,
     marginTop: 6,
+    width: 106
   },
   textSmall: {
     fontSize: 12,
