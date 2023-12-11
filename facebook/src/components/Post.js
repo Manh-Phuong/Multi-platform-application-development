@@ -853,6 +853,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
+
     // videoContainer: {
     //     marginBottom: 20,
     // },
@@ -887,3 +888,4 @@ const styles = StyleSheet.create({
         height: 40,
     },
 });
+

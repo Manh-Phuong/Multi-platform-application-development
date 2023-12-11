@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigation} from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -6,10 +7,12 @@ import {
   ScrollView,
   Image,
   FlatList,
+  TouchableOpacity
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 const Menu = () => {
+  const navigation = useNavigation();
   const data = [
     { id: "1", title: "Video", iconLink: require("../assets/icons/videoIcon.png") },
     { id: "2", title: "Nhóm", iconLink: require("../assets/icons/groupIcon.png") },
@@ -35,19 +38,21 @@ const Menu = () => {
       </View>
       <ScrollView>
         <View style={styles.menuContainer}>
-          <View style={styles.menuItem}>
-            {/* <Image
-              source={require("../assets/images/avatar-sample.png")}
-              style={styles.menuImg}
-            /> */}
-            <Image
-              style={styles.menuImg}
-              source={{
-                uri: "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
-              }}
-            />
-            <Text style={{ fontSize: 16, fontWeight: 500 }}>Tuấn Bùi</Text>
-          </View>
+          <TouchableOpacity onPress={() => navigation.navigate("ProfileDetail")}>
+            <View style={styles.menuItem}>
+              {/* <Image
+          source={require("../assets/images/avatar-sample.png")}
+          style={styles.menuImg}
+        /> */}
+              <Image
+                style={styles.menuImg}
+                source={{
+                  uri: "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
+                }}
+              />
+              <Text style={{ fontSize: 16, fontWeight: 500 }}>Tuấn Bùi</Text>
+            </View>
+          </TouchableOpacity>
           <View style={styles.shortcutDivider} />
           <View style={styles.shortcutHeader}>
             <View style={styles.iconPlus}>
