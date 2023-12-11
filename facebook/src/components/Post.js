@@ -359,7 +359,7 @@ export default function Post({ onCommentPress, ...props }) {
                 isVisible={isModalVisible}
                 onSwipeComplete={toggleModal}
                 swipeDirection={['down']}
-                style={{ justifyContent: 'flex-end', margin: 0 }}
+                style={{ justifyContent: 'flex-end', margin: 0}}
             >
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

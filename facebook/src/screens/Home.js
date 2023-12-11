@@ -41,6 +41,7 @@ import Report from "../components/Report";
 import Menu from "./Menu";
 import Friend from './Friend'
 import Notification from './Notification'
+import Video from "./Video";
 
 
 withScreen = Dimensions.get("window").width;
@@ -556,6 +557,7 @@ export default function Home() {
       {active.friend && <Friend />}
       {active.notification && <Notification />}
       {active.menu && <Menu />}
+      {active.video && <Video />}
 
       {/* Khi showComments = true, thì hiện <Comment/> */}
 

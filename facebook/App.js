@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { publicRoutes } from "./src/routes";
@@ -8,6 +8,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { faSquareCheck } from '@fortawesome/free-solid-svg-icons/faSquareCheck'
 import { Provider } from "react-redux";
 import store from "./src/store/store.js"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 library.add(fab, faSquareCheck)
 
@@ -19,7 +20,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home" 
+          initialRouteName="ChooseEmoji"
           screenOptions={{ headerShown: false }}
         >
           {publicRoutes.map((route, index) => (
