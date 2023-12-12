@@ -282,6 +282,8 @@ const Activity = () => {
     );
 };
 const ChooseEmoji = () => {
+    const navigation = useNavigation();
+
     const [active, setActive] = useState({
         emoji: true,
         activity: false,
@@ -298,7 +300,13 @@ const ChooseEmoji = () => {
     return (
         <View>
             <View style={styles.header}>
-                <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
+                <TouchableOpacity
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                >
+                    <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
+                </TouchableOpacity>
                 <Text style={{ fontSize: 20 }}>Bạn cảm thấy thế nào?</Text>
             </View>
             <View style={styles.options}>
