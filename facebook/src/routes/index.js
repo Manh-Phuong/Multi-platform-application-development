@@ -35,6 +35,7 @@ import TabVideos from '../screens/TabVideos';
 import VideoScreen from '../screens/VideoScreen';
 import VideoActive from '../screens/VideoActive';
 import DetailActivity from "../screens/DetailActivity";
+import Test from "../screens/Test";
 
 const publicRoutes = [
     {
@@ -184,6 +185,10 @@ const publicRoutes = [
     {
         name: "DetailActivity",
         component: DetailActivity
+    },
+    {
+        name: "Test",
+        component: Test
     }
 ];
 

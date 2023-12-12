@@ -32,6 +32,8 @@ import Menu from './Menu';
 import Friend from './Friend';
 import Notification from './Notification';
 import TabVideos from './TabVideos';
+import VideoScreen from './VideoScreen';
+import * as PostServices from '../services/PostServices';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -157,16 +159,14 @@ const Header = () => {
     return (
         <View>
             <View style={styles.underNav}>
-                <Image
-                    style={styles.wrapAvatar}
-                    source={{
-                        uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
-                    }}
-                />
-                {/* <Image
-          style={styles.wrapAvatar}
-          source={require("../assets/images/avatar-sample.png")}
-        ></Image> */}
+                <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')}>
+                    <Image
+                        style={styles.wrapAvatar}
+                        source={{
+                            uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
+                        }}
+                    />
+                </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
                     <View style={styles.youThink}>
@@ -253,6 +253,7 @@ export default function Home() {
         notification: false,
         menu: false,
     });
+    const [listPost, setListPost] = useState([]);
 
     const handleActive = (detailName) => {
         setActive((prevState) => ({
@@ -341,6 +342,89 @@ export default function Home() {
             backHandler.remove();
         };
     }, [showReport]);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                // const result = await PostServices.getPost({
+                //     id: '1',
+                // });
+                // const result = await PostServices.getPost();
+                const result = await PostServices.getListPost({
+                    user_id: null,
+                    in_campaign: '1',
+                    campaign_id: '1',
+                    latitude: '1.0',
+                    longitude: '1.0',
+                    last_id: null,
+                    index: '0',
+                    count: '10',
+                });
+                // console.log('result home', result.data.data.post[0]);
+                // setListPost(
+                //     result.data.data.post?.map((item) => {
+                //         console.log('image',item?.image)
+                //         console.log(['1', '2', '3', '4', '5'])
+                //         return {
+                //             id: item?.id,
+                //             owner: item.author.name,
+                //             avatar: item.author.avatar,
+                //             content: item.described,
+                //             image: item?.image.map(image => image.url),
+                //             video: item?.video?.url,
+                //             created: item?.created,
+                //             feel: item?.feel,
+                //             comment_mark: item?.comment_mark,
+                //             is_felt: item?.is_felt,
+                //             is_blocked: item?.is_blocked,
+                //             can_edit: item?.can_edit,
+                //             banned: item?.banned,
+                //             state: item?.state,
+                //         };
+                //     }),
+                // );
+
+                setListPost(
+                    result.data.data.post?.map((item) => {
+                        // console.log('image', item?.image);
+                        var imageArray = null;
+                        if (item?.image.length > 0) {
+                            imageArray = Array.isArray(item?.image) ? item.image.map((image) => image.url) : null;
+                        } else {
+                            console.log('rong', item?.image);
+                        }
+                        console.log(imageArray);
+
+                        return {
+                            id: item?.id,
+                            owner: item.author.name,
+                            avatar: item.author.avatar,
+                            content: item.described,
+                            // image: imageArray,
+                            image: null,
+                            video: item?.video?.url,
+                            created: item?.created,
+                            feel: item?.feel,
+                            comment_mark: item?.comment_mark,
+                            is_felt: item?.is_felt,
+                            is_blocked: item?.is_blocked,
+                            can_edit: item?.can_edit,
+                            banned: item?.banned,
+                            state: item?.state,
+                        };
+                    }),
+                );
+            } catch (error) {
+                console.log('fetchApi PostServices ' + error);
+            }
+        };
+        fetchApi();
+    }, []);
+
+    // useEffect(() => {
+    //     console.log('listPost', listPost);
+    // }, );
+
     return (
         <View style={styles.container}>
             {/* <Collapsible collapsed={!showHeader}> */}
@@ -368,7 +452,6 @@ export default function Home() {
                     </View>
                 </View>
             </Collapsible>
-
             <View style={styles.nav}>
                 <TouchableOpacity onPress={() => handleActive('home')}>
                     <View style={styles.wrapIconNav}>
@@ -406,7 +489,6 @@ export default function Home() {
                     </View>
                 </TouchableOpacity>
             </View>
-
             <View style={styles.divSmall}>
                 {active.home && (
                     <View
@@ -483,7 +565,7 @@ export default function Home() {
 
             {active.home && (
                 <FlatList
-                    data={data}
+                    data={listPost}
                     keyExtractor={(item) => item.id}
                     ListHeaderComponent={<Header />}
                     renderItem={({ item }) => (
@@ -502,12 +584,40 @@ export default function Home() {
             {active.friend && <Friend />}
             {active.notification && <Notification />}
             {active.menu && <Menu />}
-            {active.video && <TabVideos />}
+            {active.video && <VideoScreen />}
+
+            {/* <View style={{ width: active.home ? 'auto' : 0 }}>
+                <FlatList
+                    data={listPost}
+                    keyExtractor={(item) => item.id}
+                    ListHeaderComponent={<Header />}
+                    renderItem={({ item }) => (
+                        <View>
+                            <Post item={item} />
+
+                            <View style={styles.divLarge}></View>
+                        </View>
+                    )}
+                    onScroll={handleScroll}
+                />
+            </View>
+            <View style={{ width: active.friend ? 'auto' : 0 }}>
+                <Friend />
+            </View>
+            <View style={{ width: active.notification ? 'auto' : 0 }}>
+                <Notification />
+            </View>
+            <View style={{ width: active.menu ? 'auto' : 0 }}>
+                <Menu />
+            </View>
+
+            <View style={{ width: active.video ? 'auto' : 0 }}>
+                <VideoScreen />
+            </View> */}
+
 
             {/* Khi showComments = true, thì hiện <Comment/> */}
-
             {/* <View style={styles.viewReport}>{showReport && <Report />}</View> */}
-
             {/* <View style={styles.viewcomment}> */}
             {showComments && (
                 <Animated.View
@@ -689,4 +799,3 @@ const styles = StyleSheet.create({
         bottom: 0,
     },
 });
-

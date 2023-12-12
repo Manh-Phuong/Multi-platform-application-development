@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -28,7 +28,7 @@ import {
     faUtensils,
 } from '@fortawesome/free-solid-svg-icons';
 import Post from '../components/Post';
-import { useState } from 'react';
+import * as PostServices from '../services/PostServices';
 
 const data = [
     {
@@ -57,10 +57,73 @@ const data = [
     },
 ];
 
+const Header = () => {
+    return (
+        <View
+            style={{
+                paddingLeft: 16,
+                paddingRight: 16,
+                paddingTop: 16,
+                paddingBottom: 10,
+                borderBottomWidth: 10,
+                borderBottomColor: '#f0f2f5',
+                backgroundColor: '#fff',
+            }}
+        >
+            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Watch</Text>
+                </View>
+                <View style={{ flexDirection: 'row', columnGap: 12 }}>
+                    <View
+                        style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 999,
+                            backgroundColor: '#ddd',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faUser} size={20}></FontAwesomeIcon>
+                    </View>
+                    <View
+                        style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: 999,
+                            backgroundColor: '#ddd',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <FontAwesomeIcon icon={faSearch} size={20}></FontAwesomeIcon>
+                    </View>
+                </View>
+            </View>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 12 }}>
+                <View style={styles.options}>
+                    <FontAwesomeIcon icon={faCamera}></FontAwesomeIcon>
+                    <Text style={{ fontSize: 16 }}>Trực tiếp</Text>
+                </View>
+                <View style={styles.options}>
+                    <FontAwesomeIcon icon={faUtensils}></FontAwesomeIcon>
+                    <Text style={{ fontSize: 16 }}>Ẩm thực</Text>
+                </View>
+                <View style={styles.options}>
+                    <FontAwesomeIcon icon={faPuzzlePiece}></FontAwesomeIcon>
+                    <Text style={{ fontSize: 16 }}>Chơi game</Text>
+                </View>
+            </View>
+        </View>
+    );
+};
+
 const VideoScreen = () => {
-    const [isMute, setIsMute] = useState(true);
+    // const [isMute, setIsMute] = useState(true);
     const [offsetY, setOffsetY] = useState(0);
     // const [clickVideo, setClickVideo] = useState(false);
+    const [listPost, setListPost] = useState([]);
 
     const handleScroll = (event) => {
         // Handle scroll event here
@@ -68,10 +131,51 @@ const VideoScreen = () => {
         console.log('FlatList scrolled to offset:', offsetY);
     };
 
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const result = await PostServices.getListVideos({
+                    user_id: null,
+                    in_campaign: '1',
+                    campaign_id: '1',
+                    latitude: '1.0',
+                    longitude: '1.0',
+                    last_id: null,
+                    index: '0',
+                    count: '10',
+                });
+
+                setListPost(
+                    result.data.data.post?.map((item) => {
+                        return {
+                            id: item?.id,
+                            owner: item.author.name,
+                            avatar: item.author.avatar,
+                            content: item.described,
+                            image: null,
+                            video: item?.video?.url,
+                            created: item?.created,
+                            feel: item?.feel,
+                            comment_mark: item?.comment_mark,
+                            is_felt: item?.is_felt,
+                            is_blocked: item?.is_blocked,
+                            can_edit: item?.can_edit,
+                            banned: item?.banned,
+                            state: item?.state,
+                        };
+                    }),
+                );
+            } catch (error) {
+                console.log('fetchApi PostServices ' + error);
+            }
+        };
+        fetchApi();
+    }, []);
+
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View>
-                <View
+                {/* <View
                     style={{
                         paddingLeft: 16,
                         paddingRight: 16,
@@ -127,16 +231,17 @@ const VideoScreen = () => {
                             <Text style={{ fontSize: 16 }}>Chơi game</Text>
                         </View>
                     </View>
-                </View>
+                </View> */}
                 <View style={styles.videoContainer}>
                     <FlatList
-                        data={data}
+                        data={listPost}
                         keyExtractor={(item) => item.id}
-                        // ListHeaderComponent={<Header />}
+                        ListHeaderComponent={<Header />}
                         contentContainerStyle={{ paddingBottom: 260 }}
                         renderItem={({ item }) => (
                             <View>
-                                <Post item={item} isMute={isMute} setIsMute={setIsMute} offsetY={offsetY} />
+                                {/* <Post item={item} isMute={isMute} setIsMute={setIsMute} offsetY={offsetY} /> */}
+                                <Post item={item} offsetY={offsetY} />
                                 <View style={styles.divLarge}></View>
                             </View>
                         )}
