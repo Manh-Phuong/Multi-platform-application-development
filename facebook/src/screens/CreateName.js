@@ -16,6 +16,8 @@ import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 // import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation } from "@react-navigation/native";
+import { setStoreNickname } from "../feature/account";
+import { useDispatch } from "react-redux";
 
 const windowHeight = Dimensions.get('window').height;
 const customHeight = windowHeight - 50; 
@@ -36,6 +38,8 @@ const CreateName = () => {
   const inputBorderStyleSurName = isFocusedSurName
     ? { borderColor: "black", borderWidth: 1 }
     : {};
+
+  const dispatch = useDispatch()
 
   const changeName = (newName) => {
     setName(newName);
@@ -89,6 +93,7 @@ const CreateName = () => {
         ]
       );
     } else {
+      dispatch(setStoreNickname(surName + " " + name))
       navigation.navigate("ChooseDateOfBirth");
     }
   };
