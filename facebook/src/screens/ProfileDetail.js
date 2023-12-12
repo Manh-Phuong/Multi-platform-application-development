@@ -183,7 +183,7 @@ const ProfileDetail = () => {
           </TouchableOpacity>
         </View>
         <View style={{ flexDirection: 'row', display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 5 }}>
-          <TouchableOpacity style={styles.buttonEdit}>
+          <TouchableOpacity style={styles.buttonEdit} onPress={() => navigation.navigate("EditProfile")}>
             <FontAwesomeIcon icon={faPen} size={16} color="black" style={{ marginRight: 10 }} />
             <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>Chỉnh sửa trang cá nhân</Text>
           </TouchableOpacity>

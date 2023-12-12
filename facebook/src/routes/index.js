@@ -27,6 +27,7 @@ import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
 import MessageWaitingScreen from "../screens/MessageWaiting";
 import CameraScreen from "../screens/CameraScreen";
 import ProfileDetail from "../screens/ProfileDetail"
+import EditProfile from "../screens/EditProfile";
 import SearchScreen from "../screens/Search";
 import Friend from "../screens/Friend";
 import FriendLists from "../screens/FriendLists";
@@ -92,7 +93,11 @@ const publicRoutes = [
     },
     {
         name:"ProfileDetail",
-        component: ProfileDetail,
+        component:ProfileDetail
+    },
+    {
+        name:"EditProfile",
+        component:EditProfile
     },
     {
         name: 'VerificationCode',
