@@ -19,6 +19,7 @@ import {useNavigation} from "@react-navigation/native";
 import {LinearGradient} from "expo-linear-gradient";
 import { useDispatch, useSelector } from "react-redux";
 import { getStoreEmail, setStoreEmail } from "../feature/account";
+import { checkEmail } from "../services/AuthServices";
 
 const windowHeight = Dimensions.get('window').height;
 const customHeight = windowHeight - 30;
@@ -51,7 +52,7 @@ const ChooseNumberPhone = () => {
         setIsFocusedEmail(false);
     };
 
-    const handleSummit = () => {
+    const handleSummit = async () => {
         if (!email.trim()) {
             Alert.alert("Email không được để trống", "Hãy nhập email của bạn để tiếp tục.", [{
                     text: "OK",
@@ -67,7 +68,19 @@ const ChooseNumberPhone = () => {
                     }
                 },]);
         } else {
-            goToNextScreen()
+            try {
+                const data = await checkEmail(email.trim());
+                console.log(data.data);
+                if (data.data.data.existed == 1) {
+                    Alert.alert("Email không hợp lệ", "Email đã được sử dụng cho tài khoản khác!")
+                }
+                else {
+                    goToNextScreen()
+                }
+            }
+            catch(err) {
+                console.error(err);
+            }
         }
     };
 

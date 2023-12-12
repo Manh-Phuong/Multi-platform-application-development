@@ -20,7 +20,7 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home" 
+          initialRouteName="Login" 
           screenOptions={{ headerShown: false }}
         >
           {publicRoutes.map((route, index) => (
