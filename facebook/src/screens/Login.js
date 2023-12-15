@@ -10,11 +10,14 @@ import {
   Alert,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions
+  Dimensions,
+  ActivityIndicator
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const windowHeight = Dimensions.get('window').height;
 const customHeight = windowHeight - 100; 
 const Login = () => {
@@ -23,6 +26,7 @@ const Login = () => {
   const [isFocusedAccount, setIsFocusedAccount] = useState(false);
   const [isFocusedPassword, setIsFocusedPassword] = useState(false);
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const [isLogining, setIsLogining] = useState(false);
 
   const accountInputRef = useRef(null);
   const passwordInputRef = useRef(null);
@@ -87,17 +91,24 @@ const Login = () => {
           },
         ]);
       } else {
+        setIsLogining(true);
         axios.post("https://it4788.catan.io.vn/login", {
           "email": account,
           "password": password,
           "uuid": "string1"
         })
-        .then(res => {
+        .then(async(res) => {
           console.log(res.data);
+          await AsyncStorage.setItem('token', res.data.data.token);
           navigation.navigate("Home")
         })
-        .catch(err => {
-          console.log(err);
+        .catch(() => {
+          Alert.alert("Sai thông tin đăng nhập", "Tên người dùng hoặc mật khẩu không hợp lệ")
+        })
+        .finally(async() => {
+          setIsLogining(false);
+          const data = await AsyncStorage.getItem('token');
+          console.log(data)
         })
       }
     }
@@ -201,7 +212,8 @@ const Login = () => {
         </View>
         <View>
           <TouchableOpacity style={styles.primaryButton} onPress={handleSummit}>
-            <Text style={styles.buttonText}>Đăng nhập</Text>
+            {!isLogining && <Text style={styles.buttonText}>Đăng nhập</Text>}
+            {isLogining &&<ActivityIndicator size="large"/>}
           </TouchableOpacity>
         </View>
 
