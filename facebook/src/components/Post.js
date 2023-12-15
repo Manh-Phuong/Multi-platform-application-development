@@ -22,9 +22,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { HomeIcon, VideoIcon, FriendIcon, MarketIcon, MessageIcon, SendIcon } from '../assets/icons';
 import { ScrollView } from 'react-native-gesture-handler';
-<<<<<<< HEAD
-import { faAngleRight, faEllipsis, faLink, faPlus, faSearch, faUserLock, faXmark } from '@fortawesome/free-solid-svg-icons';
-=======
 import {
     faAngleRight,
     faEllipsis,
@@ -34,8 +31,9 @@ import {
     faVolumeLow,
     faVolumeXmark,
     faXmark,
+    faSearch,
+    faUserLock,
 } from '@fortawesome/free-solid-svg-icons';
->>>>>>> 2e32945f2f6b3251b6598137acb89dc36f141c1f
 import Modal from 'react-native-modal';
 import { Video, ResizeMode } from 'expo-av';
 import Slider from '@react-native-community/slider';
@@ -53,6 +51,11 @@ import * as PostServices from '../services/PostServices';
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
 
+// const imageUrl = require("../assets/images/bg-intro.jpg");
+// const imageSource = Image.resolveAssetSource(imageUrl);
+
+// const widthImage = withScreen;
+// const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
 const VideoPlay = ({ urlVideo, offsetY }) => {
     const navigation = useNavigation();
@@ -165,7 +168,6 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
             setSelectedReports([...selectedReports, option]);
         }
     };
-
     const [comments, setComments] = useState([
         {
             name: 'Nguyễn Văn A',
@@ -222,21 +224,23 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
     const toggleModal = () => {
         setModalVisible(false);
     };
+
+    const toggleModalReport = () => {
+        setModalReport(false);
+    };
+
+    const toggleLike = () => {
+        setLike(!like);
+    };
+    
     const handleReportButtonClick = () => {
         setModalReport(false);
         setTimeout(() => {
             setModalReportSubmit(true);
         }, 500);
     };
-    const toggleModalReport = () => {
-        setModalReport(false);
-    };
     const toggleModalReportSubmit = () => {
         setModalReportSubmit(false);
-    };
-
-    const toggleLike = () => {
-        setLike(!like);
     };
 
     useEffect(() => {
@@ -787,25 +791,6 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                         </View>
                                     </View>
                                 </View>
-<<<<<<< HEAD
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleReportButtonClick()}>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <Image
-                                    style={{ height: 20, width: 20, objectFit: 'cover' }}
-                                    source={require('../assets/icons/warning.png')}
-                                ></Image>
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Báo cáo bài viết
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Tôi lo ngại về bài viết này
-                                    </Text>
-=======
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => handleDeletePost(props?.item?.id)}>
                                 <View style={styles.item}>
@@ -817,7 +802,6 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                             </Text>
                                         </View>
                                     </View>
->>>>>>> 2e32945f2f6b3251b6598137acb89dc36f141c1f
                                 </View>
                             </TouchableOpacity>
                         </>
@@ -865,7 +849,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleReportButtonClick()}>
                                 <View style={styles.item}>
                                     <View style={styles.flexRow}>
                                         <Image
@@ -911,7 +895,6 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         </View>
                     </TouchableOpacity>
                 </View>
-
             </Modal>
             <Modal
                 isVisible={isModalReportSubmit}
@@ -1167,49 +1150,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
     },
-<<<<<<< HEAD
-    boxReport: {
-        flexDirection: 'row',
-        display: 'flex',
-        marginTop: 10,
-        marginLeft: 5,
-        backgroundColor: '#e2e4eb',
-        paddingHorizontal: 12,
-        height: 40,
-        borderRadius: 40,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    boxReportSelected: {
-        backgroundColor: '#0967ff',
-
-    },
-    buttonText: {
-        paddingHorizontal: 4,
-        marginHorizontal: 2,
-        fontSize: 12,
-        fontWeight: '700',
-        color: '#000',
-    },
-    inputContainer: {
-        borderWidth: 1,
-        height: 90,
-        marginHorizontal: 20,
-        borderRadius: 6,
-        borderColor: "#aaa"
-    },
-    textInputStyle: {
-        flexWrap: 'wrap', width: 300
-    },
-    placeholderStyle: {
-        // Style giống với TextInput nhưng với màu và kích thước font khác
-        position: 'absolute',
-        top: 0, left: 10, // Căn chỉnh vị trí
-        color: '#ccc',
-        // Các style khác để phù hợp với TextInput
-    },
-});
-=======
 
     // videoContainer: {
     //     marginBottom: 20,
@@ -1272,5 +1212,44 @@ const styles = StyleSheet.create({
         marginRight: -4,
         marginTop: 12,
     },
+    boxReport: {
+        flexDirection: 'row',
+        display: 'flex',
+        marginTop: 10,
+        marginLeft: 5,
+        backgroundColor: '#e2e4eb',
+        paddingHorizontal: 12,
+        height: 40,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    boxReportSelected: {
+        backgroundColor: '#0967ff',
+
+    },
+    buttonText: {
+        paddingHorizontal: 4,
+        marginHorizontal: 2,
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#000',
+    },
+    inputContainer: {
+        borderWidth: 1,
+        height: 90,
+        marginHorizontal: 20,
+        borderRadius: 6,
+        borderColor: "#aaa"
+    },
+    textInputStyle: {
+        flexWrap: 'wrap', width: 300
+    },
+    placeholderStyle: {
+        // Style giống với TextInput nhưng với màu và kích thước font khác
+        position: 'absolute',
+        top: 0, left: 10, // Căn chỉnh vị trí
+        color: '#ccc',
+        // Các style khác để phù hợp với TextInput
+    },
 });
->>>>>>> 2e32945f2f6b3251b6598137acb89dc36f141c1f
