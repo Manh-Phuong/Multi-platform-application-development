@@ -40,7 +40,7 @@ export const calculateTimeAgo = (created) => {
         return `${Math.floor(duration.asMinutes())} phút trước`;
     } else if (duration.asHours() < 24) {
         return `${Math.floor(duration.asHours())} giờ trước`;
-    } else if (duration.asDays() < 7) {
+    } else if (duration.asDays() < 31) {
         return `${Math.floor(duration.asDays())} ngày trước`;
     } else if (duration.asMonths() < 12) {
         return `${Math.floor(duration.asMonths())} tháng trước`;

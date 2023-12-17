@@ -1,7 +1,16 @@
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { useEffect, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-const Header = () => {
+import * as FriendServices from '../services/FriendServices';
+import { calculateTimeAgo } from '../components/Convert';
+import { setStoreRequestFriend, setStoreUserFriend, setStoreSuggestFriend } from '../feature/friend';
+import { useDispatch, useSelector } from 'react-redux';
+
+withScreen = Dimensions.get('window').width;
+heightScreen = Dimensions.get('window').height;
+
+const Header = ({ totalRequest }) => {
     const navigation = useNavigation();
     return (
         <>
@@ -17,16 +26,12 @@ const Header = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={[styles.flexRow, { marginVertical: 8 }]}>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("FriendSuggest")}
-                    >
+                    <TouchableOpacity onPress={() => navigation.navigate('FriendSuggest')}>
                         <View>
                             <Text style={styles.textBtn}>Gợi ý</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => navigation.navigate("FriendLists")}
-                    >
+                    <TouchableOpacity onPress={() => navigation.navigate('FriendLists')}>
                         <View>
                             <Text style={styles.textBtn}>Bạn bè</Text>
                         </View>
@@ -38,7 +43,7 @@ const Header = () => {
                 <View style={[styles.flexRow, styles.flexBetween]}>
                     <View style={styles.flexRow}>
                         <Text style={styles.attend}>Lời mời kết bạn</Text>
-                        <Text style={styles.amount}>10</Text>
+                        <Text style={styles.amount}>{totalRequest}</Text>
                     </View>
                 </View>
             </View>
@@ -46,76 +51,117 @@ const Header = () => {
     );
 };
 const Friend = () => {
-    const requests = [
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/371824586_1472820440139153_2000382313469213263_n.jpg?stp=dst-jpg_s320x320&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=8A-50Z6oAn8AX9V5eKx&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBFDilWw9xyATPgpw5TN6NAut8Uq6YQX2Ovb6_4JbyZjQ&oe=6570718A',
-            name: 'Bùi Thức Nam',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/59157513_545334009326831_3799570276132323328_n.jpg?stp=c0.0.320.320a_dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=r2sHRcuvjGoAX8zBsh3&_nc_ht=scontent.fhan20-1.fna&oh=00_AfDG4-i33DGSKsqUwhSWCOJ2KjSDTNLDg0uoAdEvDBHWIw&oe=65920523',
-            name: 'Mạnh Phương ',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/397658152_3484813825152306_2903554531250512188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=109&ccb=1-7&_nc_sid=5740b7&_nc_ohc=c1pMHP64Al8AX-JNCer&_nc_ht=scontent.fhan20-1.fna&oh=00_AfA9BLQ8bPfIvdJqCSBHIHFVCtCMrjaa9SjJbVLmGuBp9Q&oe=656F4ECF',
-            name: 'Tuấn Bùi ',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=yqBGltvodl8AX8stmSh&_nc_ht=scontent.fhan20-1.fna&oh=00_AfABJwlV4svFYzEIPVI9wmXKIp00-A4jsWOE6kUaeiYEsg&oe=659229B8',
-            name: 'Tô Tường',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/371824586_1472820440139153_2000382313469213263_n.jpg?stp=dst-jpg_s320x320&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=8A-50Z6oAn8AX9V5eKx&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBFDilWw9xyATPgpw5TN6NAut8Uq6YQX2Ovb6_4JbyZjQ&oe=6570718A',
-            name: 'Bùi Thức Nam',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/59157513_545334009326831_3799570276132323328_n.jpg?stp=c0.0.320.320a_dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=r2sHRcuvjGoAX8zBsh3&_nc_ht=scontent.fhan20-1.fna&oh=00_AfDG4-i33DGSKsqUwhSWCOJ2KjSDTNLDg0uoAdEvDBHWIw&oe=65920523',
-            name: 'Mạnh Phương ',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/397658152_3484813825152306_2903554531250512188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=109&ccb=1-7&_nc_sid=5740b7&_nc_ohc=c1pMHP64Al8AX-JNCer&_nc_ht=scontent.fhan20-1.fna&oh=00_AfA9BLQ8bPfIvdJqCSBHIHFVCtCMrjaa9SjJbVLmGuBp9Q&oe=656F4ECF',
-            name: 'Tuấn Bùi ',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=yqBGltvodl8AX8stmSh&_nc_ht=scontent.fhan20-1.fna&oh=00_AfABJwlV4svFYzEIPVI9wmXKIp00-A4jsWOE6kUaeiYEsg&oe=659229B8',
-            name: 'Tô Tường',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/371824586_1472820440139153_2000382313469213263_n.jpg?stp=dst-jpg_s320x320&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=8A-50Z6oAn8AX9V5eKx&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBFDilWw9xyATPgpw5TN6NAut8Uq6YQX2Ovb6_4JbyZjQ&oe=6570718A',
-            name: 'Bùi Thức Nam',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/59157513_545334009326831_3799570276132323328_n.jpg?stp=c0.0.320.320a_dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=r2sHRcuvjGoAX8zBsh3&_nc_ht=scontent.fhan20-1.fna&oh=00_AfDG4-i33DGSKsqUwhSWCOJ2KjSDTNLDg0uoAdEvDBHWIw&oe=65920523',
-            name: 'Mạnh Phương ',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/397658152_3484813825152306_2903554531250512188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=109&ccb=1-7&_nc_sid=5740b7&_nc_ohc=c1pMHP64Al8AX-JNCer&_nc_ht=scontent.fhan20-1.fna&oh=00_AfA9BLQ8bPfIvdJqCSBHIHFVCtCMrjaa9SjJbVLmGuBp9Q&oe=656F4ECF',
-            name: 'Tuấn Bùi ',
-            time: '1 tuần',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=yqBGltvodl8AX8stmSh&_nc_ht=scontent.fhan20-1.fna&oh=00_AfABJwlV4svFYzEIPVI9wmXKIp00-A4jsWOE6kUaeiYEsg&oe=659229B8',
-            name: 'Tô Tường',
-            time: '1 tuần',
-        },
-    ];
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const [listRequest, setListRequest] = useState([]);
+    const [totalRequest, setTotalRequest] = useState(null);
+    // const [onClickAccept, setOnClickAccept] = useState(-1);
+    const listRequestFriend = useSelector((state) => state.friend.listRequestFriend);
+    // console.log(listRequestFriend);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const result = await FriendServices.getListRequestFriend({
+                    index: '0',
+                    count: '999',
+                });
+
+                // console.log(result.data.data.requests);
+
+                setTotalRequest(result.data.data?.total);
+                dispatch(
+                    setStoreRequestFriend({
+                        total: result.data.data?.total,
+                        requests:
+                            result.data.data.requests?.map((item) => {
+                                return {
+                                    id: item?.id,
+                                    image:
+                                        item?.avatar ||
+                                        'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                    name: item?.username,
+                                    time: calculateTimeAgo(item?.created),
+                                    same_friends: item?.same_friends,
+                                    on_click_accept: -1,
+                                };
+                            }) || [],
+                    }),
+                );
+
+                // setListRequest(
+                //     result.data.data.requests?.map((item) => {
+                //         return {
+                //             id: item?.id,
+                //             image:
+                //                 item?.avatar ||
+                //                 'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                //             name: item?.username,
+                //             time: calculateTimeAgo(item?.created),
+                //             same_friends: item?.same_friends,
+                //             on_click_accept: -1,
+                //         };
+                //     }),
+                // );
+            } catch (error) {
+                console.log('fetchApi FriendServices getListRequestFriend ' + error);
+            }
+        };
+        fetchApi();
+    }, []);
+
+    const handleAcceptFriend = async (id) => {
+        try {
+            const result = await FriendServices.setAcceptFriend({
+                user_id: id,
+                is_accept: '1',
+            });
+        } catch (error) {
+            console.log('handleAcceptFriend Friend setAcceptFriend', error);
+        }
+    };
+
+    const handleRejectFriend = async (id) => {
+        try {
+            const result = await FriendServices.setAcceptFriend({
+                user_id: id,
+                is_accept: '0',
+            });
+        } catch (error) {
+            console.log('handleAcceptFriend Friend setAcceptFriend', error);
+        }
+    };
+
+    const handleClickAccept = (id, value) => {
+        // setListRequest((prevList) =>
+        //     prevList.map((item) => {
+        //         if (item.id === id) {
+        //             return { ...item, on_click_accept: value };
+        //         }
+        //         return item;
+        //     }),
+        // );
+
+        dispatch(
+            setStoreRequestFriend({
+                total: listRequestFriend.total - 1,
+                requests: listRequestFriend.requests.map((item) => {
+                    if (item.id === id) {
+                        return { ...item, on_click_accept: value };
+                    }
+                    return item;
+                }),
+            }),
+        );
+    };
 
     return (
         <View style={styles.container}>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={requests}
+                    data={listRequestFriend.requests}
                     showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
-                    ListHeaderComponent={<Header />}
+                    ListHeaderComponent={<Header totalRequest={listRequestFriend?.total} />}
                     renderItem={({ item }) => (
                         <View style={[styles.flexRow, styles.itemFriend]}>
                             {/* avatar */}
@@ -130,18 +176,50 @@ const Friend = () => {
                                     <Text style={styles.userName}>{item.name}</Text>
                                     <Text>{item.time}</Text>
                                 </View>
-                                <View style={[styles.flexRow, styles.flexBetween, { width: '100%' }]}>
-                                    <TouchableOpacity>
-                                        <View style={[styles.reply, styles.replyAccess]}>
-                                            <Text style={[styles.textReply, { color: '#fff' }]}>Chấp nhận</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <View style={[styles.reply, styles.replyRefuse]}>
-                                            <Text style={styles.textReply}>Xóa</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
+                                {item.same_friends != '0' && item?.on_click_accept == -1 && (
+                                    <View>
+                                        <Text style={{ fontSize: 14, color: '#65676b', marginTop: 4 }}>
+                                            {item.same_friends} bạn chung
+                                        </Text>
+                                    </View>
+                                )}
+
+                                {item?.on_click_accept == -1 ? (
+                                    <View
+                                        style={[styles.flexRow, styles.flexBetween, { width: '100%', marginTop: 12 }]}
+                                    >
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                handleAcceptFriend(item.id);
+                                                handleClickAccept(item?.id, 1);
+                                            }}
+                                        >
+                                            <View style={[styles.reply, styles.replyAccess]}>
+                                                <Text style={[styles.textReply, { color: '#fff' }]}>Chấp nhận</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                handleRejectFriend(item.id);
+                                                handleClickAccept(item?.id, 0);
+                                            }}
+                                        >
+                                            <View style={[styles.reply, styles.replyRefuse]}>
+                                                <Text style={styles.textReply}>Xóa</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : (
+                                    <View>
+                                        {/* <Text style={{ fontSize: 14, color: '#65676b' }}>Các bạn đã là bạn bè</Text> */}
+                                        {item?.on_click_accept == 1 && (
+                                            <Text style={{ fontSize: 14, color: '#65676b' }}>Các bạn đã là bạn bè</Text>
+                                        )}
+                                        {item?.on_click_accept == 0 && (
+                                            <Text style={{ fontSize: 14, color: '#65676b' }}>Đã gỡ lời mời</Text>
+                                        )}
+                                    </View>
+                                )}
                             </View>
                         </View>
                     )}
@@ -198,7 +276,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     reply: {
-        width: 110,
+        width: withScreen * 0.3,
         paddingVertical: 10,
         borderRadius: 10,
     },
@@ -219,7 +297,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     title: {
-        marginBottom: 12,
+        // marginBottom: 4,
     },
     itemFriend: {
         marginVertical: 8,

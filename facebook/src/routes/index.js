@@ -1,42 +1,46 @@
-import HomeScreen from "../screens/Home";
-import LoginScreen from "../screens/Login";
-import PolicyScreen from "../screens/Policy";
-import ChooseGenderScreen from "../screens/ChooseGender";
-import CreateNameScreen from "../screens/CreateName";
-import ChooseAgeScreen from "../screens/ChooseAge";
-import ChooseNumberPhoneScreen from "../screens/ChooseNumberPhone";
-import CreatePasswordScreen from "../screens/CreatePassword";
-import ChooseDateOfBirthScreen from "../screens/ChooseDateOfBirth";
-import IntroCreateAccountScreen from "../screens/IntroCreateAccount";
-import SaveAccountLoginScreen from "../screens/SaveAccountLogin";
-import SaveInfoConfirmScreen from "../screens/SaveInfoConfirm";
-import PolicyConfirmScreen from "../screens/PolicyConfirm";
-import VerificationCodeScreen from "../screens/VerificationCode";
-import CommentScreen from "../components/Comment";
-import CommentHomeScreen from "../screens/CommentHome";
-import CreatePostScreen from "../screens/CreatePost";
-import CRUD from "../screens/CRUD";
-import Post from "../components/Post";
-import ChooseEmoji from "../screens/ChooseEmoji";
-import MenuScreen from "../screens/Menu";
-import MessageHomeScreen from "../screens/MessageHome";
-import MessageNewScreen from "../screens/MessageNew";
-import MessagePrimaryScreen from "../screens/MessagePrimary";
-import MessageProfileScreen from "../screens/MessageProfile";
-import MessageRecipientInfoScreen from "../screens/MessageRecipientInfo";
-import MessageWaitingScreen from "../screens/MessageWaiting";
-import CameraScreen from "../screens/CameraScreen";
-import ProfileDetail from "../screens/ProfileDetail"
-import EditProfile from "../screens/EditProfile";
-import SearchScreen from "../screens/Search";
-import Friend from "../screens/Friend";
-import FriendLists from "../screens/FriendLists";
-import FriendSuggest from "../screens/FriendSuggest";
+import HomeScreen from '../screens/Home';
+import LoginScreen from '../screens/Login';
+import PolicyScreen from '../screens/Policy';
+import ChooseGenderScreen from '../screens/ChooseGender';
+import CreateNameScreen from '../screens/CreateName';
+import ChooseAgeScreen from '../screens/ChooseAge';
+import ChooseNumberPhoneScreen from '../screens/ChooseNumberPhone';
+import CreatePasswordScreen from '../screens/CreatePassword';
+import ChooseDateOfBirthScreen from '../screens/ChooseDateOfBirth';
+import IntroCreateAccountScreen from '../screens/IntroCreateAccount';
+import SaveAccountLoginScreen from '../screens/SaveAccountLogin';
+import SaveInfoConfirmScreen from '../screens/SaveInfoConfirm';
+import PolicyConfirmScreen from '../screens/PolicyConfirm';
+import VerificationCodeScreen from '../screens/VerificationCode';
+import CommentScreen from '../components/Comment';
+import CommentHomeScreen from '../screens/CommentHome';
+import CreatePostScreen from '../screens/CreatePost';
+import CRUD from '../screens/CRUD';
+import Post from '../components/Post';
+import ChooseEmoji from '../screens/ChooseEmoji';
+import MenuScreen from '../screens/Menu';
+import MessageHomeScreen from '../screens/MessageHome';
+import MessageNewScreen from '../screens/MessageNew';
+import MessagePrimaryScreen from '../screens/MessagePrimary';
+import MessageProfileScreen from '../screens/MessageProfile';
+import MessageRecipientInfoScreen from '../screens/MessageRecipientInfo';
+import MessageWaitingScreen from '../screens/MessageWaiting';
+import CameraScreen from '../screens/CameraScreen';
+import ProfileDetail from '../screens/ProfileDetail';
+import EditProfile from '../screens/EditProfile';
+import SearchScreen from '../screens/Search';
+import Friend from '../screens/Friend';
+import FriendLists from '../screens/FriendLists';
+import FriendListsOther from '../screens/FriendListsOther';
+import FriendSuggest from '../screens/FriendSuggest';
 import TabVideos from '../screens/TabVideos';
 import VideoScreen from '../screens/VideoScreen';
 import VideoActive from '../screens/VideoActive';
-import DetailActivity from "../screens/DetailActivity";
-import Test from "../screens/Test";
+import DetailActivity from '../screens/DetailActivity';
+import PreviewImage from '../screens/PreviewImage';
+import EditDetail from '../screens/EditDetail';
+import ProfileOtherDetail from '../screens/ProfileOtherDetail';
+import Test from '../screens/Test';
 
 const publicRoutes = [
     {
@@ -92,12 +96,12 @@ const publicRoutes = [
         component: PolicyConfirmScreen,
     },
     {
-        name:"ProfileDetail",
-        component:ProfileDetail
+        name: 'ProfileDetail',
+        component: ProfileDetail,
     },
     {
-        name:"EditProfile",
-        component:EditProfile
+        name: 'EditProfile',
+        component: EditProfile,
     },
     {
         name: 'VerificationCode',
@@ -168,6 +172,10 @@ const publicRoutes = [
         component: FriendLists,
     },
     {
+        name: 'FriendListsOther',
+        component: FriendListsOther,
+    },
+    {
         name: 'FriendSuggest',
         component: FriendSuggest,
     },
@@ -188,13 +196,25 @@ const publicRoutes = [
         component: VideoActive,
     },
     {
-        name: "DetailActivity",
-        component: DetailActivity
+        name: 'DetailActivity',
+        component: DetailActivity,
     },
     {
-        name: "Test",
-        component: Test
-    }
+        name: 'PreviewImage',
+        component: PreviewImage,
+    },
+    {
+        name: 'EditDetail',
+        component: EditDetail,
+    },
+    {
+        name: 'ProfileOtherDetail',
+        component: ProfileOtherDetail,
+    },
+    {
+        name: 'Test',
+        component: Test,
+    },
 ];
 
 const privateRoutes = [];

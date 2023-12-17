@@ -1,6 +1,15 @@
+import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import * as FriendServices from '../services/FriendServices';
+import { setStoreRequestFriend, setStoreUserFriend, setStoreSuggestFriend } from '../feature/friend';
+import { useDispatch, useSelector } from 'react-redux';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
+withScreen = Dimensions.get('window').width;
+heightScreen = Dimensions.get('window').height;
 
 const Title = () => {
     return (
@@ -19,6 +28,7 @@ const Title = () => {
         </View>
     );
 };
+
 const Header = () => {
     const navigation = useNavigation();
     const goBackHandler = () => {
@@ -30,9 +40,7 @@ const Header = () => {
                 <View style={[styles.flexRow, { marginTop: 8 }]}>
                     <View>
                         <TouchableOpacity onPress={goBackHandler}>
-                            <View style={{ paddingHorizontal: 8 }}>
-                                <Icon name="angle-left" size={30} color="#000" />
-                            </View>
+                            <FontAwesomeIcon icon={faArrowLeft} size={24} color="black" style={{ marginLeft: 4 }} />
                         </TouchableOpacity>
                     </View>
                     <View style={[styles.flexRow, styles.flexBetween, { flex: 1, marginLeft: 16 }]}>
@@ -52,63 +60,115 @@ const Header = () => {
     );
 };
 const FriendSuggest = () => {
-    const requests = [
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/371824586_1472820440139153_2000382313469213263_n.jpg?stp=dst-jpg_s320x320&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=8A-50Z6oAn8AX9V5eKx&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBFDilWw9xyATPgpw5TN6NAut8Uq6YQX2Ovb6_4JbyZjQ&oe=6570718A',
-            name: 'Bùi Thức Nam',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/59157513_545334009326831_3799570276132323328_n.jpg?stp=c0.0.320.320a_dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=r2sHRcuvjGoAX8zBsh3&_nc_ht=scontent.fhan20-1.fna&oh=00_AfDG4-i33DGSKsqUwhSWCOJ2KjSDTNLDg0uoAdEvDBHWIw&oe=65920523',
-            name: 'Mạnh Phương ',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/397658152_3484813825152306_2903554531250512188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=109&ccb=1-7&_nc_sid=5740b7&_nc_ohc=c1pMHP64Al8AX-JNCer&_nc_ht=scontent.fhan20-1.fna&oh=00_AfA9BLQ8bPfIvdJqCSBHIHFVCtCMrjaa9SjJbVLmGuBp9Q&oe=656F4ECF',
-            name: 'Tuấn Bùi ',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=yqBGltvodl8AX8stmSh&_nc_ht=scontent.fhan20-1.fna&oh=00_AfABJwlV4svFYzEIPVI9wmXKIp00-A4jsWOE6kUaeiYEsg&oe=659229B8',
-            name: 'Tô Tường',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/371824586_1472820440139153_2000382313469213263_n.jpg?stp=dst-jpg_s320x320&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=8A-50Z6oAn8AX9V5eKx&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBFDilWw9xyATPgpw5TN6NAut8Uq6YQX2Ovb6_4JbyZjQ&oe=6570718A',
-            name: 'Bùi Thức Nam',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/59157513_545334009326831_3799570276132323328_n.jpg?stp=c0.0.320.320a_dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=r2sHRcuvjGoAX8zBsh3&_nc_ht=scontent.fhan20-1.fna&oh=00_AfDG4-i33DGSKsqUwhSWCOJ2KjSDTNLDg0uoAdEvDBHWIw&oe=65920523',
-            name: 'Mạnh Phương ',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/397658152_3484813825152306_2903554531250512188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=109&ccb=1-7&_nc_sid=5740b7&_nc_ohc=c1pMHP64Al8AX-JNCer&_nc_ht=scontent.fhan20-1.fna&oh=00_AfA9BLQ8bPfIvdJqCSBHIHFVCtCMrjaa9SjJbVLmGuBp9Q&oe=656F4ECF',
-            name: 'Tuấn Bùi ',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=yqBGltvodl8AX8stmSh&_nc_ht=scontent.fhan20-1.fna&oh=00_AfABJwlV4svFYzEIPVI9wmXKIp00-A4jsWOE6kUaeiYEsg&oe=659229B8',
-            name: 'Tô Tường',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/371824586_1472820440139153_2000382313469213263_n.jpg?stp=dst-jpg_s320x320&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=8A-50Z6oAn8AX9V5eKx&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBFDilWw9xyATPgpw5TN6NAut8Uq6YQX2Ovb6_4JbyZjQ&oe=6570718A',
-            name: 'Bùi Thức Nam',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/59157513_545334009326831_3799570276132323328_n.jpg?stp=c0.0.320.320a_dst-jpg_p320x320&_nc_cat=104&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=r2sHRcuvjGoAX8zBsh3&_nc_ht=scontent.fhan20-1.fna&oh=00_AfDG4-i33DGSKsqUwhSWCOJ2KjSDTNLDg0uoAdEvDBHWIw&oe=65920523',
-            name: 'Mạnh Phương ',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/397658152_3484813825152306_2903554531250512188_n.jpg?stp=dst-jpg_s320x320&_nc_cat=109&ccb=1-7&_nc_sid=5740b7&_nc_ohc=c1pMHP64Al8AX-JNCer&_nc_ht=scontent.fhan20-1.fna&oh=00_AfA9BLQ8bPfIvdJqCSBHIHFVCtCMrjaa9SjJbVLmGuBp9Q&oe=656F4ECF',
-            name: 'Tuấn Bùi ',
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2b6aad&_nc_ohc=yqBGltvodl8AX8stmSh&_nc_ht=scontent.fhan20-1.fna&oh=00_AfABJwlV4svFYzEIPVI9wmXKIp00-A4jsWOE6kUaeiYEsg&oe=659229B8',
-            name: 'Tô Tường',
-        },
-    ];
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const [listSuggested, setListSuggested] = useState([]);
+    const listSuggestFriend = useSelector((state) => state.friend.listSuggestFriend);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                const result = await FriendServices.getSuggestedFriend({
+                    index: '0',
+                    count: '999',
+                });
+
+                console.log(result.data.data);
+
+                dispatch(
+                    setStoreSuggestFriend(
+                        result.data.data?.map((item) => {
+                            return {
+                                id: item?.id,
+                                image:
+                                    item?.avatar ||
+                                    'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                name: item?.username,
+                                same_friends: item?.same_friends,
+                                on_click_accept: -1,
+                            };
+                        }) || [],
+                    ),
+                );
+
+                // setListSuggested(
+                //     result.data.data?.map((item) => {
+                //         return {
+                //             id: item?.id,
+                //             image:
+                //                 item?.avatar ||
+                //                 'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                //             name: item?.username,
+                //             same_friends: item?.same_friends,
+                //             on_click_accept: -1,
+                //         };
+                //     }),
+                // );
+            } catch (error) {
+                console.log('fetchApi FriendServices getListRequestFriend ' + error);
+            }
+        };
+        fetchApi();
+    }, []);
+
+    const handleAddFriend = async (id) => {
+        try {
+            const result = await FriendServices.setRequestFriend({ user_id: id });
+            console.log(result);
+        } catch (error) {
+            console.log('handleAddFriend FriendSuggest setRequestFriend', error);
+        }
+    };
+
+    const handleCancelAddFriend = async (id) => {
+        try {
+            const result = await FriendServices.delRequestFriend({ user_id: id });
+            console.log(result);
+        } catch (error) {
+            console.log('handleAddFriend FriendSuggest setRequestFriend', error);
+        }
+    };
+
+    const handleClickAccept = (id, value) => {
+        // setListSuggested((prevList) =>
+        //     prevList.map((item) => {
+        //         if (item.id === id) {
+        //             return { ...item, on_click_accept: value };
+        //         }
+        //         return item;
+        //     }),
+        // );
+
+        dispatch(
+            setStoreSuggestFriend(
+                listSuggestFriend.map((item) => {
+                    if (item.id === id) {
+                        return { ...item, on_click_accept: value };
+                    }
+                    return item;
+                }),
+            ),
+        );
+    };
+
+    // const handleDelSuggest = (id) => {
+    //     setListRequest((prevList) =>
+    //         prevList.filter((item) => {
+    //             if (item.id === id) {
+    //                 return { ...item, on_click_accept: value };
+    //             }
+    //             return item;
+    //         }),
+    //     );
+    // };
 
     return (
         <View style={styles.container}>
             <Header />
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={requests}
+                    data={listSuggestFriend}
                     showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
                     ListHeaderComponent={<Title />}
                     renderItem={({ item }) => (
@@ -124,18 +184,67 @@ const FriendSuggest = () => {
                                 <View style={[styles.flexRow, styles.flexBetween, styles.title]}>
                                     <Text style={styles.userName}>{item.name}</Text>
                                 </View>
-                                <View style={[styles.flexRow, styles.flexBetween, { width: '100%' }]}>
-                                    <TouchableOpacity>
-                                        <View style={[styles.reply, styles.replyAccess]}>
-                                            <Text style={[styles.textReply, { color: '#fff' }]}>Thêm bạn bè</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity>
-                                        <View style={[styles.reply, styles.replyRefuse]}>
-                                            <Text style={styles.textReply}>Gỡ</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                </View>
+                                {item.same_friends != '0' && item?.on_click_accept == -1 && (
+                                    <View>
+                                        <Text style={{ fontSize: 14, color: '#65676b', marginTop: 4 }}>
+                                            {item.same_friends} bạn chung
+                                        </Text>
+                                    </View>
+                                )}
+
+                                {item?.on_click_accept == -1 ? (
+                                    <View
+                                        style={[styles.flexRow, styles.flexBetween, { width: '100%', marginTop: 12 }]}
+                                    >
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                handleAddFriend(item.id);
+                                                handleClickAccept(item?.id, 1);
+                                            }}
+                                        >
+                                            <View style={[styles.reply, styles.replyAccess]}>
+                                                <Text style={[styles.textReply, { color: '#fff' }]}>Thêm bạn bè</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity>
+                                            <View style={[styles.reply, styles.replyRefuse]}>
+                                                <Text style={styles.textReply}>Gỡ</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : (
+                                    <View>
+                                        {/* <Text style={{ fontSize: 14, color: '#65676b' }}>Các bạn đã là bạn bè</Text> */}
+                                        {item?.on_click_accept == 1 && (
+                                            <>
+                                                <Text style={{ fontSize: 14, color: '#65676b' }}>Đã gửi lời mời</Text>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        handleCancelAddFriend(item?.id);
+                                                        handleClickAccept(item?.id, -1);
+                                                    }}
+                                                >
+                                                    <View
+                                                        style={[
+                                                            {
+                                                                // width: withScreen * 0.6,
+                                                                paddingVertical: 10,
+                                                                borderRadius: 10,
+                                                                marginTop: 12,
+                                                            },
+                                                            styles.replyRefuse,
+                                                        ]}
+                                                    >
+                                                        <Text style={styles.textReply}>Hủy</Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </>
+                                        )}
+                                        {item?.on_click_accept == 0 && (
+                                            <Text style={{ fontSize: 14, color: '#65676b' }}>Đã gỡ lời mời</Text>
+                                        )}
+                                    </View>
+                                )}
                             </View>
                         </View>
                     )}
@@ -188,7 +297,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     reply: {
-        width: 110,
+        width: withScreen * 0.3,
         paddingVertical: 10,
         borderRadius: 10,
     },
@@ -209,7 +318,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     title: {
-        marginBottom: 12,
+        // marginBottom: 12,
     },
     itemFriend: {
         marginVertical: 8,
