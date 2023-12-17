@@ -698,19 +698,6 @@ const styles = StyleSheet.create({
     },
 
     underNav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: withScreen - 40,
-        paddingTop: 20,
-        marginLeft: 16,
-        marginRight: 24,
-    },
-
-    wrapAvatar: {
-        width: 46,
-        height: 46,
-        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
     },

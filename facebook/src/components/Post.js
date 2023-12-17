@@ -31,6 +31,8 @@ import {
     faVolumeLow,
     faVolumeXmark,
     faXmark,
+    faSearch,
+    faUserLock,
 } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
 import { Video, ResizeMode } from 'expo-av';
@@ -155,8 +157,20 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
     const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalReport, setModalReport] = useState(false);
+    const [isModalReportSubmit, setModalReportSubmit] = useState(false);
     const [like, setLike] = useState(false);
     const [isKeyboardOpen, setKeyboardOpen] = useState(false);
+    const [selectedReports, setSelectedReports] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+
+    const options = ["Ảnh thoả thân", "Bạo lực", "Quấy rối", "Tự tử/Tự gây thương tích", "Tin giả", "Spam", "Bán hàng trái phép", "Ngôn ngữ gây thù ghét", "Khủng bố", "Vấn đề khác"];
+    const onOptionPress = (option) => {
+        if (selectedReports.includes(option)) {
+            setSelectedReports(selectedReports.filter(item => item !== option));
+        } else {
+            setSelectedReports([...selectedReports, option]);
+        }
+    };
     const [comments, setComments] = useState([
         {
             name: 'Nguyễn Văn A',
@@ -220,6 +234,16 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
 
     const toggleLike = () => {
         setLike(!like);
+    };
+    
+    const handleReportButtonClick = () => {
+        setModalReport(false);
+        setTimeout(() => {
+            setModalReportSubmit(true);
+        }, 500);
+    };
+    const toggleModalReportSubmit = () => {
+        setModalReportSubmit(false);
     };
 
     useEffect(() => {
@@ -856,7 +880,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                     </View>
                                 </View>
                             </TouchableOpacity>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleReportButtonClick()}>
                                 <View style={styles.item}>
                                     <View style={styles.flexRow}>
                                         <Image
@@ -900,6 +924,103 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                 </View>
                             </View>
                         </View>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+            <Modal
+                isVisible={isModalReportSubmit}
+                onSwipeComplete={toggleModalReportSubmit}
+                swipeDirection={['down']}
+                style={{ justifyContent: 'flex-end', margin: 5 }}
+            >
+                <View
+                    style={{
+                        backgroundColor: 'white',
+                        height: heightScreen * 0.8,
+                        borderTopLeftRadius: 20,
+                        borderTopRightRadius: 20,
+                        paddingTop: 12,
+                    }}
+                >
+                    <View
+                        style={{
+                            height: 6,
+                            width: withScreen * 0.16,
+                            backgroundColor: '#ccc',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            borderRadius: 4,
+                            marginBottom: 8
+                        }}
+                    ></View>
+                    <Text style={{ fontSize: 18, fontWeight: "600", marginLeft: 10 }}>Vui lòng chọn vấn đề để tiếp tục</Text>
+                    <Text style={{ fontSize: 16, marginLeft: 10, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>Bạn có thể báo cáo bài viết sau khi chọn vấn đề</Text>
+                    <View style={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap' }}>
+                        {options.map((option, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[styles.boxReport, selectedReports.includes(option) ? styles.boxReportSelected : {}]}
+                                onPress={() => onOptionPress(option)}
+                            >
+                                {option === "Vấn đề khác" ? <FontAwesomeIcon icon={faSearch} /> : null}
+                                <Text style={styles.buttonText}>{option}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                    <View style={styles.divSmall}></View>
+                    <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 10, marginTop: 10, marginBottom: 8 }}>Các bước khác mà bạn có thể thực hiện</Text>
+                    <TouchableOpacity>
+                        <View style={styles.item}>
+                            <View style={styles.flexRow}>
+                                <FontAwesomeIcon icon={faUserLock} size={20} />
+                                <View>
+                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Chặn nó</Text>
+                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16, opacity: 0.6, flexWrap: 'wrap', width: 300 }}>
+                                        Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+                        <View style={styles.item}>
+                            <View style={styles.flexRow}>
+                                <FontAwesomeIcon icon={faRectangleXmark} size={20} />
+                                <View>
+                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Bỏ theo dõi nó</Text>
+                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16, opacity: 0.6, flexWrap: 'wrap', width: 300 }}>
+                                        Dừng xem bài viết nhưng vẫn là bạn bè
+                                    </Text>
+                                </View>
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                    <View style={styles.inputContainer}>
+                        <FontAwesomeIcon icon={faSearch} size={20} style={styles.iconStyle} />
+                        {!inputValue && (
+                            <Text style={styles.placeholderStyle}>
+                                Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ cấp cứu địa phương
+                            </Text>
+                        )}
+                        <TextInput
+                            style={styles.textInputStyle}
+                            multiline
+                            value={inputValue}
+                            onChangeText={text => setInputValue(text)}
+                            placeholderTextColor="#ccc"
+                        />
+                    </View>
+                    <TouchableOpacity style={{
+                        backgroundColor: '#e5e6ed', paddingVertical: 10,
+                        paddingHorizontal: 20,
+                        width: 320,
+                        borderRadius: 5,
+                        justifyContent: 'center', alignItems: 'center',
+                        height: 40,
+                        marginLeft: 30,
+                        marginTop: 15
+                    }}>
+                        <Text style={{ color: '#000', fontSize: 16, fontWeight: '500', opacity: 0.6 }}>Tiếp</Text>
                     </TouchableOpacity>
                 </View>
             </Modal>
@@ -1121,5 +1242,45 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
         marginRight: -4,
         marginTop: 12,
+    },
+    boxReport: {
+        flexDirection: 'row',
+        display: 'flex',
+        marginTop: 10,
+        marginLeft: 5,
+        backgroundColor: '#e2e4eb',
+        paddingHorizontal: 12,
+        height: 40,
+        borderRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    boxReportSelected: {
+        backgroundColor: '#0967ff',
+
+    },
+    buttonText: {
+        paddingHorizontal: 4,
+        marginHorizontal: 2,
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#000',
+    },
+    inputContainer: {
+        borderWidth: 1,
+        height: 90,
+        marginHorizontal: 20,
+        borderRadius: 6,
+        borderColor: "#aaa"
+    },
+    textInputStyle: {
+        flexWrap: 'wrap', width: 300
+    },
+    placeholderStyle: {
+        // Style giống với TextInput nhưng với màu và kích thước font khác
+        position: 'absolute',
+        top: 0, left: 10, // Căn chỉnh vị trí
+        color: '#ccc',
+        // Các style khác để phù hợp với TextInput
     },
 });
