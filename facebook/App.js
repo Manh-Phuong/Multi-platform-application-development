@@ -16,11 +16,24 @@ library.add(fab, faSquareCheck)
 const Stack = createStackNavigator();
 
 export default function App() {
+  const [route, setRoute] = useState('Login')
+  useEffect(() => {
+    const getInfo = async () => {
+      const info = await AsyncStorage.getItem('accountInfo')
+      if (info) {
+        setRoute('SaveAccountLogin')
+        console.log(route)
+      }
+    }
+    
+    getInfo();
+  },[])
+
   return (
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="Home" 
+          initialRouteName={route}
           screenOptions={{ headerShown: false }}
         >
           {publicRoutes.map((route, index) => (

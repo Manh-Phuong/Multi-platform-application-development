@@ -3,7 +3,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEllipsis, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-native-modal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getNotification } from '../services/NotificationServices';
+import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
     return (
@@ -73,8 +75,81 @@ const Option = ({ valueOption }) => {
         </View>
     );
 };
+
+const NotificationContent = ({ notification }) => {
+    switch (notification.type) {
+        case '1':
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã gửi cho bạn lời mời kết bạn.</Text>
+                </Text>
+            );
+        case '2':
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã chấp nhận yêu cầu kết bạn.</Text>
+                </Text>
+            );
+        case '3':
+            return <Text>A new post has been added.</Text>;
+        case '4':
+            return <Text>A post has been updated.</Text>;
+        case '5':
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã bày tỏ cảm xúc về bài viết của bạn.</Text>
+                </Text>
+            );
+        case '6':
+            return <Text>Your post has been marked.</Text>;
+        case '7':
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã bình luận về bài viết của bạn.</Text>
+                </Text>
+            );
+        case '8':
+            return <Text>A new video has been added.</Text>;
+        case '9':
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã bình luận về bài viết của bạn.</Text>
+                </Text>
+            );
+        default:
+            return <Text>Unknown notification type.</Text>;
+    }
+};
+
+const GenerateTime = ({notification}) => {
+    const inputDate = new Date(notification.created);
+    const currentDate = new Date();
+    const timeDifference = (currentDate - inputDate) / 1000; // Chuyển đổi sang giây
+
+    if (timeDifference < 2) {
+        return <Text>Vừa xong</Text>
+    } else if (timeDifference < 3600) {
+        const minutes = Math.floor(timeDifference / 60);
+        return <Text>{minutes} phút trước</Text>
+    } else if (timeDifference < 86400) {
+        const hours = Math.floor(timeDifference / 3600);
+        return <Text>{hours} giờ trước</Text>
+    } else {
+        const days = Math.floor(timeDifference / 86400);
+        return <Text>{days} ngày trước</Text>
+    }
+};
+
 const Notification = () => {
+    const navigation = useNavigation();
+
     const [isModalOption, setModalOption] = useState(false);
+    const [listNotify, setListNotify] = useState([]);
     const toggleModalOption = () => {
         setModalOption(false);
     };
@@ -86,104 +161,86 @@ const Notification = () => {
         });
         setModalOption(true);
     };
-    const requests = [
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/183502746_1349207945453542_8602506344653869175_n.jpg?stp=dst-jpg_p130x130&_nc_cat=100&ccb=1-7&_nc_sid=db1b99&_nc_ohc=LAOh1uILzO8AX8iGFfQ&_nc_ht=scontent.fhan20-1.fna&oh=00_AfAcCQrZJ69GaxkqyF-T7EBAAosFeLLwghV1lhN0NlmgOg&oe=659208FD',
-            iconLink: require('../assets/icons/birthdayIcon.png'),
-            content: 'Sinh nhật của Nguyễn Văn Nam vào 30 tháng 11.',
-            time: '2 ngày trước',
-            seen: false,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/335905476_891499558741787_4169812642276808370_n.jpg?stp=c0.79.130.130a_dst-jpg_p130x130&_nc_cat=111&ccb=1-7&_nc_sid=4da83f&_nc_ohc=QYCkom8rQLkAX8NCT4K&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBR1KbEtQarufKk-4uyeBv7u60J5kvLm6oD9tjzLjBAfQ&oe=656FE75F',
-            iconLink: require('../assets/icons/groupIcon.png'),
-            content: 'Bây giờ trong KMHTO1-K65: # **Các em join vào buổi học này nhé**',
-            time: '2 ngày trước',
-            seen: false,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/402082126_858838229064181_7143429889673621239_n.jpg?stp=dst-jpg_p130x130&_nc_cat=103&ccb=1-7&_nc_sid=4da83f&_nc_ohc=acha5Fbv2kkAX9m6LoQ&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBb9WVdM5PfX_PGxgSfkBmA07TC6T4dp_qV7GGu11nTvw&oe=656FCA8D',
-            iconLink: require('../assets/icons/commentIconGreen.png'),
-            content: 'Xuân Thuyên đã bình luận về bài viết của Trần Doãn Quang',
-            time: '1 tuần trước',
-            seen: true,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/367061187_122104175828009668_3521630750285971881_n.jpg?stp=dst-jpg_p130x130&_nc_cat=106&ccb=1-7&_nc_sid=4da83f&_nc_ohc=qTkkYtgJjZUAX_h4d-q&_nc_ht=scontent.fhan20-1.fna&oh=00_AfCPe3uBcO0cxZdqjZA6l6rVhdeAAxLFP0JPmpHxtbUiHA&oe=657070BE',
-            iconLink: require('../assets/icons/friendIcon.png'),
-            content: 'Hồ Đăng Chung đã chấp nhận lời mời kết bạn.',
-            time: '2 tuần trước',
-            seen: true,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/402082126_858838229064181_7143429889673621239_n.jpg?stp=dst-jpg_p130x130&_nc_cat=103&ccb=1-7&_nc_sid=4da83f&_nc_ohc=acha5Fbv2kkAX9m6LoQ&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBb9WVdM5PfX_PGxgSfkBmA07TC6T4dp_qV7GGu11nTvw&oe=656FCA8D',
-            iconLink: require('../assets/icons/commentIconGreen.png'),
-            content: 'Xuân Thuyên đã bình luận về ảnh của bạn',
-            time: '2 tuần trước',
-            seen: true,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t1.6435-1/183502746_1349207945453542_8602506344653869175_n.jpg?stp=dst-jpg_p130x130&_nc_cat=100&ccb=1-7&_nc_sid=db1b99&_nc_ohc=LAOh1uILzO8AX8iGFfQ&_nc_ht=scontent.fhan20-1.fna&oh=00_AfAcCQrZJ69GaxkqyF-T7EBAAosFeLLwghV1lhN0NlmgOg&oe=659208FD',
-            iconLink: require('../assets/icons/birthdayIcon.png'),
-            content: 'Sinh nhật của Nguyễn Văn Nam vào 30 tháng 11.',
-            time: '2 tuần trước',
-            seen: false,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/335905476_891499558741787_4169812642276808370_n.jpg?stp=c0.79.130.130a_dst-jpg_p130x130&_nc_cat=111&ccb=1-7&_nc_sid=4da83f&_nc_ohc=QYCkom8rQLkAX8NCT4K&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBR1KbEtQarufKk-4uyeBv7u60J5kvLm6oD9tjzLjBAfQ&oe=656FE75F',
-            iconLink: require('../assets/icons/groupIcon.png'),
-            content: 'Bây giờ trong KMHTO1-K65: # **Các em join vào buổi học này nhé**',
-            time: '2 tuần trước',
-            seen: false,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/402082126_858838229064181_7143429889673621239_n.jpg?stp=dst-jpg_p130x130&_nc_cat=103&ccb=1-7&_nc_sid=4da83f&_nc_ohc=acha5Fbv2kkAX9m6LoQ&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBb9WVdM5PfX_PGxgSfkBmA07TC6T4dp_qV7GGu11nTvw&oe=656FCA8D',
-            iconLink: require('../assets/icons/commentIconGreen.png'),
-            content: 'Xuân Thuyên đã bình luận về bài viết của Trần Doãn Quang',
-            time: '2 tuần trước',
-            seen: true,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/367061187_122104175828009668_3521630750285971881_n.jpg?stp=dst-jpg_p130x130&_nc_cat=106&ccb=1-7&_nc_sid=4da83f&_nc_ohc=qTkkYtgJjZUAX_h4d-q&_nc_ht=scontent.fhan20-1.fna&oh=00_AfCPe3uBcO0cxZdqjZA6l6rVhdeAAxLFP0JPmpHxtbUiHA&oe=657070BE',
-            iconLink: require('../assets/icons/friendIcon.png'),
-            content: 'Hồ Đăng Chung đã chấp nhận lời mời kết bạn.',
-            time: '2 tuần trước',
-            seen: false,
-        },
-        {
-            image: 'https://scontent.fhan20-1.fna.fbcdn.net/v/t39.30808-1/402082126_858838229064181_7143429889673621239_n.jpg?stp=dst-jpg_p130x130&_nc_cat=103&ccb=1-7&_nc_sid=4da83f&_nc_ohc=acha5Fbv2kkAX9m6LoQ&_nc_ht=scontent.fhan20-1.fna&oh=00_AfBb9WVdM5PfX_PGxgSfkBmA07TC6T4dp_qV7GGu11nTvw&oe=656FCA8D',
-            iconLink: require('../assets/icons/commentIconGreen.png'),
-            content: 'Xuân Thuyên đã bình luận về ảnh của bạn',
-            time: '2 tuần trước',
-            seen: false,
-        },
-    ];
 
+    useEffect(() => {
+        const getNotify = async () => {
+            const res = await getNotification({});
+            console.log(res.data);
+            setListNotify(res.data);
+        };
+
+        getNotify();
+    }, []);
+
+    const handlePressComment = (type, id) => {
+        switch (type) {
+            case '1':
+                navigation.navigate('Friend')
+            // case '2':
+            //     return (
+            //         <Text>
+            //             <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+            //             <Text>đã chấp nhận yêu cầu kết bạn.</Text>
+            //         </Text>
+            //     );
+            // case '3':
+            //     return <Text>A new post has been added.</Text>;
+            // case '4':
+            //     return <Text>A post has been updated.</Text>;
+            // case '5':
+            //     return (
+            //         <Text>
+            //             <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+            //             <Text>đã bày tỏ cảm xúc về bài viết của bạn.</Text>
+            //         </Text>
+            //     );
+            // case '6':
+            //     return <Text>Your post has been marked.</Text>;
+            // case '7':
+            //     return (
+            //         <Text>
+            //             <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+            //             <Text>đã bình luận về bài viết của bạn.</Text>
+            //         </Text>
+            //     );
+            // case '8':
+            //     return <Text>A new video has been added.</Text>;
+            // case '9':
+                // return (
+                //     <Text>
+                //         <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                //         <Text>đã bình luận về bài viết của bạn.</Text>
+                //     </Text>
+                // );
+            default:
+                return <Text>Unknown notification type.</Text>;
+        }
+    }
     return (
         <View style={styles.container}>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={requests}
+                    data={listNotify}
                     showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
                     ListHeaderComponent={<Header />}
                     renderItem={({ item }) => (
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => handlePressComment(item.type, item.object_id)}>
                             <View style={[styles.itemNoti, item.seen ? styles.seenBackgr : styles.notSeenBackgr]}>
                                 <View style={[styles.flexRow, styles.contentNoti]}>
                                     {/* avatar */}
                                     <View>
-                                        <Image source={item.iconLink} style={styles.icon} />
+                                        {/* <Image source={item.iconLink} style={styles.icon} /> */}
                                         <Image
                                             style={styles.accountImage}
                                             source={{
-                                                uri: item.image,
+                                                uri: item.avatar,
                                             }}
                                         ></Image>
                                     </View>
                                     <View style={{ flex: 1, marginLeft: 8 }}>
                                         <View>
-                                            <Text style={styles.content}>{item.content}</Text>
-                                            <Text>{item.time}</Text>
+                                            <NotificationContent notification={item} />
+                                            <GenerateTime notification={item} />
                                         </View>
                                     </View>
                                     <View style={{ marginLeft: 8 }}>

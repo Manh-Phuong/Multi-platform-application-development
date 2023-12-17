@@ -98,17 +98,19 @@ const Login = () => {
           "uuid": "string1"
         })
         .then(async(res) => {
-          console.log(res.data);
+          const info = res.data.data;
+          info['email'] = account,
+          info['password'] = password
           await AsyncStorage.setItem('token', res.data.data.token);
+          await AsyncStorage.setItem('accountInfo', JSON.stringify(info));
           navigation.navigate("Home")
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log(err)
           Alert.alert("Sai thông tin đăng nhập", "Tên người dùng hoặc mật khẩu không hợp lệ")
         })
         .finally(async() => {
           setIsLogining(false);
-          const data = await AsyncStorage.getItem('token');
-          console.log(data)
         })
       }
     }
