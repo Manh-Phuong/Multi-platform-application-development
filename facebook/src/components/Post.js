@@ -47,6 +47,7 @@ import {
 } from '@fortawesome/free-regular-svg-icons';
 import { calculateTimeAgo } from '../components/Convert';
 import * as PostServices from '../services/PostServices';
+import { useDispatch, useSelector } from 'react-redux';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -151,6 +152,8 @@ const VideoPlay = ({ urlVideo, offsetY }) => {
 
 export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...props }) {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const user_id = useSelector((state) => state.profile.user_id);
     const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
     const [isModalVisible, setModalVisible] = useState(false);
     const [isModalReport, setModalReport] = useState(false);
@@ -299,7 +302,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                 const result = await PostServices.deletePost(id);
 
                                 // Thực hiện các bước xóa hoặc thông báo thành công tùy thuộc vào kết quả
-                                console.log('Bài viết đã được xóa thành công', result);
+                                // console.log('Bài viết đã được xóa thành công', result);
 
                                 // Đối với ví dụ này, bạn có thể thêm các bước khác sau khi xóa bài viết ở đây
                             } catch (error) {
@@ -315,6 +318,11 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
         }
     };
 
+    // const isString = (value) => {
+    //     console.log(typeof value)
+    //     return typeof value === 'string' || value instanceof String;
+    //   };
+
     return (
         <View style={[styles.container, { backgroundColor: darkMode ? '#242526' : '#fff' }]}>
             <View style={styles.header}>
@@ -323,14 +331,24 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
             style={styles.wrapAvatar}
             source={require("../assets/images/avatar-sample.png")}
           ></Image> */}
-                    <Image
-                        style={styles.wrapAvatar}
-                        source={{
-                            uri:
-                                props.item?.avatar ||
-                                'https://scontent.fhan15-1.fna.fbcdn.net/v/t39.30808-1/356150905_221055794134074_7342427060415828020_n.jpg?stp=cp0_dst-jpg_p60x60&_nc_cat=1&ccb=1-7&_nc_sid=5f2048&_nc_ohc=qsmztDXjbrgAX-UdlbA&_nc_ht=scontent.fhan15-1.fna&oh=00_AfDT1VZf8gV7mZsMT07r4iENKWnEi-KoIXCYDju-9BcRlw&oe=653C4A7B',
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (user_id != props?.item?.owner_id) {
+                                navigation.navigate('ProfileOtherDetail', { props: props?.item?.owner_id });
+                            } else {
+                                navigation.navigate('ProfileDetail');
+                            }
                         }}
-                    />
+                    >
+                        <Image
+                            style={styles.wrapAvatar}
+                            source={{
+                                uri:
+                                    props.item?.avatar ||
+                                    'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                            }}
+                        />
+                    </TouchableOpacity>
 
                     <View
                         style={{
@@ -339,28 +357,40 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         }}
                     >
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Text
-                                numberOfLines={2}
-                                ellipsizeMode="tail"
-                                style={{
-                                    fontWeight: 600,
-                                    fontSize: 18,
-                                    color: darkMode ? '#fff' : '#000',
+                            <TouchableOpacity
+                                onPress={() => {
+                                    if (user_id != props?.item?.owner_id) {
+                                        navigation.navigate('ProfileOtherDetail', { props: props?.item?.owner_id });
+                                    } else {
+                                        navigation.navigate('ProfileDetail');
+                                    }
                                 }}
                             >
-                                {props.item?.owner}{' '}
                                 <Text
+                                    numberOfLines={2}
+                                    ellipsizeMode="tail"
                                     style={{
-                                        fontWeight: 400,
+                                        fontWeight: 600,
                                         fontSize: 18,
-                                        color: '#65676b',
+                                        color: darkMode ? '#fff' : '#000',
                                     }}
                                 >
-                                    {props?.item?.state != 'Hyped' &&
-                                        props?.item?.state != '' &&
-                                        `đang cảm thấy ${props?.item?.state}`}
+                                    {props.item?.owner}
+                                    <Text
+                                        style={{
+                                            fontWeight: 400,
+                                            fontSize: 18,
+                                            color: '#65676b',
+                                        }}
+                                    >
+                                        {props?.item?.state != 'Hyped' &&
+                                            props?.item?.state != '{"type":"activities"}' &&
+                                            typeof props?.item?.state === 'string' &&
+                                            props?.item?.state != '' &&
+                                            ` đang cảm thấy ${props?.item?.state}`}
+                                    </Text>
                                 </Text>
-                            </Text>
+                            </TouchableOpacity>
                             {/* <Text
                                 numberOfLines={2}
                                 ellipsizeMode="tail"
@@ -414,69 +444,70 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 </Text>
             </View>
             <View>
-                {props.item?.image ? (
+                {props.item?.images ? (
                     <View>
-                        {props.item?.image && props.item?.image.length == 4 && (
+                        {props.item?.images && props.item?.images.length == 4 && (
                             <View style={styles.imagePart_4}>
-                                {props.item?.image &&
-                                    props.item?.image?.map((item, index) => (
+                                {props.item?.images &&
+                                    props.item?.images?.map((item, index) => (
                                         <View
                                             key={index}
                                             style={{ width: '50%', height: 200, paddingRight: 4, marginBottom: 4 }}
                                         >
                                             <Image
-                                                source={{ uri: item }}
+                                                source={{ uri: item?.url }}
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />
                                         </View>
                                     ))}
                             </View>
                         )}
-                        {props.item?.image && props.item?.image.length == 3 && (
+                        {props.item?.images && props.item?.images.length == 3 && (
                             <View style={styles.imagePart_3}>
                                 <View style={{ display: 'flex', flexDirection: 'row', width: '100%', height: 400 }}>
                                     <View style={{ width: '50%', height: 400, paddingRight: 4, marginBottom: 4 }}>
                                         <Image
-                                            source={{ uri: props.item?.image[0] }}
+                                            source={{ uri: props.item?.images[0]?.url }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
                                     </View>
                                     <View style={{ display: 'flex', rowGap: 4, width: '50%', height: 198 }}>
                                         <Image
-                                            source={{ uri: props.item?.image[1] }}
+                                            source={{ uri: props.item?.images[1]?.url }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
                                         <Image
-                                            source={{ uri: props.item?.image[2] }}
+                                            source={{ uri: props.item?.images[2]?.url }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
                                     </View>
                                 </View>
                             </View>
                         )}
-                        {props.item?.image && props.item?.image.length == 2 && (
+                        {props.item?.images && props.item?.images.length == 2 && (
                             <View style={styles.imagePart_2}>
-                                {props.item?.image &&
-                                    props.item?.image?.map((item, index) => (
+                                {props.item?.images &&
+                                    props.item?.images?.map((item, index) => (
                                         <View
                                             key={index}
                                             style={{ width: '50%', height: 400, paddingRight: 4, marginBottom: 4 }}
                                         >
                                             <Image
-                                                source={{ uri: item }}
+                                                source={{ uri: item?.url }}
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />
                                         </View>
                                     ))}
                             </View>
                         )}
-                        {props.item?.image && props.item?.image.length == 1 && (
+                        {props.item?.images && props.item?.images.length == 1 && (
                             <View style={styles.imagePart_1}>
                                 <View style={{ width: '100%', height: 400, marginBottom: 4 }}>
                                     <Image
-                                        source={{ uri: props.item?.image[0] }}
+                                        source={{ uri: props.item?.images[0]?.url }}
                                         style={{ width: imageSize.width, height: imageSize.height, objectFit: 'cover' }}
                                     />
+                                    {/* <Text>{ props.item?.images[0]?.url }</Text> */}
                                 </View>
                             </View>
                         )}

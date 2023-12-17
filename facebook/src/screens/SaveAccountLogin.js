@@ -13,7 +13,8 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome"; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { LinearGradient } from "expo-linear-gradient";
-
+import { login } from "../services/AuthServices";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const SaveAccountLogin = () => {
   const navigation = useNavigation();
   const [isShowPopup, setIsShowPopup] = useState(false);
@@ -21,6 +22,21 @@ const SaveAccountLogin = () => {
   const togglePopup = () => {
     setIsShowPopup(!isShowPopup);
   };
+
+  const handleLogin = async () => {
+    const email = await AsyncStorage.getItem('email')
+    const password = await AsyncStorage.getItem('password')
+    try {
+      const res = await login({email, password})
+      if (res.data.code == "1000") {
+        navigation.navigate("Home")
+      }
+    }
+    catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <LinearGradient
@@ -54,7 +70,7 @@ const SaveAccountLogin = () => {
           </View>
         </View>
 
-        <View style={[styles.infoLoginBar, styles.boxShadow]}>
+        <TouchableOpacity style={[styles.infoLoginBar, styles.boxShadow]} onPress={handleLogin}>
           <View style={styles.infoLoginBarRight}>
             <Image
               style={styles.accountImage}
@@ -76,7 +92,7 @@ const SaveAccountLogin = () => {
               <Text style={styles.popupMenuItem}>Tắt thông báo đẩy</Text>
             </View>
           )}
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.subButtonView}>
           <TouchableOpacity

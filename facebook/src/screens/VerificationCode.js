@@ -14,12 +14,11 @@ import { Color, FontFamily, FontSize } from "../GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
-
-
+import { changeProfileAfterSignUp, checkVerifyCode, login } from "../services/AuthServices";
+import { UseSelector } from "react-redux/es/hooks/useSelector";
+import { removeToken } from "../utils/getToken";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 const VerificationCode = () => {
-    const email = useSelector((state) => state.account.email)
-    const password = useSelector((state) => state.account.password)
     const navigation = useNavigation();
     const goBackHandler = () => {
         navigation.goBack(); // Quay lại màn hình trước đó
@@ -37,7 +36,12 @@ const VerificationCode = () => {
         setIsFocusedCode(false);
     };
     const codeInputRef = useRef(null);
-    const handleSummit = () => {
+
+    const email = useSelector((state) => state.account.email)
+    const username = useSelector((state) => state.account.nickname)
+    const password = useSelector((state) => state.account.password)
+
+    const handleSummit = async () => {
         if (!code.trim() || code.length <5) {
             Alert.alert("Cần có mã xác nhận", 'Hãy nhập chính xác mã xác nhận.', [{
                 text: 'OK',
@@ -47,22 +51,41 @@ const VerificationCode = () => {
             },])
         }
         else {
-            console.log({
-                "email": email,
-                "password": password,
-                "uuid": "string"
-            })
-            axios.post("https://it4788.catan.io.vn/signup", {
-                "email": email,
-                "password": password,
-                "uuid": "string"
-            })
-            .then(res => {
-                alert("Đăng ký thành công!")
-            })
-            .catch(err => {
+            try {
+                const res =  await checkVerifyCode(email, code)
+                if (res.data.code == "1000") {
+                    try {
+                        const res = await login({email, password, uuid: "string"})
+                        if (res.data.code == "1000") {
+                            try {
+                                const res = await changeProfileAfterSignUp({username})
+                                if (res.data.code == "1000") {
+                                    await removeToken();
+                                    const email = await AsyncStorage.getItem('email'); 
+                                    const password = await AsyncStorage.getItem('password');
+                                    if (email && password) {
+                                        navigation.navigate("SaveAccountLogin")
+                                    }
+                                    else navigation.navigate("Login")
+                                }
+                            }
+                            catch(err) {
+                                console.log(err)
+                            }
+                        }
+                    }
+                    catch(err) {
+                        console.log(err)
+                    }
+                   
+                }
+                else {
+                    Alert.alert("Mã xác nhận không chính xác!", "Vui lòng nhập lại mã xác nhận!")
+                }
+            }
+            catch(err) {
                 console.log(err)
-            })
+            }
         }
     }
 
@@ -98,7 +121,7 @@ const VerificationCode = () => {
                     </View>
                     <View>
                         <KeyboardAvoidingView >
-                            <TextInput maxLength={5} 
+                            <TextInput maxLength={6} 
                                     style={[styles.inputtextCode, 
                                         isFocusedCode ? styles.focusedInput : null]
                                             } 
