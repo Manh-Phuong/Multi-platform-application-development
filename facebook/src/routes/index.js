@@ -41,6 +41,7 @@ import PreviewImage from '../screens/PreviewImage';
 import EditDetail from '../screens/EditDetail';
 import ProfileOtherDetail from '../screens/ProfileOtherDetail';
 import Test from '../screens/Test';
+import ActivityLog from '../screens/ActivityLog';
 
 const publicRoutes = [
     {
@@ -214,6 +215,10 @@ const publicRoutes = [
     {
         name: 'Test',
         component: Test,
+    },
+    {
+        name: 'ActivityLog',
+        component: ActivityLog,
     },
 ];
 
