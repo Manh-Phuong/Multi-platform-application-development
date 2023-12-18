@@ -6,6 +6,7 @@ import friendSlice from '../feature/friend';
 import listPostSlice from '../feature/listPost';
 import blockSlice from '../feature/block';
 import settingSlice from '../feature/settings';
+import loadingReducer from '../feature/loading'
 
 export default configureStore({
     reducer: {
@@ -16,5 +17,6 @@ export default configureStore({
         listPost: listPostSlice,
         block: blockSlice,
         settings: settingSlice,
+        loading: loadingReducer
     },
 });

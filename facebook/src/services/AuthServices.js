@@ -3,7 +3,6 @@ import request from '../utils/httpRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const signup = async ({ email, password, uuid="string" }) => {
-    console.log(email, password, uuid)
     try {
         const res = await request.post('/signup', { email, password, uuid });
         console.log(res.response)
@@ -16,7 +15,6 @@ export const signup = async ({ email, password, uuid="string" }) => {
 export const login = async ({ email, password, uuid="string" }) => {
     try {
         const res = await request.post('/login', { email, password, uuid });
-        await AsyncStorage.setItem('token', res.data.data.token);
         return res;
     } catch (err) {
         console.log(err);

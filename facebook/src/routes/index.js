@@ -45,6 +45,8 @@ import BlockList from '../screens/BlockList';
 import BuyCoins from '../screens/BuyCoins';
 import SettingNotification from '../screens/SettingNotification';
 import Test from '../screens/Test';
+import ActivityLog from '../screens/ActivityLog';
+import DetailPost from '../screens/DetailPost';
 
 const publicRoutes = [
     {
@@ -234,6 +236,14 @@ const publicRoutes = [
     {
         name: 'Test',
         component: Test,
+    },
+    {
+        name: 'ActivityLog',
+        component: ActivityLog,
+    },
+    {
+        name: 'DetailPost',
+        component: DetailPost,
     },
 ];
 

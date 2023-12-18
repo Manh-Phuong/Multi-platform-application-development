@@ -76,13 +76,14 @@ const Header = () => {
     return (
         <View>
             <View style={styles.underNav}>
-                <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')}>
-                    <Image
+                <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')} style={{backgroundColor: 'blue'}}>
+                    {/* <Image
                         style={styles.wrapAvatar}
                         source={{
                             uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
                         }}
-                    />
+                    /> */}
+                    <Text>avatar</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
@@ -281,7 +282,6 @@ export default function Home() {
                 index: '0',
                 count: '10',
             });
-
             setLastId(response.data.data.last_id);
 
             // console.log(response.data.data.post);
@@ -700,21 +700,9 @@ const styles = StyleSheet.create({
     },
 
     underNav: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: withScreen - 40,
-        paddingTop: 20,
-        marginLeft: 16,
-        marginRight: 24,
-    },
-
-    wrapAvatar: {
-        width: 46,
-        height: 46,
-        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row'
     },
 
     youThink: {
