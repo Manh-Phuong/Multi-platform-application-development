@@ -42,6 +42,7 @@ import EditDetail from '../screens/EditDetail';
 import ProfileOtherDetail from '../screens/ProfileOtherDetail';
 import Test from '../screens/Test';
 import ActivityLog from '../screens/ActivityLog';
+import DetailPost from '../screens/DetailPost';
 
 const publicRoutes = [
     {
@@ -219,6 +220,10 @@ const publicRoutes = [
     {
         name: 'ActivityLog',
         component: ActivityLog,
+    },
+    {
+        name: 'DetailPost',
+        component: DetailPost,
     },
 ];
 
