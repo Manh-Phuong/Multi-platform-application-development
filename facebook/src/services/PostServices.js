@@ -14,7 +14,6 @@ export const addPost = async (data) => {
 
         return res;
     } catch (err) {
-        console.log('addPost', err.response);
         Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại.', [
             {
                 text: 'OK',
@@ -34,20 +33,21 @@ export const addPost = async (data) => {
 //     }
 // };
 
-export const getPost = async () => {
+export const getPost = async ({id="737"}) => {
     try {
         const headers = await createAuthHeader();
         const res = await request.post(
             '/get_post',
             {
-                id: '1',
+                id: id,
             },
             { headers },
-        );
+        );``
 
         return res;
     } catch (err) {
         console.log(err);
+        return err;
     }
 };
 
@@ -55,11 +55,8 @@ export const getListPost = async (formData) => {
     try {
         const headers = await createAuthHeader();
         const res = await request.post('/get_list_posts', formData, { headers });
-
         return res;
     } catch (err) {
-        console.log(err.response.data);
-        console.log(err);
         if (err.response.data.code == '9998') {
             Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
                 {
@@ -88,8 +85,6 @@ export const getListVideos = async (formData) => {
 
         return res;
     } catch (err) {
-        console.log(err.response.data);
-        console.log(err);
         if (err.response.data.code == '9998') {
             Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
                 {
@@ -113,7 +108,6 @@ export const deletePost = async (id) => {
         }
         return res;
     } catch (err) {
-        console.log('err', err.response.data);
         if (err.response.data.code == '9998') {
             Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
                 {

@@ -48,6 +48,8 @@ import {
 import { calculateTimeAgo } from '../components/Convert';
 import * as PostServices from '../services/PostServices';
 import { useDispatch, useSelector } from 'react-redux';
+import { getListComment, getListFeel } from '../services/CommentServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -162,65 +164,25 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
     const [isKeyboardOpen, setKeyboardOpen] = useState(false);
     const [selectedReports, setSelectedReports] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [listCmt, setListCmt] = useState([]);
 
-    const options = ["Ảnh thoả thân", "Bạo lực", "Quấy rối", "Tự tử/Tự gây thương tích", "Tin giả", "Spam", "Bán hàng trái phép", "Ngôn ngữ gây thù ghét", "Khủng bố", "Vấn đề khác"];
+    const options = [
+        'Ảnh thoả thân',
+        'Bạo lực',
+        'Quấy rối',
+        'Tự tử/Tự gây thương tích',
+        'Tin giả',
+        'Spam',
+        'Bán hàng trái phép',
+        'Ngôn ngữ gây thù ghét',
+        'Khủng bố',
+        'Vấn đề khác',
+    ];
     const onOptionPress = (option) => {
         if (selectedReports.includes(option)) {
-            setSelectedReports(selectedReports.filter(item => item !== option));
+            setSelectedReports(selectedReports.filter((item) => item !== option));
         } else {
             setSelectedReports([...selectedReports, option]);
-        }
-    };
-    const [comments, setComments] = useState([
-        {
-            name: 'Nguyễn Văn A',
-            content: 'Bình luận 1',
-        },
-        {
-            name: 'Nguyễn Văn B',
-            content: 'Bình luận 2',
-        },
-        {
-            name: 'Nguyễn Văn A',
-            content: 'Bình luận 1',
-        },
-        {
-            name: 'Nguyễn Văn B',
-            content: 'Bình luận 2',
-        },
-        {
-            name: 'Nguyễn Văn A',
-            content: 'Bình luận 1',
-        },
-        {
-            name: 'Nguyễn Văn B',
-            content: 'Bình luận 2',
-        },
-        {
-            name: 'Nguyễn Văn A',
-            content: 'Bình luận 1',
-        },
-        {
-            name: 'Nguyễn Văn B',
-            content: 'Bình luận 2',
-        },
-        {
-            name: 'Nguyễn Văn A',
-            content: 'Bình luận 1',
-        },
-        {
-            name: 'Nguyễn Văn B',
-            content: 'Bình luận 2',
-        },
-        // ...Thêm bình luận khác nếu cần
-    ]);
-
-    const [newComment, setNewComment] = useState('');
-
-    const addComment = () => {
-        if (newComment) {
-            setComments([...comments, { nickname: 'Tuấn Bùi', text: newComment }]);
-            setNewComment('');
         }
     };
 
@@ -235,7 +197,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
     const toggleLike = () => {
         setLike(!like);
     };
-    
+
     const handleReportButtonClick = () => {
         setModalReport(false);
         setTimeout(() => {
@@ -322,6 +284,31 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
     //     console.log(typeof value)
     //     return typeof value === 'string' || value instanceof String;
     //   };
+
+    // const getDataOfPost = async () => {
+    //     if (props && props.item) {
+    //         const res = await getListComment({ id: props.item.id });
+
+    //         if (res.code == 1000) {
+    //             setListCmt(res.data);
+    //         }
+    //     }
+    // };
+
+    const handleShowDetailPost = async () => {
+        if (props && props.item) {
+            let type = false;
+            const res = await getListComment({ id: props.item.id });
+            const res2 = await PostServices.getPost({id: props.item.id})
+            if (res2.data.code == 1000) {
+                props.item["feel"] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10)
+                type = res2.data.data.is_felt
+            }
+            if (res.code == 1000) {
+                navigation.navigate('DetailPost',{ postInfo: props.item, listCmt: res?.data, type});
+            }
+        }
+    };
 
     return (
         <View style={[styles.container, { backgroundColor: darkMode ? '#242526' : '#fff' }]}>
@@ -505,7 +492,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                 <View style={{ width: '100%', height: 400, marginBottom: 4 }}>
                                     <Image
                                         source={{ uri: props.item?.images[0]?.url }}
-                                        style={{ width: imageSize.width, height: imageSize.height, objectFit: 'cover' }}
+                                        style={{ width: "100%", height: "100%", objectFit: 'cover' }}
                                     />
                                     {/* <Text>{ props.item?.images[0]?.url }</Text> */}
                                 </View>
@@ -613,7 +600,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 </View>
 
                 {/* onpress -> oncommentPress */}
-                <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <TouchableOpacity onPress={handleShowDetailPost}>
                     <View style={styles.footerItem}>
                         <Image
                             style={{
@@ -655,116 +642,6 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                     </Text>
                 </View>
             </View>
-
-            <Modal
-                isVisible={isModalVisible}
-                onSwipeComplete={toggleModal}
-                swipeDirection={['down']}
-                style={{ justifyContent: 'flex-end', margin: 0 }}
-            >
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={{
-                        backgroundColor: 'white',
-                        // padding: 16,
-                        // height: heightScreen * 0.9,
-                        height: modalHeight,
-                        position: 'relative',
-                    }}
-                >
-                    <View
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            padding: 16,
-                        }}
-                    >
-                        <View
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Image
-                                style={{ width: 20, height: 20 }}
-                                contentFit="cover"
-                                source={require('../assets/icons/likeIconColor.png')}
-                            />
-                            <Text style={{ margin: 5 }}>146</Text>
-                            <FontAwesomeIcon icon={faAngleRight} size={18} color="black" />
-                        </View>
-                        <TouchableOpacity onPress={toggleLike}>
-                            {like ? (
-                                <Image
-                                    style={{ width: 24, height: 24 }}
-                                    contentFit="cover"
-                                    source={require('../assets/icons/likedIcon.png')}
-                                />
-                            ) : (
-                                <Image
-                                    style={{
-                                        width: 24,
-                                        height: 24,
-                                        marginTop: 2,
-                                        marginBottom: -2,
-                                    }}
-                                    contentFit="cover"
-                                    source={require('../assets/icons/likeIcon.png')}
-                                />
-                            )}
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={{}}>
-                        <View style={styles.containerFlex}>
-                            <Text style={styles.title}>Hiển thị bình luận trước...</Text>
-                        </View>
-                        <FlatList
-                            data={comments}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item }) => (
-                                <View style={[styles.containerFlex, { marginTop: 10, marginLeft: 8, marginRight: 8 }]}>
-                                    <Image
-                                        style={styles.accountImage}
-                                        source={require('../assets/images/avatar-sample.png')}
-                                    ></Image>
-                                    <View style={{ maxWidth: withScreen * 0.85 }}>
-                                        <View style={styles.textComment}>
-                                            <Text style={{ fontWeight: 'bold' }}>{item.name}</Text>
-                                            <Text>{item.content}</Text>
-                                        </View>
-                                        <View style={styles.containerFlex}>
-                                            <Text>20p</Text>
-                                            <Text style={{ marginLeft: 20, marginRight: 20 }}>Thích</Text>
-                                            <Text>Phản hồi</Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            )}
-                        />
-                    </View>
-
-                    <View style={[styles.commentInput, { position: 'absolute', bottom: 0 }]}>
-                        <TouchableOpacity>
-                            <View style={styles.wrapIconNews}>
-                                <FontAwesomeIcon icon={faPlus} size={22} color="white" />
-                            </View>
-                        </TouchableOpacity>
-                        <TextInput
-                            style={styles.input}
-                            placeholder="Viết bình luận..."
-                            value={newComment}
-                            onChangeText={setNewComment}
-                        />
-                        <TouchableOpacity style={{ marginRight: 8, marginLeft: 8 }} onPress={addComment}>
-                            <SendIcon width="24" height="24" fill={newComment.trim().length > 0 ? '#0866ff' : '#ccc'} />
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
-            </Modal>
 
             <Modal
                 isVisible={isModalReport}
@@ -931,7 +808,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 isVisible={isModalReportSubmit}
                 onSwipeComplete={toggleModalReportSubmit}
                 swipeDirection={['down']}
-                style={{ justifyContent: 'flex-end', margin: 5 }}
+                style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View
                     style={{
@@ -950,32 +827,50 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                             marginLeft: 'auto',
                             marginRight: 'auto',
                             borderRadius: 4,
-                            marginBottom: 8
+                            marginBottom: 8,
                         }}
                     ></View>
-                    <Text style={{ fontSize: 18, fontWeight: "600", marginLeft: 10 }}>Vui lòng chọn vấn đề để tiếp tục</Text>
-                    <Text style={{ fontSize: 16, marginLeft: 10, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>Bạn có thể báo cáo bài viết sau khi chọn vấn đề</Text>
+                    <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 10 }}>
+                        Vui lòng chọn vấn đề để tiếp tục
+                    </Text>
+                    <Text style={{ fontSize: 16, marginLeft: 10, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>
+                        Bạn có thể báo cáo bài viết sau khi chọn vấn đề
+                    </Text>
                     <View style={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap' }}>
                         {options.map((option, index) => (
                             <TouchableOpacity
                                 key={index}
-                                style={[styles.boxReport, selectedReports.includes(option) ? styles.boxReportSelected : {}]}
+                                style={[
+                                    styles.boxReport,
+                                    selectedReports.includes(option) ? styles.boxReportSelected : {},
+                                ]}
                                 onPress={() => onOptionPress(option)}
                             >
-                                {option === "Vấn đề khác" ? <FontAwesomeIcon icon={faSearch} /> : null}
+                                {option === 'Vấn đề khác' ? <FontAwesomeIcon icon={faSearch} /> : null}
                                 <Text style={styles.buttonText}>{option}</Text>
                             </TouchableOpacity>
                         ))}
                     </View>
                     <View style={styles.divSmall}></View>
-                    <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 10, marginTop: 10, marginBottom: 8 }}>Các bước khác mà bạn có thể thực hiện</Text>
+                    <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 10, marginTop: 10, marginBottom: 8 }}>
+                        Các bước khác mà bạn có thể thực hiện
+                    </Text>
                     <TouchableOpacity>
                         <View style={styles.item}>
                             <View style={styles.flexRow}>
                                 <FontAwesomeIcon icon={faUserLock} size={20} />
                                 <View>
                                     <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Chặn nó</Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16, opacity: 0.6, flexWrap: 'wrap', width: 300 }}>
+                                    <Text
+                                        style={{
+                                            fontSize: 14,
+                                            fontWeight: 400,
+                                            marginLeft: 16,
+                                            opacity: 0.6,
+                                            flexWrap: 'wrap',
+                                            width: 300,
+                                        }}
+                                    >
                                         Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau
                                     </Text>
                                 </View>
@@ -987,8 +882,19 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                             <View style={styles.flexRow}>
                                 <FontAwesomeIcon icon={faRectangleXmark} size={20} />
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Bỏ theo dõi nó</Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16, opacity: 0.6, flexWrap: 'wrap', width: 300 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        Bỏ theo dõi nó
+                                    </Text>
+                                    <Text
+                                        style={{
+                                            fontSize: 14,
+                                            fontWeight: 400,
+                                            marginLeft: 16,
+                                            opacity: 0.6,
+                                            flexWrap: 'wrap',
+                                            width: 300,
+                                        }}
+                                    >
                                         Dừng xem bài viết nhưng vẫn là bạn bè
                                     </Text>
                                 </View>
@@ -999,27 +905,32 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         <FontAwesomeIcon icon={faSearch} size={20} style={styles.iconStyle} />
                         {!inputValue && (
                             <Text style={styles.placeholderStyle}>
-                                Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ cấp cứu địa phương
+                                Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ
+                                cấp cứu địa phương
                             </Text>
                         )}
                         <TextInput
                             style={styles.textInputStyle}
                             multiline
                             value={inputValue}
-                            onChangeText={text => setInputValue(text)}
+                            onChangeText={(text) => setInputValue(text)}
                             placeholderTextColor="#ccc"
                         />
                     </View>
-                    <TouchableOpacity style={{
-                        backgroundColor: '#e5e6ed', paddingVertical: 10,
-                        paddingHorizontal: 20,
-                        width: 320,
-                        borderRadius: 5,
-                        justifyContent: 'center', alignItems: 'center',
-                        height: 40,
-                        marginLeft: 30,
-                        marginTop: 15
-                    }}>
+                    <TouchableOpacity
+                        style={{
+                            backgroundColor: '#e5e6ed',
+                            paddingVertical: 10,
+                            paddingHorizontal: 20,
+                            width: 320,
+                            borderRadius: 5,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            height: 40,
+                            marginLeft: 30,
+                            marginTop: 15,
+                        }}
+                    >
                         <Text style={{ color: '#000', fontSize: 16, fontWeight: '500', opacity: 0.6 }}>Tiếp</Text>
                     </TouchableOpacity>
                 </View>
@@ -1257,7 +1168,6 @@ const styles = StyleSheet.create({
     },
     boxReportSelected: {
         backgroundColor: '#0967ff',
-
     },
     buttonText: {
         paddingHorizontal: 4,
@@ -1271,15 +1181,17 @@ const styles = StyleSheet.create({
         height: 90,
         marginHorizontal: 20,
         borderRadius: 6,
-        borderColor: "#aaa"
+        borderColor: '#aaa',
     },
     textInputStyle: {
-        flexWrap: 'wrap', width: 300
+        flexWrap: 'wrap',
+        width: 300,
     },
     placeholderStyle: {
         // Style giống với TextInput nhưng với màu và kích thước font khác
         position: 'absolute',
-        top: 0, left: 10, // Căn chỉnh vị trí
+        top: 0,
+        left: 10, // Căn chỉnh vị trí
         color: '#ccc',
         // Các style khác để phù hợp với TextInput
     },

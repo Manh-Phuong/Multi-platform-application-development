@@ -281,7 +281,6 @@ export default function Home() {
                 index: '0',
                 count: '10',
             });
-
             setLastId(response.data.data.last_id);
 
             // console.log(response.data.data.post);
