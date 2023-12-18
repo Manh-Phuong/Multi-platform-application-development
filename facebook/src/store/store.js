@@ -4,6 +4,8 @@ import postReducer from '../feature/post';
 import profileReducer from '../feature/profile';
 import friendSlice from '../feature/friend';
 import listPostSlice from '../feature/listPost';
+import blockSlice from '../feature/block';
+import settingSlice from '../feature/settings';
 
 export default configureStore({
     reducer: {
@@ -12,5 +14,7 @@ export default configureStore({
         profile: profileReducer,
         friend: friendSlice,
         listPost: listPostSlice,
+        block: blockSlice,
+        settings: settingSlice,
     },
 });

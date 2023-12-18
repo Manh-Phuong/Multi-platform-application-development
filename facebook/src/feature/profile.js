@@ -10,7 +10,7 @@ const initialState = {
     city: '',
     country: '',
     link: '',
-    coins: '',
+    coins: '50',
     temp: '',
 };
 
@@ -91,6 +91,7 @@ export const {
     setStoreCity,
     setStoreCountry,
     setStoreLink,
+    setStoreCoins,
     setStoreTemp,
     setStoreProfile,
 } = profileSlice.actions;

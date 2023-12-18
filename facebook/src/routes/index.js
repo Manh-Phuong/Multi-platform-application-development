@@ -40,6 +40,10 @@ import DetailActivity from '../screens/DetailActivity';
 import PreviewImage from '../screens/PreviewImage';
 import EditDetail from '../screens/EditDetail';
 import ProfileOtherDetail from '../screens/ProfileOtherDetail';
+import ProfileSetting from '../screens/ProfileSetting';
+import BlockList from '../screens/BlockList';
+import BuyCoins from '../screens/BuyCoins';
+import SettingNotification from '../screens/SettingNotification';
 import Test from '../screens/Test';
 
 const publicRoutes = [
@@ -210,6 +214,22 @@ const publicRoutes = [
     {
         name: 'ProfileOtherDetail',
         component: ProfileOtherDetail,
+    },
+    {
+        name: 'ProfileSetting',
+        component: ProfileSetting,
+    },
+    {
+        name: 'BlockList',
+        component: BlockList,
+    },
+    {
+        name: 'BuyCoins',
+        component: BuyCoins,
+    },
+    {
+        name: 'SettingNotification',
+        component: SettingNotification,
     },
     {
         name: 'Test',

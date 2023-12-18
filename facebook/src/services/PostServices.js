@@ -15,11 +15,14 @@ export const addPost = async (data) => {
         return res;
     } catch (err) {
         console.log('addPost', err.response);
-        Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại.', [
-            {
-                text: 'OK',
-            },
-        ]);
+        if (err.response.data.code != '2001') {
+            Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại.', [
+                {
+                    text: 'OK',
+                },
+            ]);
+        }
+        return err.response;
     }
 };
 
