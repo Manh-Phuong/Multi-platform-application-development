@@ -606,7 +606,7 @@ const ProfileOtherDetail = () => {
 
             setHasData(response.data.data.post?.length > 0);
         } catch (error) {
-            console.error('Error fetching data', error);
+            console.error('Error fetching data5', error);
             setLoading(false);
         } finally {
             setLoading(false);

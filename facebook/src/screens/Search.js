@@ -59,7 +59,7 @@ export default function Search() {
                     }
                 }
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data6:', error);
             }
         };
 
@@ -86,7 +86,7 @@ export default function Search() {
                 }
             }
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error('Error fetching data7:', error);
         }
     };
     const handleSearch = async () => {

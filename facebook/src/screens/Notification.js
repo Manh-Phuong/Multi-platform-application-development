@@ -6,6 +6,8 @@ import Modal from 'react-native-modal';
 import { useEffect, useState } from 'react';
 import { getNotification } from '../services/NotificationServices';
 import { useNavigation } from '@react-navigation/native';
+import { getPost } from '../services/PostServices';
+import { getListComment } from '../services/CommentServices';
 
 const Header = () => {
     return (
@@ -93,27 +95,45 @@ const NotificationContent = ({ notification }) => {
                 </Text>
             );
         case '3':
-            return <Text>A new post has been added.</Text>;
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã đăng bài viết mới.</Text>
+                </Text>
+            );
         case '4':
-            return <Text>A post has been updated.</Text>;
+            <Text>
+                <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                <Text>đã cập nhật bài viết.</Text>
+            </Text>;
         case '5':
             return (
                 <Text>
                     <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
-                    <Text>đã bày tỏ cảm xúc về bài viết của bạn.</Text>
+                    <Text>đã bày tỏ cảm xúc về bài viết của bạn</Text>
                 </Text>
             );
         case '6':
-            return <Text>Your post has been marked.</Text>;
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã bình luận về bài viết</Text>
+                </Text>
+            );
         case '7':
             return (
                 <Text>
                     <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
-                    <Text>đã bình luận về bài viết của bạn.</Text>
+                    <Text>đã bình luận về bài viết.</Text>
                 </Text>
             );
         case '8':
-            return <Text>A new video has been added.</Text>;
+            return (
+                <Text>
+                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text>đã đăng một video mới.</Text>{' '}
+                </Text>
+            );
         case '9':
             return (
                 <Text>
@@ -122,26 +142,26 @@ const NotificationContent = ({ notification }) => {
                 </Text>
             );
         default:
-            return <Text>Unknown notification type.</Text>;
+            return <Text>Unknown notification type.</Text>
     }
 };
 
-const GenerateTime = ({notification}) => {
+const GenerateTime = ({ notification }) => {
     const inputDate = new Date(notification.created);
     const currentDate = new Date();
     const timeDifference = (currentDate - inputDate) / 1000; // Chuyển đổi sang giây
 
-    if (timeDifference < 2) {
-        return <Text>Vừa xong</Text>
+    if (timeDifference < 60) {
+        return <Text>Vừa xong</Text>;
     } else if (timeDifference < 3600) {
         const minutes = Math.floor(timeDifference / 60);
-        return <Text>{minutes} phút trước</Text>
+        return <Text>{minutes} phút trước</Text>;
     } else if (timeDifference < 86400) {
         const hours = Math.floor(timeDifference / 3600);
-        return <Text>{hours} giờ trước</Text>
+        return <Text>{hours} giờ trước</Text>;
     } else {
         const days = Math.floor(timeDifference / 86400);
-        return <Text>{days} ngày trước</Text>
+        return <Text>{days} ngày trước</Text>;
     }
 };
 
@@ -165,57 +185,65 @@ const Notification = () => {
     useEffect(() => {
         const getNotify = async () => {
             const res = await getNotification({});
-            console.log(res.data);
+            console.log(res.data[0]);
             setListNotify(res.data);
         };
 
         getNotify();
     }, []);
-
-    const handlePressComment = (type, id) => {
+    const getSinglePost = async (id) => {
+        const res = await getPost({ id });
+        const resCmt = await getListComment({ id });
+        let postInfo = {};
+        if (res.data.code == 1000) {
+            res.data.data['feel'] = parseInt(res.data.data.kudos, 10) + parseInt(res.data.data.disappointed, 10);
+            type = res.data.data.is_felt;
+            postInfo = {
+                id: res.data.data?.id,
+                owner: res.data.data.author.name,
+                owner_id: res.data.data.author.id,
+                avatar: res.data.data.author.avatar,
+                content: res.data.data.described,
+                images: res.data.data?.image,
+                video: res.data.data?.video?.url,
+                created: res.data.data?.created,
+                feel: res.data.data?.feel,
+                comment_mark: res.data.data?.comment_mark,
+                is_felt: res.data.data?.is_felt,
+                is_blocked: res.data.data?.is_blocked,
+                can_edit: res.data.data?.can_edit,
+                banned: res.data.data?.banned,
+                state: res.data.data?.state,
+            };
+            navigation.navigate('DetailPost', { postInfo: postInfo, listCmt: resCmt?.data, type });
+        }
+    };
+    const handlePressComment = (type, id, index) => {
+        listNotify.at(index).read = 1;
+        console.log(index)
         switch (type) {
             case '1':
-                navigation.navigate('Friend')
-            // case '2':
-            //     return (
-            //         <Text>
-            //             <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
-            //             <Text>đã chấp nhận yêu cầu kết bạn.</Text>
-            //         </Text>
-            //     );
-            // case '3':
-            //     return <Text>A new post has been added.</Text>;
-            // case '4':
-            //     return <Text>A post has been updated.</Text>;
-            // case '5':
-            //     return (
-            //         <Text>
-            //             <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
-            //             <Text>đã bày tỏ cảm xúc về bài viết của bạn.</Text>
-            //         </Text>
-            //     );
-            // case '6':
-            //     return <Text>Your post has been marked.</Text>;
-            // case '7':
-            //     return (
-            //         <Text>
-            //             <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
-            //             <Text>đã bình luận về bài viết của bạn.</Text>
-            //         </Text>
-            //     );
-            // case '8':
-            //     return <Text>A new video has been added.</Text>;
-            // case '9':
-                // return (
-                //     <Text>
-                //         <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
-                //         <Text>đã bình luận về bài viết của bạn.</Text>
-                //     </Text>
-                // );
+                navigation.navigate('Friend');
+            case '1':
+                navigation.navigate('Friend');
+            case '3':
+                getSinglePost(id);
+            case '4':
+                getSinglePost(id);
+            case '5':
+                getSinglePost(id);
+            case '6':
+                getSinglePost(id);
+            case '7':
+                getSinglePost(id);
+            case '8':
+                getSinglePost(id);
+            case '9':
+                getSinglePost(id);
             default:
                 return <Text>Unknown notification type.</Text>;
         }
-    }
+    };
     return (
         <View style={styles.container}>
             <View style={{ flex: 1 }}>
@@ -223,9 +251,9 @@ const Notification = () => {
                     data={listNotify}
                     showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
                     ListHeaderComponent={<Header />}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => handlePressComment(item.type, item.object_id)}>
-                            <View style={[styles.itemNoti, item.seen ? styles.seenBackgr : styles.notSeenBackgr]}>
+                    renderItem={({ item, index }) => (
+                        <TouchableOpacity onPress={() => handlePressComment(item.type, item.object_id, index)}>
+                            <View style={[styles.itemNoti, item.read ? styles.seenBackgr : styles.notSeenBackgr]}>
                                 <View style={[styles.flexRow, styles.contentNoti]}>
                                     {/* avatar */}
                                     <View>

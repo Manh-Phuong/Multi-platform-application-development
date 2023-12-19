@@ -610,7 +610,7 @@ const ProfileDetail = () => {
             //     ]),
             // );
         } catch (error) {
-            console.error('Error fetching data', error);
+            console.error('Error fetching data4', error);
         } finally {
             setLoading(false);
         }
