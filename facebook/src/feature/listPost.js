@@ -4,6 +4,8 @@ const initialState = {
     listPost: [],
     listPostUser: [],
     lasIdPost: null,
+    listVideos: [],
+    listVideoActive: [],
 };
 
 export const listPostSlice = createSlice({
@@ -22,9 +24,18 @@ export const listPostSlice = createSlice({
             // console.log(action);
             state.lasIdPost = action.payload;
         },
+        setStoreListVideos: (state, action) => {
+            console.log(action);
+            state.listVideos = action.payload;
+        },
+        setStoreListVideoActive: (state, action) => {
+            console.log(action);
+            state.listVideoActive = action.payload;
+        },
     },
 });
 
-export const { setStoreListPost, setStoreListUser, setStoreLasIdPost } = listPostSlice.actions;
+export const { setStoreListPost, setStoreListUser, setStoreLasIdPost, setStoreListVideos, setStoreListVideoActive } =
+    listPostSlice.actions;
 
 export default listPostSlice.reducer;

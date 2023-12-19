@@ -11,13 +11,13 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     FlatList,
+    ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
 import { useNavigation } from '@react-navigation/native';
 import { Color, FontFamily, FontSize } from '../GlobalStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
     faCamera,
@@ -29,6 +29,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Post from '../components/Post';
 import * as PostServices from '../services/PostServices';
+import _ from 'lodash';
+import {
+    setStoreListPost,
+    setStoreListUser,
+    setStoreLasIdPost,
+    setStoreListVideos,
+    setStoreListVideoActive,
+} from '../feature/listPost';
+import { useDispatch, useSelector } from 'react-redux';
 
 const data = [
     {
@@ -120,57 +129,148 @@ const Header = () => {
 };
 
 const VideoScreen = () => {
+    const dispatch = useDispatch();
     // const [isMute, setIsMute] = useState(true);
     const [offsetY, setOffsetY] = useState(0);
     // const [clickVideo, setClickVideo] = useState(false);
     const [listPost, setListPost] = useState([]);
+    const [lastId, setLastId] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [hasData, setHasData] = useState(true);
 
-    const handleScroll = (event) => {
-        // Handle scroll event here
-        setOffsetY(event.nativeEvent.contentOffset.y);
-        console.log('FlatList scrolled to offset:', offsetY);
+    const refreshData = async () => {
+        try {
+            setListPost([]);
+            setLoading(true);
+            const result = await PostServices.getListVideos({
+                user_id: null,
+                in_campaign: '1',
+                campaign_id: '1',
+                latitude: '1.0',
+                longitude: '1.0',
+                last_id: null,
+                index: '0',
+                count: '10',
+            });
+
+            setLastId(result.data.data.last_id);
+
+            setListPost((prev) =>
+                _.uniqBy(
+                    [
+                        ...prev,
+                        ...(result.data.data.post?.map((item) => {
+                            return {
+                                id: item?.id,
+                                owner: item.author.name,
+                                avatar: item.author.avatar,
+                                content: item.described,
+                                image: null,
+                                video: item?.video?.url,
+                                created: item?.created,
+                                feel: item?.feel,
+                                comment_mark: item?.comment_mark,
+                                is_felt: item?.is_felt,
+                                is_blocked: item?.is_blocked,
+                                can_edit: item?.can_edit,
+                                banned: item?.banned,
+                                state: item?.state,
+                            };
+                        }) || []),
+                    ],
+                    'id',
+                ),
+            );
+            setHasData(result.data.data.post?.length > 0);
+        } catch (error) {
+            console.log('refreshData PostServices ' + error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchApi = async () => {
+        try {
+            setLoading(true);
+            const result = await PostServices.getListVideos({
+                user_id: null,
+                in_campaign: '1',
+                campaign_id: '1',
+                latitude: '1.0',
+                longitude: '1.0',
+                last_id: lastId,
+                index: '0',
+                count: '10',
+            });
+
+            setLastId(result.data.data.last_id);
+
+            dispatch(setStoreListVideos());
+
+            setListPost((prev) =>
+                _.uniqBy(
+                    [
+                        ...prev,
+                        ...(result.data.data.post?.map((item) => {
+                            return {
+                                id: item?.id,
+                                owner: item.author.name,
+                                avatar: item.author.avatar,
+                                content: item.described,
+                                image: null,
+                                video: item?.video?.url,
+                                created: item?.created,
+                                feel: item?.feel,
+                                comment_mark: item?.comment_mark,
+                                is_felt: item?.is_felt,
+                                is_blocked: item?.is_blocked,
+                                can_edit: item?.can_edit,
+                                banned: item?.banned,
+                                state: item?.state,
+                            };
+                        }) || []),
+                    ],
+                    'id',
+                ),
+            );
+            setHasData(true);
+        } catch (error) {
+            console.log('fetchApi PostServices ' + error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
-        const fetchApi = async () => {
-            try {
-                const result = await PostServices.getListVideos({
-                    user_id: null,
-                    in_campaign: '1',
-                    campaign_id: '1',
-                    latitude: '1.0',
-                    longitude: '1.0',
-                    last_id: null,
-                    index: '0',
-                    count: '10',
-                });
+        dispatch(setStoreListVideos(listPost));
+        dispatch(setStoreListVideoActive(listPost));
+    }, [listPost]);
 
-                setListPost(
-                    result.data.data.post?.map((item) => {
-                        return {
-                            id: item?.id,
-                            owner: item.author.name,
-                            avatar: item.author.avatar,
-                            content: item.described,
-                            image: null,
-                            video: item?.video?.url,
-                            created: item?.created,
-                            feel: item?.feel,
-                            comment_mark: item?.comment_mark,
-                            is_felt: item?.is_felt,
-                            is_blocked: item?.is_blocked,
-                            can_edit: item?.can_edit,
-                            banned: item?.banned,
-                            state: item?.state,
-                        };
-                    }),
-                );
-            } catch (error) {
-                console.log('fetchApi PostServices ' + error);
-            }
-        };
+    useEffect(() => {
+        setLoading(true);
         fetchApi();
     }, []);
+
+    const handleScroll = async (event) => {
+        // Handle scroll event here
+        setOffsetY(event.nativeEvent.contentOffset.y);
+        console.log('FlatList scrolled to offset:', offsetY);
+        const currentOffset = event.nativeEvent.contentOffset.y;
+        if (currentOffset == 0) {
+            console.log('goi roi ne');
+            refreshData();
+        }
+    };
+
+    const handleEndReached = () => {
+        if (!loading && hasData) {
+            fetchApi();
+        }
+    };
+
+    const renderFooter = () => {
+        return loading ? <ActivityIndicator size="large" color="#0000ff" /> : null;
+    };
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -235,9 +335,9 @@ const VideoScreen = () => {
                 <View style={styles.videoContainer}>
                     <FlatList
                         data={listPost}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item, index) => item.id + index}
                         ListHeaderComponent={<Header />}
-                        contentContainerStyle={{ paddingBottom: 260 }}
+                        contentContainerStyle={{ paddingBottom: 130 }}
                         renderItem={({ item }) => (
                             <View>
                                 {/* <Post item={item} isMute={isMute} setIsMute={setIsMute} offsetY={offsetY} /> */}
@@ -245,7 +345,11 @@ const VideoScreen = () => {
                                 <View style={styles.divLarge}></View>
                             </View>
                         )}
+                        onEndReached={handleEndReached}
+                        onEndReachedThreshold={0.1}
+                        ListFooterComponent={renderFooter}
                         onScroll={handleScroll}
+                        scrollEventThrottle={16}
                     />
                 </View>
             </View>

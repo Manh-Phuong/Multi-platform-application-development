@@ -17,7 +17,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Color, FontFamily, FontSize } from '../GlobalStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {
     faArrowLeft,
@@ -30,6 +29,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import Post from '../components/Post';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const data = [
     {
@@ -61,6 +62,7 @@ const data = [
 const VideoActive = () => {
     const navigation = useNavigation();
     const [clickVideo, setClickVideo] = useState(false);
+    const listPost = useSelector((state) => state.listPost.listVideoActive);
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -69,7 +71,7 @@ const VideoActive = () => {
                     style={{
                         paddingLeft: 16,
                         paddingRight: 16,
-                        paddingTop: 8,
+                        paddingTop: 24,
                         paddingBottom: 8,
                         // borderBottomWidth: 10,
                         // borderBottomColor: '#0d0d0d',
@@ -108,13 +110,13 @@ const VideoActive = () => {
                 </View>
                 <View style={styles.videoContainer}>
                     <FlatList
-                        data={data}
+                        data={listPost}
                         keyExtractor={(item) => item.id}
                         // ListHeaderComponent={<Header />}
                         contentContainerStyle={{ paddingBottom: 110 }}
                         renderItem={({ item }) => (
                             <View>
-                                <Post item={item} darkMode={true} />
+                                <Post item={item} darkMode={true} activeVideo={true} />
                                 <View style={styles.divLarge}></View>
                             </View>
                         )}

@@ -196,7 +196,7 @@ export default function Home() {
     };
 
     const handleScroll = async (event) => {
-        console.log('event', event.nativeEvent.contentOffset.y);
+        // console.log('event', event.nativeEvent.contentOffset.y);
         const currentOffset = event.nativeEvent.contentOffset.y;
         // const isScrollingUp = currentOffset < lastOffset;
         // setShowHeader(isScrollingUp);

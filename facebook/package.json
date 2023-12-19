@@ -34,6 +34,7 @@
     "expo-sharing": "~11.5.0",
     "expo-sqlite": "~11.3.3",
     "expo-status-bar": "~1.6.0",
+    "expo-video-thumbnails": "~7.4.0",
     "expo-web-browser": "~12.3.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
