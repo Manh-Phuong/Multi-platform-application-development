@@ -1,146 +1,128 @@
-import * as React from 'react';
-import { useRef } from 'react';
-import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    KeyboardAvoidingView,
-    TextInput,
-    Alert,
-    Keyboard,
-    TouchableWithoutFeedback,
-    FlatList,
-} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Chú ý: Icon set của bạn phải được import từ thư viện phù hợp.
-import { useNavigation } from '@react-navigation/native';
-import { Color, FontFamily, FontSize } from '../GlobalStyles';
-import { LinearGradient } from 'expo-linear-gradient';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {
-    faArrowLeft,
-    faCamera,
-    faPuzzlePiece,
-    faSearch,
-    faUser,
-    faUtensilSpoon,
-    faUtensils,
-} from '@fortawesome/free-solid-svg-icons';
-import Post from '../components/Post';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { Video } from 'expo-av';
+import { Ionicons } from '@expo/vector-icons';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+import { head } from 'lodash';
 
-const data = [
-    {
-        id: 1,
-        content: '1',
-    },
-    {
-        id: 2,
-        content: '2',
-    },
-    {
-        id: 3,
-        content: '3',
-    },
-    {
-        id: 4,
-        content: '4',
-    },
-    {
-        id: 5,
-        content: '5',
-    },
-    {
-        id: 6,
-        content: '6',
-    },
-    {
-        id: 7,
-        content: '7',
-    },
-    {
-        id: 8,
-        content: '8',
-    },
-    {
-        id: 9,
-        content: '9',
-    },
-    {
-        id: 10,
-        content: '10',
-    },
-    {
-        id: 11,
-        content: '11',
-    },
-    {
-        id: 12,
-        content: '12',
-    },
-];
+withScreen = Dimensions.get('window').width;
+heightScreen = Dimensions.get('window').height;
 
-const Test = () => {
-    const navigation = useNavigation();
-    const [clickVideo, setClickVideo] = useState(false);
+export default function App() {
+    const videoRef = React.useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [visiblePause, setVisiblePause] = useState(false);
+    const [showControls, setShowControls] = useState(true);
+    const [thumbnail, setThumbnail] = useState(null);
+    const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
+
+    const handlePlayPause = () => {
+        if (isPlaying) {
+            videoRef.current.pauseAsync();
+        } else {
+            videoRef.current.playAsync();
+        }
+        setIsPlaying(!isPlaying);
+        setShowControls(true);
+    };
+
+    const handleScreenPress = () => {
+        setShowControls(!showControls);
+    };
+
+    const handleVisiblePause = () => {
+        // setShowControls(!showControls);
+    };
+
+    const loadThumbnail = async () => {
+        try {
+            const { uri } = await VideoThumbnails.getThumbnailAsync(
+                'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                {
+                    time: 0,
+                },
+            );
+            Image.getSize(uri, (width, height) => {
+                const aspectRatio = width / height;
+                const widthImage = withScreen; // Thay đổi kích thước theo nhu cầu
+                const heightImage = widthImage / aspectRatio;
+                console.log(width, height);
+                console.log(widthImage, heightImage);
+                setImageSize({ width: widthImage, height: heightImage });
+            });
+            console.log(uri);
+            // setThumbnail(uri);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    useEffect(() => {
+        loadThumbnail();
+    }, []);
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
-                <View
-                    style={{
-                        paddingLeft: 16,
-                        paddingRight: 16,
-                        paddingTop: 8,
-                        paddingBottom: 8,
-                        marginTop: 60,
-                        opacity: 1,
-                        width: 0,
-                        height: 0
-                        // pointerEvents: 'none',
-                        // borderBottomWidth: 10,
-                        // borderBottomColor: '#0d0d0d',
-                        // backgroundColor: '#191919',
-                    }}
-                >
-                    <FlatList
-                        data={data}
-                        keyExtractor={(item) => item.id}
-                        // ListHeaderComponent={<Header />}
-                        contentContainerStyle={{ paddingBottom: 110 }}
-                        renderItem={({ item }) => (
-                            <View>
-                                <Post item={item} darkMode={true} />
-                                <View style={styles.divLarge}></View>
-                            </View>
-                        )}
+        <View style={styles.container}>
+            <TouchableOpacity onPress={handleScreenPress} style={styles.videoContainer}>
+                {showControls && (
+                    <View style={styles.controls}>
+                        <TouchableOpacity onPress={handlePlayPause}>
+                            {isPlaying ? (
+                                <>{visiblePause && <Ionicons name="pause" size={32} color="white" />}</>
+                            ) : (
+                                <Ionicons name="play" size={32} color="white" />
+                            )}
+                        </TouchableOpacity>
+                    </View>
+                )}
+
+                <TouchableOpacity onPress={handleVisiblePause}>
+                    <Video
+                        ref={videoRef}
+                        source={{
+                            uri: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
+                        }}
+                        resizeMode={Video.RESIZE_MODE_CONTAIN}
+                        style={[styles.video, { width: imageSize.width || 450, height: imageSize.height || 200 }]}
+                        // style={[{ width: withScreen, height: 800 }]}
+                        onPlaybackStatusUpdate={(status) => {
+                            if (status.didJustFinish) {
+                                setIsPlaying(false);
+                            }
+                        }}
                     />
-                </View>
-            </View>
-        </TouchableWithoutFeedback>
+                </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
     );
-};
-export default Test;
+}
 
 const styles = StyleSheet.create({
     container: {
-        // backfaceVisibility: '#242526',
-    },
-    options: {
-        flexDirection: 'row',
-        columnGap: 6,
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#ccc',
-        paddingVertical: 8,
-        paddingHorizontal: 12,
-        borderRadius: 20,
-    },
-    divLarge: {
-        height: 10,
         width: withScreen,
-        backgroundColor: '#0d0d0d',
-        // marginTop: 10,
+        height: heightScreen,
+    },
+    videoContainer: {
+        flex: 1,
+        width: withScreen,
+        height: heightScreen,
+    },
+    video: {
+        flex: 1,
+        width: withScreen,
+        height: heightScreen,
+        position: 'relative',
+    },
+    controls: {
+        position: 'absolute',
+        top: 100,
+        left: 180,
+        zIndex: 1,
+    },
+    thumbnail: {
+        ...StyleSheet.absoluteFillObject,
     },
 });

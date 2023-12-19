@@ -40,6 +40,8 @@ import Slider from '@react-native-community/slider';
 import {
     faBell,
     faBookmark,
+    faCirclePause,
+    faCirclePlay,
     faCircleQuestion,
     faClock,
     faRectangleXmark,
@@ -50,6 +52,15 @@ import * as PostServices from '../services/PostServices';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListComment, getListFeel } from '../services/CommentServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+import _ from 'lodash';
+import {
+    setStoreListPost,
+    setStoreListUser,
+    setStoreLasIdPost,
+    setStoreListVideos,
+    setStoreListVideoActive,
+} from '../feature/listPost';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -60,13 +71,17 @@ heightScreen = Dimensions.get('window').height;
 // const widthImage = withScreen;
 // const heightImage = (withScreen * imageSource.height) / imageSource.width;
 
-const VideoPlay = ({ urlVideo, offsetY }) => {
+const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [volume, setVolume] = useState(0.0);
     const [historyVolume, setHistoryVolume] = useState(1.0);
     const video = useRef(null);
     const [isMute, setIsMute] = useState(true);
-
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [visiblePause, setVisiblePause] = useState(false);
+    const [videoSize, setVideoSize] = useState({ width: withScreen, height: (withScreen * 9) / 16 });
+    const listVideoActive = useSelector((state) => state.listPost.listVideoActive);
     // console.log('urlVideo', urlVideo);
     // console.log('offsetY', offsetY);
 
@@ -77,22 +92,75 @@ const VideoPlay = ({ urlVideo, offsetY }) => {
 
     const handleClickVideo = () => {
         // console.log('click roi')
-        navigation.navigate('VideoActive');
+        if (!activeVideo) {
+            dispatch(setStoreListVideoActive(_.uniqBy([item, ...listVideoActive]), 'id'));
+            navigation.navigate('VideoActive', { item: item });
+        }
+        setVisiblePause(true);
+    };
+
+    const handlePlay = () => {
+        setVisiblePause(true);
+        video.current.playAsync();
+
+        setIsPlaying(true);
+        // setShowControls(true);
+    };
+
+    const handlePause = () => {
+        video.current.pauseAsync();
+
+        setIsPlaying(false);
+        // setShowControls(true);
     };
 
     useEffect(() => {
-        const playTimeout = setTimeout(() => {
-            if (video.current) {
-                video.current.playAsync();
-            } else {
-                // video.current.pauseAsync();
-            }
-        }, 3000);
+        let timeout;
+        if (isPlaying) {
+            // Nếu showControls là true, thiết lập timeout để ẩn controls sau 3 giây
+            timeout = setTimeout(() => {
+                setVisiblePause(false);
+            }, 3000);
+        }
 
         return () => {
-            // video.current.pauseAsync();
-            clearTimeout(playTimeout);
+            clearTimeout(timeout);
         };
+    }, [isPlaying]);
+
+    const loadThumbnail = async () => {
+        try {
+            const { uri } = await VideoThumbnails.getThumbnailAsync(urlVideo, {
+                time: 0,
+            });
+            Image.getSize(uri, (width, height) => {
+                const aspectRatio = width / height;
+                const widthImage = withScreen;
+                const heightImage = widthImage / aspectRatio;
+                // console.log(width, height);
+                // console.log(widthImage, heightImage);
+                setVideoSize({ width: widthImage, height: heightImage });
+            });
+            // console.log(uri);
+            // setThumbnail(uri);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    useEffect(() => {
+        loadThumbnail();
+        // const playTimeout = setTimeout(() => {
+        //     if (video.current) {
+        //         video.current.playAsync();
+        //     } else {
+        //         // video.current.pauseAsync();
+        //     }
+        // }, 3000);
+        // return () => {
+        //     // video.current.pauseAsync();
+        //     clearTimeout(playTimeout);
+        // };
     }, [urlVideo]);
 
     return (
@@ -100,7 +168,7 @@ const VideoPlay = ({ urlVideo, offsetY }) => {
             <View style={styles.videoContainer}>
                 <Video
                     ref={video}
-                    style={styles.video}
+                    style={[styles.video, { width: videoSize.width, height: videoSize.height }]}
                     source={{
                         // uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
                         uri: urlVideo,
@@ -110,9 +178,30 @@ const VideoPlay = ({ urlVideo, offsetY }) => {
                     // isMuted={true}
                     resizeMode="cover"
                     shouldPlay={false}
+                    paused={true}
                     isLooping
-                    useNativeControls
+                    // useNativeControls
+                    onPlaybackStatusUpdate={(status) => {
+                        if (status.didJustFinish) {
+                            setIsPlaying(false);
+                        }
+                    }}
                 />
+                <View style={[styles.playVideo, { left: videoSize.width / 2 - 20, bottom: videoSize.height / 2 - 20 }]}>
+                    {isPlaying ? (
+                        <>
+                            {visiblePause && (
+                                <TouchableOpacity onPress={handlePause}>
+                                    <FontAwesomeIcon icon={faCirclePause} size={40} color="white" />
+                                </TouchableOpacity>
+                            )}
+                        </>
+                    ) : (
+                        <TouchableOpacity onPress={handlePlay}>
+                            <FontAwesomeIcon icon={faCirclePlay} size={40} color="white" />
+                        </TouchableOpacity>
+                    )}
+                </View>
                 <View style={styles.iconVolume}>
                     {isMute ? (
                         <TouchableOpacity
@@ -152,7 +241,7 @@ const VideoPlay = ({ urlVideo, offsetY }) => {
     );
 };
 
-export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...props }) {
+export default function Post({ onCommentPress, darkMode, isMute, offsetY, activeVideo = false, ...props }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const user_id = useSelector((state) => state.profile.user_id);
@@ -277,8 +366,8 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
             const res = await getListComment({ id: props.item.id });
             const res2 = await PostServices.getPost({ id: props.item.id });
             if (res2.data.code == 1000) {
-                props.item["feel"] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10)
-                type = res2.data.data.is_felt
+                props.item['feel'] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10);
+                type = res2.data.data.is_felt;
                 // props.item["disappointed"] = res.data.data.disappointed
                 // props.item["kudos"] = res.data.data.kudos
             }
@@ -478,12 +567,18 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         )}
                     </View>
                 ) : (
-                    props.item?.video && (
-                        <View>
-                            {/* <WebView source={{ uri: props.item.url }} style={styles.videoPlayer} /> */}
-                            <VideoPlay urlVideo={props.item?.video} offsetY={offsetY} />
-                        </View>
-                    )
+                    <>
+                        {props.item?.video && (
+                            <View>
+                                <VideoPlay
+                                    urlVideo={props.item?.video}
+                                    offsetY={offsetY}
+                                    item={props?.item}
+                                    activeVideo={activeVideo}
+                                />
+                            </View>
+                        )}
+                    </>
                 )}
             </View>
 
@@ -619,7 +714,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 onSwipeComplete={toggleModalReport}
                 swipeDirection={['down']}
                 onBackdropPress={toggleModalReport}
-                animationOutTiming= {1000}
+                animationOutTiming={1000}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View
@@ -795,7 +890,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 onSwipeComplete={toggleModalReportSubmit}
                 swipeDirection={['down']}
                 onBackdropPress={toggleModalReportSubmit}
-                animationOutTiming= {1000}
+                animationOutTiming={1000}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View
@@ -1100,7 +1195,13 @@ const styles = StyleSheet.create({
     iconVolume: {
         position: 'absolute',
         right: 20,
-        bottom: 20,
+        bottom: 34,
+        zIndex: 2,
+    },
+    playVideo: {
+        position: 'absolute',
+        left: withScreen / 2 - 20,
+        bottom: (withScreen * 9) / 32 - 20,
         zIndex: 2,
     },
     sliderContainer: {

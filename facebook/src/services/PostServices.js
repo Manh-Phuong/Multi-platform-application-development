@@ -37,7 +37,7 @@ export const addPost = async (data) => {
 //     }
 // };
 
-export const getPost = async ({id="737"}) => {
+export const getPost = async ({ id = '737' }) => {
     try {
         const headers = await createAuthHeader();
         const res = await request.post(
@@ -46,7 +46,8 @@ export const getPost = async ({id="737"}) => {
                 id: id,
             },
             { headers },
-        );``
+        );
+        ``;
 
         return res;
     } catch (err) {
@@ -109,6 +110,7 @@ export const getListVideos = async (formData) => {
                 },
             ]);
         }
+        return err;
     }
 };
 
