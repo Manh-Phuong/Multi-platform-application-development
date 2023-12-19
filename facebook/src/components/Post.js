@@ -236,15 +236,6 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
 
     const modalHeight = isKeyboardOpen ? heightScreen * 0.5 : heightScreen * 0.9;
 
-    // const handleDeletePost = async (id) => {
-    //     try {
-    //         const result = await PostServices.deletePost(id);
-
-    //     } catch (error) {
-    //         console.log('handleDeletePost Post deletePost', error);
-    //     }
-    // };
-
     const handleDeletePost = async (id) => {
         try {
             // Hiển thị hộp thoại xác nhận
@@ -280,29 +271,16 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
         }
     };
 
-    // const isString = (value) => {
-    //     console.log(typeof value)
-    //     return typeof value === 'string' || value instanceof String;
-    //   };
-
-    // const getDataOfPost = async () => {
-    //     if (props && props.item) {
-    //         const res = await getListComment({ id: props.item.id });
-
-    //         if (res.code == 1000) {
-    //             setListCmt(res.data);
-    //         }
-    //     }
-    // };
-
     const handleShowDetailPost = async () => {
         if (props && props.item) {
             let type = false;
             const res = await getListComment({ id: props.item.id });
             const res2 = await PostServices.getPost({ id: props.item.id });
             if (res2.data.code == 1000) {
-                props.item['feel'] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10);
-                type = res2.data.data.is_felt;
+                props.item["feel"] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10)
+                type = res2.data.data.is_felt
+                // props.item["disappointed"] = res.data.data.disappointed
+                // props.item["kudos"] = res.data.data.kudos
             }
             if (res.code == 1000) {
                 navigation.navigate('DetailPost', { postInfo: props.item, listCmt: res?.data, type });
@@ -526,14 +504,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         alignItems: 'center',
                     }}
                 >
-                    <Image
-                        style={{
-                            width: 20,
-                            height: 20,
-                        }}
-                        contentFit="cover"
-                        source={require('../assets/icons/likeIconColor.png')}
-                    />
+                    <Text>😊😔</Text>
                     <Text
                         style={{
                             fontSize: 16,
@@ -541,7 +512,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                             color: '#65676b',
                         }}
                     >
-                        1
+                        {props?.item?.feel}
                     </Text>
                 </View>
                 <View
@@ -551,7 +522,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         justifyContent: 'space-between',
                     }}
                 >
-                    <View>
+                    {/* <View>
                         <Text
                             style={{
                                 fontSize: 16,
@@ -559,10 +530,10 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                 color: '#65676b',
                             }}
                         >
-                            55 bình luận
+                            {props?.item?.feel} bình luận
                         </Text>
-                    </View>
-                    <View>
+                    </View> */}
+                    {/* <View>
                         <Text
                             style={{
                                 fontSize: 16,
@@ -572,7 +543,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                         >
                             9 chia sẻ
                         </Text>
-                    </View>
+                    </View> */}
                 </View>
             </View>
 

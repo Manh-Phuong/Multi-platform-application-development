@@ -57,7 +57,7 @@ const ActivityLog = () => {
                     setDataSearch(groupedData);
                 }
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data1:', error);
             }
         };
 

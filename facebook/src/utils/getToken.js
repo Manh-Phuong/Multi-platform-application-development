@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const createAuthHeader = async () => {
     try {
       // const token = await AsyncStorage.getItem('token');
-      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NzYyLCJkZXZpY2VfaWQiOiJzdHJpbmciLCJpYXQiOjE3MDI5Njc5NDR9.-CGqIWGz-7Sn4cv7saBIk9RISHx-UBX2Nvo4QlHPxx8";
+      const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTU2LCJkZXZpY2VfaWQiOiJzdHJpbmciLCJpYXQiOjE3MDI5Njg4MjF9.vIzsOQZ60mX3GgjtqKbVSf6yaGYPnPl3wF3qhvBvhSk";
       if (token !== null) {
         return  {Authorization: `Bearer ${token}`};
       } else {

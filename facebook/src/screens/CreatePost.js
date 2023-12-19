@@ -111,8 +111,6 @@ const CreatePost = () => {
             return;
         }
 
-        console.log(result.canceled);
-
         if (!result.canceled) {
             // console.log(result.assets[0].uri);
             // const selectedImages = result.assets.map((asset) => asset.uri);

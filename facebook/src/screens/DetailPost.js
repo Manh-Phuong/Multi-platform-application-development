@@ -58,6 +58,7 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
     };
     const handleRemoveEmoji = async () => {
         const res = await deleteFeel({ id: post.id });
+        console.log(res)
         if (res.code == 1000) {
             setIsChooseEmoji(-1);
             setDisplayEmoji(false);
@@ -285,9 +286,13 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                         )}
                     </View>
                     <View>
-                        <Text style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}>{`😊😔 ${
-                            totalEmoji || post.feel
-                        }`}</Text>
+                        {!reselect && <Text style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}>{`😊😔 ${
+                            post.feel
+                        }`}</Text>}
+                        {reselect && <Text style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}>{`😊😔 ${
+                            totalEmoji
+                        }`}</Text>}
+                        
                     </View>
                     <View>
                         {0 < listCmt.length && listCmt.length > 9 && (
@@ -316,6 +321,7 @@ const DetailPost = ({ route }) => {
         const { postInfo, listCmt } = route.params;
         setPostInfo(postInfo);
         setListCmt(listCmt);
+        console.log(postInfo)
     }, []);
 
     const GenerateTime = ({ date }) => {
@@ -446,9 +452,9 @@ const DetailPost = ({ route }) => {
                                         )}
                                         {item.comments &&
                                             selectedReply == index &&
-                                            item.comments.map((cmt) => {
+                                            item.comments.map((cmt, index) => {
                                                 return (
-                                                    <View>
+                                                    <View key={index}>
                                                         <View
                                                             style={{
                                                                 flexDirection: 'row',
@@ -541,6 +547,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 5,
         backgroundColor: 'white',
+        paddingBottom: 6,
+        paddingLeft: 4, 
+        paddingRight: 4
     },
     wrapIconNews: {
         backgroundColor: '#0866ff',
