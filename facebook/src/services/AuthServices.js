@@ -55,3 +55,14 @@ export const changeProfileAfterSignUp = async ({username}) => {
         console.log(err.response);
     }
 }
+
+export const logout = async () => {
+    try {
+        const headers = await createAuthHeader();
+        console.log(headers)
+        const res = await request.post('/logout',{ headers });
+        return res.data;
+    } catch (err) {
+        console.log(err.response);
+    }
+}
