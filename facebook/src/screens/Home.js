@@ -34,6 +34,7 @@ import Friend from './Friend';
 import Notification from './Notification';
 import TabVideos from './TabVideos';
 import VideoScreen from './VideoScreen';
+import BuyCoins from './BuyCoins';
 import * as PostServices from '../services/PostServices';
 import { setStoreListPost, setStoreLasIdPost } from '../feature/listPost';
 import { useDispatch, useSelector } from 'react-redux';
@@ -647,6 +648,7 @@ export default function Home() {
             {active.notification && <Notification />}
             {active.menu && <Menu />}
             {active.video && <VideoScreen />}
+            {active.market && <BuyCoins hiddenHeader={true} />}
 
             {/* <View style={{ width: active.home ? 'auto' : 0 }}>
                 <FlatList

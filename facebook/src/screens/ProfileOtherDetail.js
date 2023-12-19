@@ -55,7 +55,7 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
     const [listFriend, setListFriend] = useState({ total: 0, friends: [] });
     const [acceptFriend, setAcceptFriend] = useState(false);
 
-    // console.log('profile', profile);
+    console.log('profile', profile?.id);
 
     // const listFriend = useSelector((state) => state.friend.listUserFriend);
 
@@ -230,7 +230,16 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
                         </>
                     )}
 
-                    <TouchableOpacity style={styles.buttonMenu}>
+                    <TouchableOpacity
+                        style={styles.buttonMenu}
+                        onPress={() =>
+                            navigation.navigate('ProfileSetting', {
+                                type: 'other',
+                                link: profile?.link,
+                                info: { id: profile?.id, name: profile.username },
+                            })
+                        }
+                    >
                         <FontAwesomeIcon icon={faEllipsis} size={16} color="black" />
                     </TouchableOpacity>
                 </View>

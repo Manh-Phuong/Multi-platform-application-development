@@ -150,6 +150,26 @@ const CreatePost = () => {
             formData.append('auto_accept', '1.0');
 
             const result = await PostServices.addPost(formData);
+            if (result.data.code == '1000') {
+                Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
+                    {
+                        text: 'OK',
+                        onPress: async () => navigation.goBack(),
+                    },
+                ]);
+            } else if (result.data.code == '2001') {
+                Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Mua xu',
+                        onPress: async () => navigation.navigate('BuyCoins'),
+                    },
+                ]);
+            }
+            console.log('ket qua', result.data);
         } catch (error) {
             console.log('handlePost PostServices addPost', error);
         }

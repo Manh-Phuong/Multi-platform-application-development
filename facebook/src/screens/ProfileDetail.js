@@ -219,7 +219,16 @@ const Header = ({
                         <FontAwesomeIcon icon={faPen} size={16} color="black" style={{ marginRight: 10 }} />
                         <Text style={{ color: '#000', fontSize: 16, fontWeight: '600' }}>Chỉnh sửa trang cá nhân</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonMenu}>
+                    <TouchableOpacity
+                        style={styles.buttonMenu}
+                        onPress={() =>
+                            navigation.navigate('ProfileSetting', {
+                                type: 'personal',
+                                link: profile?.link,
+                                info: { id: profile.id, name: profile.name },
+                            })
+                        }
+                    >
                         <FontAwesomeIcon icon={faEllipsis} size={16} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -602,7 +611,7 @@ const ProfileDetail = () => {
     useEffect(() => {
         const fetchApi = async () => {
             try {
-                const result = await ProfileServices.getUserInfo({ user_id: '762' });
+                const result = await ProfileServices.getUserInfo({ user_id: user_id });
                 // console.log('profile', result.data.data);
                 if (result.data.code == '1000') {
                     dispatch(setStoreProfile(result.data.data));
@@ -893,7 +902,7 @@ const ProfileDetail = () => {
                             </View>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('CameraScreen', {upAvatar: true})}>
+                    <TouchableOpacity onPress={() => navigation.navigate('CameraScreen', { upAvatar: true })}>
                         <View style={styles.item}>
                             <View style={styles.flexRow}>
                                 <View style={styles.wrapIcon}>
