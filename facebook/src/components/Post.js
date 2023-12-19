@@ -339,7 +339,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
 
                     <View
                         style={{
-                            maxWidth: withScreen * 0.70,
+                            maxWidth: withScreen * 0.7,
                             marginLeft: 8,
                         }}
                     >
@@ -647,12 +647,14 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 isVisible={isModalReport}
                 onSwipeComplete={toggleModalReport}
                 swipeDirection={['down']}
+                onBackdropPress={toggleModalReport}
+                animationOutTiming= {1000}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View
                     style={{
                         backgroundColor: 'white',
-                        height: heightScreen * 0.8,
+                        height: props?.item?.can_edit == '1' ? heightScreen * 0.45 : heightScreen * 0.6,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
                         paddingTop: 12,
@@ -821,6 +823,8 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 isVisible={isModalReportSubmit}
                 onSwipeComplete={toggleModalReportSubmit}
                 swipeDirection={['down']}
+                onBackdropPress={toggleModalReportSubmit}
+                animationOutTiming= {1000}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View

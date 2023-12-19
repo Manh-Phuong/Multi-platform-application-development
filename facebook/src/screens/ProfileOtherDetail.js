@@ -530,7 +530,7 @@ const ProfileOtherDetail = () => {
                         onPress: async () => {
                             try {
                                 const result = await FriendServices.unFriend({ user_id: user_id });
-                                // console.log('Xóa bạn thành công', result);
+                                console.log('Xóa bạn thành công', result);
                                 fetchApi();
 
                                 setModalVisible(false);

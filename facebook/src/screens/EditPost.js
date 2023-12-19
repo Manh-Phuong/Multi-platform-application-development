@@ -112,9 +112,21 @@ const EditPost = () => {
 
             if (mediaType === 'image') {
                 const selectedImages = result.assets.map((asset) => asset.uri);
-                setImage(selectedImages);
-                console.log(selectedImages);
-                // console.log(result);
+                if (selectedImages?.length + image?.length > 4) {
+                    Alert.alert(
+                        'Quá số lượng ảnh.',
+                        `Bài viết đang có ${image?.length} ảnh, bạn chỉ có thể thêm ${4 - image?.length} ảnh.`,
+                        [
+                            {
+                                text: 'OK',
+                            },
+                        ],
+                    );
+                } else {
+                    console.log([...image, ...selectedImages]);
+                    setImage([...image, ...selectedImages]);
+                    setVideo('');
+                }
             } else if (mediaType === 'video') {
                 const selectedVideo = result.assets[0].uri;
                 setVideo(selectedVideo);
@@ -146,7 +158,7 @@ const EditPost = () => {
         setTextInput(newInput);
     };
 
-    const handlePost = async () => {
+    const handleSaveEditPost = async () => {
         try {
             const formData = new FormData();
             if (image) {
@@ -174,16 +186,17 @@ const EditPost = () => {
             formData.append('described', textInput);
             formData.append('status', status || 'Hyped');
             formData.append('auto_accept', '1.0');
+            formData.append('id', info?.id);
 
-            const result = await PostServices.addPost(formData);
-            if (result.data.code == '1000') {
-                Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
+            const result = await PostServices.editPost(formData);
+            if (result.code == '1000') {
+                Alert.alert('Chỉnh sửa thành công', 'Bạn đã chỉnh sửa bài đăng thành công.', [
                     {
                         text: 'OK',
                         onPress: async () => navigation.goBack(),
                     },
                 ]);
-            } else if (result.data.code == '2001') {
+            } else if (result.code == '2001') {
                 Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
                     {
                         text: 'Hủy',
@@ -195,9 +208,9 @@ const EditPost = () => {
                     },
                 ]);
             }
-            console.log('ket qua', result.data);
+            console.log('ket qua', result);
         } catch (error) {
-            console.log('handlePost PostServices addPost', error);
+            console.log('handleSaveEditPost EditPost.js PostServices editPost', error);
         }
     };
 
@@ -211,7 +224,7 @@ const EditPost = () => {
                         </TouchableOpacity>
                         {/* <Icon name="close" size={24} color="black" onPress={showAlert} /> */}
                         <Text style={styles.textBigBold}>Chỉnh sửa bài viết</Text>
-                        <TouchableOpacity style={[styles.buttonNotDisable]} onPress={handlePost}>
+                        <TouchableOpacity style={[styles.buttonNotDisable]} onPress={handleSaveEditPost}>
                             <Text style={[styles.textBigBold, { color: 'white' }]}>Lưu</Text>
                         </TouchableOpacity>
                     </View>

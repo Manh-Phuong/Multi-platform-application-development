@@ -71,14 +71,27 @@ export const getListPost = async (formData) => {
     }
 };
 
-export const editPost = async (formData) => {
+export const editPost = async (data) => {
     try {
         const headers = await createAuthHeader();
-        const res = await request.post('/edit_post', formData, { headers });
+        const res = await request.post('/edit_post', data, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                ...headers,
+            },
+        });
 
-        return res;
+        return res.data;
     } catch (err) {
-        console.log(err.response.data);
+        console.log('addPost', err.response);
+        if (err.response.data.code != '2001') {
+            Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại.', [
+                {
+                    text: 'OK',
+                },
+            ]);
+        }
+        return err.response;
     }
 };
 
