@@ -32,11 +32,11 @@ const EditPost = () => {
     const navigation = useNavigation();
     const route = useRoute();
     const { info } = route.params || {};
-    console.log('info', info)
+    console.log('info', info);
     const [selectedImage, setSelectedImage] = React.useState('');
     const [isShowTagPart, setIsShowTagPart] = useState(false);
     const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
-    const [image, setImage] = useState(info?.listImage?.map(item => item.url));
+    const [image, setImage] = useState(info?.listImage?.map((item) => item.url));
     const [video, setVideo] = useState(info?.video);
     const [textInput, setTextInput] = useState(info?.described);
     const [loading, setLoading] = useState(false);

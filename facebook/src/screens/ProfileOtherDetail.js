@@ -53,13 +53,16 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
     const user_id = useSelector((state) => state.profile.user_id);
 
     const [listFriend, setListFriend] = useState({ total: 0, friends: [] });
-    const [acceptFriend, setAcceptFriend] = useState(false);
+    const [acceptFriend, setAcceptFriend] = useState(null);
 
-    console.log('profile', profile?.id);
+    console.log('acceptFriend', acceptFriend);
+    console.log('profile', profile);
 
     // const listFriend = useSelector((state) => state.friend.listUserFriend);
 
     useEffect(() => {
+        setAcceptFriend(profile?.is_friend);
+
         const fetchApi = async () => {
             try {
                 const result = await FriendServices.getUserFriend({
@@ -92,8 +95,10 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
         fetchApi();
     }, [profile?.id]);
 
-    const handleAddFriend = async (id) => {
-        setAcceptFriend(true);
+    const handleAddFriend = async (id, is_friend) => {
+        setAcceptFriend('2');
+        console.log('handleAddFriend is_friend====================', is_friend);
+        console.log('setAcceptFriend====================', acceptFriend);
         try {
             const result = await FriendServices.setRequestFriend({ user_id: id });
             // console.log(result);
@@ -102,8 +107,11 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
         }
     };
 
-    const handleCancelAddFriend = async (id) => {
-        setAcceptFriend(false);
+    const handleCancelAddFriend = async (id, is_friend) => {
+        setAcceptFriend('0');
+        console.log('handleCancelAddFriend is_friend======================', is_friend);
+        console.log('setAcceptFriend====================', acceptFriend);
+
         try {
             const result = await FriendServices.delRequestFriend({ user_id: id });
             // console.log(result);
@@ -165,11 +173,11 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
                         marginLeft: 16,
                     }}
                 >
-                    {profile?.is_friend == '0' ? (
+                    {!(profile?.is_friend == '1') ? (
                         <>
-                            {acceptFriend ? (
+                            {acceptFriend != '0' && profile?.is_friend != '0' ? (
                                 <TouchableOpacity
-                                    onPress={() => handleCancelAddFriend(profile?.id)}
+                                    onPress={() => handleCancelAddFriend(profile?.id, profile?.is_friend)}
                                     style={[styles.buttonAddInfo, { flexDirection: 'row' }]}
                                 >
                                     <FontAwesomeIcon
@@ -182,7 +190,7 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
                                 </TouchableOpacity>
                             ) : (
                                 <TouchableOpacity
-                                    onPress={() => handleAddFriend(profile?.id)}
+                                    onPress={() => handleAddFriend(profile?.id, profile?.is_friend)}
                                     style={[styles.buttonAddInfo, { flexDirection: 'row' }]}
                                 >
                                     <FontAwesomeIcon
