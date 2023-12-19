@@ -105,10 +105,10 @@ export const unFriend = async (formData) => {
         const headers = await createAuthHeader();
         const res = await request.post('/unfriend', formData, { headers });
         // console.log(res);
-        return res;
+        return res.data;
     } catch (err) {
-        console.log(err.response.data);
-        console.log(err);
+        // console.log(err.response.data);
+        // console.log(err);
         if (err.response.data.code == '9998') {
             Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
                 {
@@ -116,6 +116,7 @@ export const unFriend = async (formData) => {
                 },
             ]);
         }
+        return err.response;
     }
 };
 

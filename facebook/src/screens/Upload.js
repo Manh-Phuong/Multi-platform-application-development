@@ -22,7 +22,7 @@ export default function Upload() {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       setImage(result.uri);
       // Tại đây, bạn có thể tải lên ảnh lên máy chủ hoặc làm gì bạn cần với ảnh này.
     }

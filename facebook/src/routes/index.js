@@ -47,6 +47,7 @@ import SettingNotification from '../screens/SettingNotification';
 import Test from '../screens/Test';
 import ActivityLog from '../screens/ActivityLog';
 import DetailPost from '../screens/DetailPost';
+import EditPost from '../screens/EditPost';
 
 const publicRoutes = [
     {
@@ -244,6 +245,10 @@ const publicRoutes = [
     {
         name: 'DetailPost',
         component: DetailPost,
+    },
+    {
+        name: 'EditPost',
+        component: EditPost,
     },
 ];
 

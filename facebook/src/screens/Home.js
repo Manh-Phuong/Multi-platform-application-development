@@ -72,21 +72,20 @@ const listNews = [
 
 const Header = () => {
     const navigation = useNavigation();
+    const name = useSelector((state) => state.profile.name);
+    const avatar = useSelector((state) => state.profile.avatar);
 
     return (
         <View>
             <View style={styles.underNav}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate('ProfileDetail')}
-                    style={{ backgroundColor: 'blue' }}
-                >
-                    {/* <Image
+                <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')}>
+                    <Image
                         style={styles.wrapAvatar}
                         source={{
-                            uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
+                            uri: avatar,
                         }}
-                    /> */}
-                    <Text>avatar</Text>
+                    />
+                    {/* <Text>avatar</Text> */}
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
@@ -105,11 +104,11 @@ const Header = () => {
 
             <View>
                 <ScrollView horizontal={true} style={styles.newsList} showsHorizontalScrollIndicator={false}>
-                    <View style={styles.newsItem}>
+                    <View style={[styles.newsItem, { borderColor: '#ccc', borderWidth: 1 }]}>
                         <Image
                             style={styles.addNews}
                             source={{
-                                uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
+                                uri: avatar,
                             }}
                         ></Image>
                         <View style={styles.wrapIconNews}>
@@ -778,9 +777,22 @@ const styles = StyleSheet.create({
     },
 
     underNav: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: withScreen - 40,
+        paddingTop: 8,
+        paddingBottom: 8,
+        marginLeft: 16,
+        marginRight: 24,
+    },
+
+    wrapAvatar: {
+        width: 46,
+        height: 46,
+        borderRadius: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row',
     },
 
     youThink: {
@@ -800,7 +812,7 @@ const styles = StyleSheet.create({
 
     newsItem: {
         height: heightScreen * 0.24,
-        width: withScreen * 0.26,
+        width: withScreen * 0.26 + 2,
         backgroundColor: '#eee',
         marginTop: heightScreen * 0.02,
         borderRadius: 12,

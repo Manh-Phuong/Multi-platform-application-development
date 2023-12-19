@@ -275,7 +275,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
         if (props && props.item) {
             let type = false;
             const res = await getListComment({ id: props.item.id });
-            const res2 = await PostServices.getPost({id: props.item.id})
+            const res2 = await PostServices.getPost({ id: props.item.id });
             if (res2.data.code == 1000) {
                 props.item["feel"] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10)
                 type = res2.data.data.is_felt
@@ -283,7 +283,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 // props.item["kudos"] = res.data.data.kudos
             }
             if (res.code == 1000) {
-                navigation.navigate('DetailPost',{ postInfo: props.item, listCmt: res?.data, type});
+                navigation.navigate('DetailPost', { postInfo: props.item, listCmt: res?.data, type });
             }
         }
     };
@@ -317,7 +317,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
 
                     <View
                         style={{
-                            maxWidth: withScreen * 0.72,
+                            maxWidth: withScreen * 0.7,
                             marginLeft: 8,
                         }}
                     >
@@ -470,7 +470,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                                 <View style={{ width: '100%', height: 400, marginBottom: 4 }}>
                                     <Image
                                         source={{ uri: props.item?.images[0]?.url }}
-                                        style={{ width: "100%", height: "100%", objectFit: 'cover' }}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                     />
                                     {/* <Text>{ props.item?.images[0]?.url }</Text> */}
                                 </View>
@@ -618,12 +618,14 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 isVisible={isModalReport}
                 onSwipeComplete={toggleModalReport}
                 swipeDirection={['down']}
+                onBackdropPress={toggleModalReport}
+                animationOutTiming= {1000}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View
                     style={{
                         backgroundColor: 'white',
-                        height: heightScreen * 0.8,
+                        height: props?.item?.can_edit == '1' ? heightScreen * 0.45 : heightScreen * 0.6,
                         borderTopLeftRadius: 20,
                         borderTopRightRadius: 20,
                         paddingTop: 12,
@@ -659,7 +661,20 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
 
                     {props?.item?.can_edit == '1' ? (
                         <>
-                            <TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    navigation.navigate('EditPost', {
+                                        info: {
+                                            listImage: props?.item?.images,
+                                            video: props?.item?.video,
+                                            described: props?.item?.content,
+                                            status: props?.item?.state,
+                                            id: props?.item?.id,
+                                        },
+                                    });
+                                    setModalReport(false);
+                                }}
+                            >
                                 <View style={styles.item}>
                                     <View style={styles.flexRow}>
                                         <FontAwesomeIcon icon={faPen} size={20} color="black" />
@@ -779,6 +794,8 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, ...pro
                 isVisible={isModalReportSubmit}
                 onSwipeComplete={toggleModalReportSubmit}
                 swipeDirection={['down']}
+                onBackdropPress={toggleModalReportSubmit}
+                animationOutTiming= {1000}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View

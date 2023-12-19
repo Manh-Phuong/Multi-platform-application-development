@@ -102,7 +102,7 @@ const Emoji = () => {
             <TouchableOpacity
                 onPress={() => {
                     dispatch(setStoreStatus(item.icon + ' ' + item.title));
-                    navigation.navigate('CreatePost');
+                    navigation.goBack();
                 }}
                 style={{
                     flexDirection: 'row',

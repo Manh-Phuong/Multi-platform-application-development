@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, View, Text, ScrollView, Image, FlatList, TouchableOpacity,Alert,
     ActivityIndicator, Dimensions } from 'react-native';
@@ -27,6 +27,11 @@ const Menu = () => {
         { id: '7', title: 'Bảng feed', iconLink: require('../assets/icons/bangFeedIcon.png') },
         { id: '8', title: ' Sự kiện', iconLink: require('../assets/icons/suKienIcon.png') },
     ];
+
+    const handleLogout = () => {
+
+    }
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}>
