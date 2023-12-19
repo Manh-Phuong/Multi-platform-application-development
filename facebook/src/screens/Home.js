@@ -76,7 +76,10 @@ const Header = () => {
     return (
         <View>
             <View style={styles.underNav}>
-                <TouchableOpacity onPress={() => navigation.navigate('ProfileDetail')} style={{backgroundColor: 'blue'}}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('ProfileDetail')}
+                    style={{ backgroundColor: 'blue' }}
+                >
                     {/* <Image
                         style={styles.wrapAvatar}
                         source={{
@@ -193,11 +196,15 @@ export default function Home() {
         }));
     };
 
-    const handleScroll = (event) => {
+    const handleScroll = async (event) => {
+        console.log('event', event.nativeEvent.contentOffset.y);
         const currentOffset = event.nativeEvent.contentOffset.y;
-        const isScrollingUp = currentOffset < lastOffset;
-        setShowHeader(isScrollingUp);
-        setLastOffset(currentOffset);
+        // const isScrollingUp = currentOffset < lastOffset;
+        // setShowHeader(isScrollingUp);
+        // setLastOffset(currentOffset);
+        if (currentOffset == 0) {
+            await refreshData();
+        }
     };
     const animatedValue = useRef(new Animated.Value(0)).current;
 
@@ -281,7 +288,7 @@ export default function Home() {
                 last_id: lastId,
                 index: '0',
                 count: '10',
-            });
+            },navigation);
             setLastId(response.data.data.last_id);
 
             // console.log(response.data.data.post);
@@ -335,7 +342,76 @@ export default function Home() {
             //     ]),
             // );
         } catch (error) {
-            console.error('Error fetching data', error);
+            console.error('Error fetching data2', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const refreshData = async () => {
+        try {
+            setListPost([])
+            setLoading(true);
+            const response = await PostServices.getListPost({
+                user_id: null,
+                in_campaign: '1',
+                campaign_id: '1',
+                latitude: '1.0',
+                longitude: '1.0',
+                last_id: null,
+                index: '0',
+                count: '10',
+            });
+            setLastId(response.data.data.last_id);
+            setListPost(
+                response.data.data.post?.map((item) => {
+                    return {
+                        id: item?.id,
+                        owner: item.author.name,
+                        owner_id: item.author.id,
+                        avatar: item.author.avatar,
+                        content: item.described,
+                        images: item?.image,
+                        video: item?.video?.url,
+                        created: item?.created,
+                        feel: item?.feel,
+                        comment_mark: item?.comment_mark,
+                        is_felt: item?.is_felt,
+                        is_blocked: item?.is_blocked,
+                        can_edit: item?.can_edit,
+                        banned: item?.banned,
+                        state: item?.state,
+                    };
+                }) || [],
+            );
+
+            setHasData(response.data.data.post?.length > 0);
+
+            // dispatch(
+            //     setStoreListPost((prevData) => [
+            //         ...prevData,
+            //         ...response.data.data.post?.map((item) => {
+            //             return {
+            //                 id: item?.id,
+            //                 owner: item.author.name,
+            //                 avatar: item.author.avatar,
+            //                 content: item.described,
+            //                 images: item?.image,
+            //                 video: item?.video?.url,
+            //                 created: item?.created,
+            //                 feel: item?.feel,
+            //                 comment_mark: item?.comment_mark,
+            //                 is_felt: item?.is_felt,
+            //                 is_blocked: item?.is_blocked,
+            //                 can_edit: item?.can_edit,
+            //                 banned: item?.banned,
+            //                 state: item?.state,
+            //             };
+            //         }),
+            //     ]),
+            // );
+        } catch (error) {
+            console.error('Error fetching data3', error);
         } finally {
             setLoading(false);
         }
@@ -564,6 +640,8 @@ export default function Home() {
                     onEndReached={handleEndReached}
                     onEndReachedThreshold={0.1}
                     ListFooterComponent={renderFooter}
+                    onScroll={handleScroll}
+                    scrollEventThrottle={16}
                 />
             )}
             {active.friend && <Friend />}
@@ -702,7 +780,7 @@ const styles = StyleSheet.create({
     underNav: {
         justifyContent: 'center',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
 
     youThink: {
