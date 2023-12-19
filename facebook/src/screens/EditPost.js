@@ -17,46 +17,34 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Video, ResizeMode } from 'expo-av';
 import * as PostServices from '../services/PostServices';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
 
-const CreatePost = () => {
+const EditPost = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const { info } = route.params || {};
+    console.log('info', info)
     const [selectedImage, setSelectedImage] = React.useState('');
-    const [isShowTagPart, setIsShowTagPart] = useState(true);
+    const [isShowTagPart, setIsShowTagPart] = useState(false);
     const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
-    const [image, setImage] = useState([]);
-    const [video, setVideo] = useState('');
-    const [textInput, setTextInput] = useState('');
+    const [image, setImage] = useState(info?.listImage?.map(item => item.url));
+    const [video, setVideo] = useState(info?.video);
+    const [textInput, setTextInput] = useState(info?.described);
     const [loading, setLoading] = useState(false);
 
     const name = useSelector((state) => state.profile.name);
     const avatar = useSelector((state) => state.profile.avatar);
 
-    const status = useSelector((state) => state.post.status);
-
-    const showAlert = () => {
-        Alert.alert(
-            'Lưu bài viết này dưới dạng bản nháp?',
-            'Nếu bỏ bây giờ, bạn sẽ mất bài viết này.',
-            [
-                { text: 'Lưu bản nháp', onPress: () => console.log('Nút 1 được nhấn') },
-                { text: 'Bỏ bài viết', onPress: () => navigation.goBack() },
-                {
-                    text: 'Tiếp tục chỉnh sửa',
-                    onPress: () => console.log('Nút 3 được nhấn'),
-                },
-            ],
-            { cancelable: false }, // Cho phép người dùng nhấn bất kỳ nơi nào để đóng thông báo
-        );
-    };
+    const status = info?.status || useSelector((state) => state.post.status);
 
     const imagePicker = () => {
         let options = {
@@ -124,26 +112,12 @@ const CreatePost = () => {
 
             if (mediaType === 'image') {
                 const selectedImages = result.assets.map((asset) => asset.uri);
-                if (selectedImages?.length + image?.length > 4) {
-                    Alert.alert(
-                        'Quá số lượng ảnh.',
-                        `Bài viết đang có ${image?.length} ảnh, bạn chỉ có thể thêm ${4 - image?.length} ảnh.`,
-                        [
-                            {
-                                text: 'OK',
-                            },
-                        ],
-                    );
-                } else {
-                    console.log([...image, ...selectedImages]);
-                    setImage([...image, ...selectedImages]);
-                    setVideo('');
-                }
+                setImage(selectedImages);
+                console.log(selectedImages);
                 // console.log(result);
             } else if (mediaType === 'video') {
                 const selectedVideo = result.assets[0].uri;
                 setVideo(selectedVideo);
-                setImage([]);
                 console.log(selectedVideo);
             }
         }
@@ -232,31 +206,13 @@ const CreatePost = () => {
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
                 <View style={[styles.container, isShowKeyBoard && styles.showKeyBoard]}>
                     <View style={styles.header}>
-                        <Image
-                            onTouchEnd={showAlert}
-                            source={require('../assets/icons/closeicon.png')}
-                            style={{ width: 20, height: 20 }}
-                        />
+                        <TouchableOpacity onPress={() => navigation.goBack()}>
+                            <FontAwesomeIcon icon={faArrowLeft} size={24} color="black" style={{}} />
+                        </TouchableOpacity>
                         {/* <Icon name="close" size={24} color="black" onPress={showAlert} /> */}
-                        <Text style={styles.textBigBold}>Tạo bài viết</Text>
-                        <TouchableOpacity
-                            style={[
-                                !textInput.length || !(image && image.length) || video == '' ? styles.buttonDisable : '',
-                                textInput.length || (image && image.length) || video != '' ? styles.buttonNotDisable : '',
-                            ]}
-                            disabled={!textInput.length && !(image && image.length) && video == ''}
-                            onPress={handlePost}
-                        >
-                            <Text
-                                style={[
-                                    styles.textBigBold,
-                                    !textInput.length && !(image && image.length) && video == ''
-                                        ? styles.textDisable
-                                        : { color: 'white' },
-                                ]}
-                            >
-                                Đăng
-                            </Text>
+                        <Text style={styles.textBigBold}>Chỉnh sửa bài viết</Text>
+                        <TouchableOpacity style={[styles.buttonNotDisable]} onPress={handlePost}>
+                            <Text style={[styles.textBigBold, { color: 'white' }]}>Lưu</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.body}>
@@ -270,7 +226,8 @@ const CreatePost = () => {
                             <View style={styles.right}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 18 }}>
-                                        <Text style={styles.textMediumBold}>{name}</Text> hiện đang cảm thấy {status}
+                                        <Text style={styles.textMediumBold}>{name}</Text>
+                                        {status && ' hiện đang cảm thấy'} {status}
                                     </Text>
                                 </View>
                                 <View style={styles.rightPublic}>
@@ -755,4 +712,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CreatePost;
+export default EditPost;

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { StyleSheet, View, Text, ScrollView, Image, FlatList, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Image, FlatList, TouchableOpacity,Alert,
+    ActivityIndicator, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBell, faCoins, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../services/AuthServices';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -14,6 +16,7 @@ const Menu = () => {
     const navigation = useNavigation();
     const name = useSelector((state) => state.profile.name);
     const avatar = useSelector((state) => state.profile.avatar);
+    const [isLoadApi, setIsLoadApi] = useState(false);
     const data = [
         { id: '1', title: 'Video', iconLink: require('../assets/icons/videoIcon.png') },
         { id: '2', title: 'Nhóm', iconLink: require('../assets/icons/groupIcon.png') },
@@ -24,6 +27,11 @@ const Menu = () => {
         { id: '7', title: 'Bảng feed', iconLink: require('../assets/icons/bangFeedIcon.png') },
         { id: '8', title: ' Sự kiện', iconLink: require('../assets/icons/suKienIcon.png') },
     ];
+
+    const handleLogout = () => {
+
+    }
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -160,17 +168,23 @@ const Menu = () => {
                     </View>
                 </View>
                 <View style={styles.menuContainer}>
-                    <View style={styles.menuItemR}>
-                        <Image
-                            source={{
-                                uri: 'https://img.icons8.com/ios/50/000000/logout-rounded-up.png',
-                            }}
-                            style={styles.menuIcon}
-                        />
-                        <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Đăng xuất</Text>
-                    </View>
-                </View>
+                            <TouchableOpacity style={styles.menuItemR} onPress={handleLogout}>
+                                <Image
+                                    source={{
+                                        uri: 'https://img.icons8.com/ios/50/000000/logout-rounded-up.png',
+                                    }}
+                                    style={styles.menuIcon}
+                                />
+                                <Text style={{ marginLeft: 10, fontWeight: 'bold' }}>Đăng xuất</Text>
+                            </TouchableOpacity>
+                        </View>
             </ScrollView>
+            {isLoadApi && (
+                <ActivityIndicator
+                    size="large"
+                    style={{ position: 'absolute', top: '50%', left: '44%' }}
+                ></ActivityIndicator>
+            )}
         </View>
     );
 };

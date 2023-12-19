@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    user_id: '556',
-    name: '',
+    user_id: '762',
+    name: 'username',
     avatar: 'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
     imageBackground: 'https://res.cloudinary.com/manhphuong/image/upload/v1702693703/default-thumbnail_lscmuo.jpg',
     description: '',
