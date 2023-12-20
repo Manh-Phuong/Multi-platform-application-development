@@ -98,25 +98,25 @@ export default function MessageRecipientInfo() {
                 >
                     <TouchableOpacity>
                         <View style={{ paddingTop: 12, paddingBottom: 12, paddingLeft: 16, paddingRight: 16 }}>
-                            <Text style={{ fontSize: 16, fontWeight: 400 }}>Mở bong bóng chat</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '400' }}>Mở bong bóng chat</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
                         <View style={{ paddingTop: 12, paddingBottom: 12, paddingLeft: 16, paddingRight: 16 }}>
-                            <Text style={{ fontSize: 16, fontWeight: 400 }}>Đổi tên</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '400' }}>Đổi tên</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
                         <View style={{ paddingTop: 12, paddingBottom: 12, paddingLeft: 16, paddingRight: 16 }}>
-                            <Text style={{ fontSize: 16, fontWeight: 400 }}>Xóa cuộc trò chuyện</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '400' }}>Xóa cuộc trò chuyện</Text>
                         </View>
                     </TouchableOpacity>
 
                     <TouchableOpacity>
                         <View style={{ paddingTop: 12, paddingBottom: 12, paddingLeft: 16, paddingRight: 16 }}>
-                            <Text style={{ fontSize: 16, fontWeight: 400 }}>Báo cáo sự cố kỹ thuật</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '400' }}>Báo cáo sự cố kỹ thuật</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -139,7 +139,7 @@ export default function MessageRecipientInfo() {
                             uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
                         }}
                     />
-                    <Text style={{ marginTop: 8, fontSize: 20, fontWeight: 700 }}>Mạnh Phương</Text>
+                    <Text style={{ marginTop: 8, fontSize: 20, fontWeight: '700' }}>Mạnh Phương</Text>
                 </View>
 
                 <View
@@ -243,7 +243,7 @@ export default function MessageRecipientInfo() {
                             marginBottom: 8,
                             fontSize: 15,
                             color: '#a2a1a1',
-                            fontWeight: 500,
+                            fontWeight: '500',
                             marginTop: 16,
                             marginLeft: 8,
                         }}
@@ -260,7 +260,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Chủ đề</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Chủ đề</Text>
                             <Image
                                 style={{
                                     height: 36,
@@ -283,7 +283,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Biểu tượng cảm xúc</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Biểu tượng cảm xúc</Text>
                             <View style={{ marginRight: 40 }}>
                                 <MessageLikeIcon />
                             </View>
@@ -300,7 +300,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Biệt danh</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Biệt danh</Text>
                         </View>
                     </View>
 
@@ -309,7 +309,7 @@ export default function MessageRecipientInfo() {
                             marginBottom: 8,
                             fontSize: 15,
                             color: '#a2a1a1',
-                            fontWeight: 500,
+                            fontWeight: '500',
                             marginTop: 8,
                             marginLeft: 8,
                         }}
@@ -327,7 +327,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Xem ảnh và video</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Xem ảnh và video</Text>
                             <TouchableOpacity>
                                 <View style={[styles.wrapIcon, { marginRight: 36 }]}>
                                     <FontAwesomeIcon icon={faImage} size={22} color="black" />
@@ -346,7 +346,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>
                                 Tìm kiếm trong cuộc trò chuyện
                             </Text>
                             <TouchableOpacity>
@@ -367,7 +367,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>
                                 Đi đến cuộc trò chuyện bí mật
                             </Text>
                             <TouchableOpacity>
@@ -388,7 +388,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Tạo nhóm</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Tạo nhóm</Text>
                             <TouchableOpacity>
                                 <View style={[styles.wrapIcon, { marginRight: 36 }]}>
                                     <FontAwesomeIcon icon={faUserGroup} size={20} color="black" />
@@ -402,7 +402,7 @@ export default function MessageRecipientInfo() {
                             marginBottom: 8,
                             fontSize: 15,
                             color: '#a2a1a1',
-                            fontWeight: 500,
+                            fontWeight: '500',
                             marginTop: 8,
                             marginLeft: 8,
                         }}
@@ -419,11 +419,11 @@ export default function MessageRecipientInfo() {
                             }}
                         >
                             <View>
-                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Thông báo</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Thông báo</Text>
                                 <Text
                                     style={{
                                         fontSize: 14,
-                                        fontWeight: 400,
+                                        fontWeight: '400',
                                         marginLeft: 16,
                                         color: '#65676b',
                                     }}
@@ -444,7 +444,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Bỏ qua tin nhắn</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Bỏ qua tin nhắn</Text>
                             <TouchableOpacity>
                                 <View style={[styles.wrapIcon, { marginRight: 36 }]}>
                                     <FontAwesomeIcon icon={faBan} size={20} color="black" />
@@ -463,7 +463,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Chặn</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Chặn</Text>
                             <TouchableOpacity>
                                 <View style={[styles.wrapIcon, { marginRight: 36 }]}>
                                     <FontAwesomeIcon icon={faCircleMinus} size={20} color="black" />
@@ -482,7 +482,7 @@ export default function MessageRecipientInfo() {
                                 width: withScreen,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 8 }}>Báo cáo</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 8 }}>Báo cáo</Text>
                             <TouchableOpacity>
                                 <View style={[styles.wrapIcon, { marginRight: 36 }]}>
                                     <FontAwesomeIcon icon={faTriangleExclamation} size={20} color="black" />
@@ -558,7 +558,7 @@ export default function MessageRecipientInfo() {
                     </View>
                     <View>
                         <Text
-                            style={{ marginTop: withScreen * 0.1, fontSize: 20, fontWeight: 700, textAlign: 'center' }}
+                            style={{ marginTop: withScreen * 0.1, fontSize: 20, fontWeight: '700', textAlign: 'center' }}
                         >
                             Mạnh Phương
                         </Text>
@@ -657,7 +657,7 @@ export default function MessageRecipientInfo() {
                             <Text
                                 style={{
                                     fontSize: 14,
-                                    fontWeight: 700,
+                                    fontWeight: '700',
                                     textAlign: 'center',
                                 }}
                             >
@@ -671,7 +671,7 @@ export default function MessageRecipientInfo() {
                                 marginTop: withScreen * 0.05,
                             }}
                         >
-                            <Text style={{ fontWeight: 500, color: '#666', marginBottom: withScreen * 0.02 }}>
+                            <Text style={{ fontWeight: '500', color: '#666', marginBottom: withScreen * 0.02 }}>
                                 Điểm chung
                             </Text>
                             <View
@@ -680,7 +680,7 @@ export default function MessageRecipientInfo() {
                                 }}
                             >
                                 <FontAwesomeIcon icon={faUser} size={20} color="#666" />
-                                <Text style={{ fontWeight: 500, fontSize: 14, marginLeft: 12 }}>20 bạn chung</Text>
+                                <Text style={{ fontWeight: '500', fontSize: 14, marginLeft: 12 }}>20 bạn chung</Text>
                             </View>
                         </View>
                     </View>

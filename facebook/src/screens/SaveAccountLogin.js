@@ -136,7 +136,7 @@ const SaveAccountLogin = () => {
 
                 <View style={styles.linkText}>
                     <TouchableOpacity onPress={() => navigation.navigate('IntroCreateAccount')}>
-                        <Text style={{ fontSize: 16, fontWeight: 600 }}>Tạo tài khoản mới</Text>
+                        <Text style={{ fontSize: 16, fontWeight: '600' }}>Tạo tài khoản mới</Text>
                     </TouchableOpacity>
                 </View>
             </LinearGradient>

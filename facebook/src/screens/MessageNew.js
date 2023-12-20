@@ -121,7 +121,7 @@ const ActionMessage = ({ user }) => {
                         uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
                     }}
                 />
-                <Text style={{ marginTop: 8, fontSize: 18, fontWeight: 600 }}>{user.name}</Text>
+                <Text style={{ marginTop: 8, fontSize: 18, fontWeight: '600' }}>{user.name}</Text>
             </View>
         </View>
     );
@@ -415,7 +415,7 @@ export default function MessageNew() {
                             marginLeft: 24,
                             textAlign: 'center',
                             fontSize: 18,
-                            fontWeight: 600,
+                            fontWeight: '600',
                         }}
                     >
                         Tin nhắn mới
@@ -451,7 +451,7 @@ export default function MessageNew() {
                 <View style={[styles.wrapTextInput]}>
                     <View style={{ flexDirection: 'row' }}>
                         <View>
-                            <Text style={{ fontSize: 18, fontWeight: 600, color: '#acabab' }}>Đến:</Text>
+                            <Text style={{ fontSize: 18, fontWeight: '600', color: '#acabab' }}>Đến:</Text>
                         </View>
                         <TextInput
                             numberOfLines={1}
@@ -510,7 +510,7 @@ export default function MessageNew() {
                             <Text
                                 style={{
                                     fontSize: 18,
-                                    fontWeight: 600,
+                                    fontWeight: '600',
                                     color: '#acabab',
                                     margin: 8,
                                 }}
@@ -535,7 +535,7 @@ export default function MessageNew() {
                                                 ellipsizeMode="tail"
                                                 style={{
                                                     fontSize: 15,
-                                                    fontWeight: 700,
+                                                    fontWeight: '700',
                                                     width: withScreen * 0.7 - 8,
                                                     color: '#000',
                                                     marginLeft: 12,

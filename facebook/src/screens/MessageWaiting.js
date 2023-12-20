@@ -173,12 +173,12 @@ const Header = () => {
                             borderRadius: 30,
                         }}
                     >
-                        <Text style={{ fontWeight: 600 }}>BẠN CÓ THỂ BIẾT</Text>
+                        <Text style={{ fontWeight: '600' }}>BẠN CÓ THỂ BIẾT</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <View>
-                        <Text style={{ fontWeight: 600, color: '#8d8d8d' }}>SPAM</Text>
+                        <Text style={{ fontWeight: '600', color: '#8d8d8d' }}>SPAM</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -205,7 +205,7 @@ const Header = () => {
                     textAlign: "center",
                     marginTop: 4,
                     fontSize: 15,
-                    fontWeight: 400,
+                    fontWeight: '400',
                     width: withScreen * 0.22 - 8,
                     color: "#000",
                   }}
@@ -256,7 +256,7 @@ const Message = () => {
                                         style={{
                                             marginTop: 4,
                                             fontSize: 15,
-                                            fontWeight: 700,
+                                            fontWeight: '700',
                                             width: withScreen * 0.7 - 8,
                                             color: '#000',
                                         }}
@@ -278,7 +278,7 @@ const Message = () => {
                                             maxWidth: withScreen * 0.6,
                                             marginTop: 4,
                                             fontSize: 15,
-                                            fontWeight: 400,
+                                            fontWeight: '400',
 
                                             // width: withScreen * 0.7 - 8,
                                             color: '#65676b',
@@ -294,7 +294,7 @@ const Message = () => {
                                             maxWidth: withScreen * 0.2,
                                             marginTop: 4,
                                             fontSize: 15,
-                                            fontWeight: 400,
+                                            fontWeight: '400',
                                             marginLeft: 12,
                                             color: '#65676b',
                                         }}
@@ -359,7 +359,7 @@ export default function MessageWaiting() {
                                 paddingRight: 16,
                             }}
                         >
-                            <Text style={{ fontSize: 16, fontWeight: 400 }}>Xóa tin nhắn đang chờ</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '400' }}>Xóa tin nhắn đang chờ</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -375,7 +375,7 @@ export default function MessageWaiting() {
                                 marginLeft: 24,
                                 textAlign: 'center',
                                 fontSize: 18,
-                                fontWeight: 600,
+                                fontWeight: '600',
                             }}
                         >
                             Tin nhắn đang chờ
@@ -394,11 +394,11 @@ export default function MessageWaiting() {
             {/* <View style={styles.bottom}>
         <View style={styles.wrapIconBottom}>
           <FontAwesomeIcon icon={faComment} size={20} color="#373737" />
-          <Text style={{textAlign: "center", fontSize: 14, fontWeight: 500}}>Chat</Text>
+          <Text style={{textAlign: "center", fontSize: 14, fontWeight: '500'}}>Chat</Text>
         </View>
         <View style={styles.wrapIconBottom}>
           <FontAwesomeIcon icon={faUserGroup} size={20} color="#a2a1a1" />
-          <Text style={{textAlign: "center", fontSize: 14, fontWeight: 500, color: "#a2a1a1"}}>Danh bạ</Text>
+          <Text style={{textAlign: "center", fontSize: 14, fontWeight: '500', color: "#a2a1a1"}}>Danh bạ</Text>
         </View>
       </View> */}
         </View>

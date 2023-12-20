@@ -205,10 +205,10 @@ const ProfileSetting = () => {
 
                 <View style={{ marginTop: 12 }}>
                     <View style={{ width: withScreen - 32, marginLeft: 16, marginBottom: 8 }}>
-                        <Text style={{ fontSize: 18, fontWeight: 800 }}>
+                        <Text style={{ fontSize: 18, fontWeight: '800' }}>
                             Liên kết đến trang cá nhân của {type == 'personal' ? 'bạn' : `${info.name}`}
                         </Text>
-                        <Text style={{ fontSize: 18, fontWeight: 400 }}>
+                        <Text style={{ fontSize: 18, fontWeight: '400' }}>
                             Liên kết riêng của {type == 'personal' ? 'bạn' : `${info.name}`} trên Facebook
                         </Text>
                     </View>
@@ -216,7 +216,7 @@ const ProfileSetting = () => {
                         <View style={styles.horizontalView}></View>
                     </View>
                     <View style={{ marginLeft: 16 }}>
-                        <Text style={{ fontSize: 16, fontWeight: 700, width: withScreen - 32 }}>{link}</Text>
+                        <Text style={{ fontSize: 16, fontWeight: '700', width: withScreen - 32 }}>{link}</Text>
                         <TouchableOpacity
                             style={{
                                 backgroundColor: '#ecf4ff',

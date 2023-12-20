@@ -40,12 +40,12 @@ const Header = ({ totalRequest }) => {
                 <View style={[styles.flexRow, { marginVertical: 8 }]}>
                     <TouchableOpacity onPress={() => navigation.navigate('FriendSuggest')}>
                         <View style={styles.textBtn}>
-                            <Text style={{ fontWeight: 700 }}>Gợi ý</Text>
+                            <Text style={{ fontWeight: '700' }}>Gợi ý</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('FriendLists')}>
                         <View style={styles.textBtn}>
-                            <Text style={{ fontWeight: 700 }}>Bạn bè</Text>
+                            <Text style={{ fontWeight: '700' }}>Bạn bè</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

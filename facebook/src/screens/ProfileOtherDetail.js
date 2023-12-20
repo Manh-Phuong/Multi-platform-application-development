@@ -475,7 +475,7 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
                     />
                     <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
                         <View style={styles.youThink}>
-                            <Text style={{ fontSize: 16, fontWeight: 500 }}>Viết gì đó cho ...</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '500' }}>Viết gì đó cho ...</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -570,6 +570,7 @@ const ProfileOtherDetail = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
+            // setData([]);
             const response = await PostServices.getListPost({
                 user_id: props,
                 in_campaign: '1',
@@ -584,6 +585,61 @@ const ProfileOtherDetail = () => {
             setLastId(response.data.data.last_id);
 
             // console.log(response.data);
+
+            if (response.data.code == '1000') {
+                setData((prevData) => [
+                    ...prevData,
+                    ...response.data.data.post?.map((item) => {
+                        return {
+                            id: item?.id,
+                            owner: item.author.name,
+                            owner_id: item.author.id,
+                            avatar: item.author.avatar,
+                            content: item.described,
+                            images: item?.image,
+                            video: item?.video?.url,
+                            created: item?.created,
+                            feel: item?.feel,
+                            comment_mark: item?.comment_mark,
+                            is_felt: item?.is_felt,
+                            is_blocked: item?.is_blocked,
+                            can_edit: item?.can_edit,
+                            banned: item?.banned,
+                            state: item?.state,
+                        };
+                    }),
+                ]);
+            } else {
+                setLoading(false);
+            }
+
+            setHasData(response.data.data.post?.length > 0);
+        } catch (error) {
+            console.error('Error fetching data5', error);
+            setLoading(false);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchNewData = async () => {
+        try {
+            setLoading(true);
+            setData([]);
+            const response = await PostServices.getListPost({
+                user_id: props,
+                in_campaign: '1',
+                campaign_id: '1',
+                latitude: '1.0',
+                longitude: '1.0',
+                last_id: lastId,
+                index: '0',
+                count: '10',
+            });
+
+            setLastId(response.data.data.last_id);
+
+            console.log('new data', response.data);
 
             if (response.data.code == '1000') {
                 setData((prevData) => [
@@ -639,6 +695,8 @@ const ProfileOtherDetail = () => {
 
     useEffect(() => {
         fetchApi();
+        fetchNewData();
+        console.log('props data', props)
         // fetchData();
     }, [props]);
 
@@ -650,6 +708,7 @@ const ProfileOtherDetail = () => {
         if (!loading && hasData) {
             fetchData();
         }
+        fetchNewData();
     };
 
     const renderFooter = () => {
@@ -738,7 +797,7 @@ const ProfileOtherDetail = () => {
                                     <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Bỏ theo dõi</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Bỏ theo dõi</Text>
                                 </View>
                             </View>
                         </View>
@@ -750,7 +809,7 @@ const ProfileOtherDetail = () => {
                                     <FontAwesomeIcon icon={faUserMinus} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Giảm tương tác
                                     </Text>
                                 </View>
@@ -764,7 +823,7 @@ const ProfileOtherDetail = () => {
                                     <FontAwesomeIcon icon={faUserPen} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Chỉnh sửa danh sách bạn bè
                                     </Text>
                                 </View>
@@ -778,7 +837,7 @@ const ProfileOtherDetail = () => {
                                     <FontAwesomeIcon icon={faHeart} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Yêu thích</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Yêu thích</Text>
                                 </View>
                             </View>
                         </View>
@@ -790,7 +849,7 @@ const ProfileOtherDetail = () => {
                                     <FontAwesomeIcon icon={faUserXmark} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Hủy kết bạn</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Hủy kết bạn</Text>
                                 </View>
                             </View>
                         </View>

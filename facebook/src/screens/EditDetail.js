@@ -83,7 +83,7 @@ export default function EditDetail() {
                                 // marginLeft: 24,
                                 textAlign: 'center',
                                 fontSize: 18,
-                                fontWeight: 600,
+                                fontWeight: '600',
                             }}
                         >
                             Chỉnh sửa chi tiết
@@ -110,7 +110,7 @@ export default function EditDetail() {
 
             <View style={{ marginTop: 16 }}>
                 <View style={{ marginLeft: 16, marginBottom: 16 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Địa chỉ</Text>
+                    <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 8 }}>Địa chỉ</Text>
                     <TextInput
                         style={{
                             fontSize: 16,
@@ -129,7 +129,7 @@ export default function EditDetail() {
                 </View>
 
                 <View style={{ marginLeft: 16, marginBottom: 16 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Thành phố</Text>
+                    <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 8 }}>Thành phố</Text>
                     <TextInput
                         style={{
                             fontSize: 16,
@@ -148,7 +148,7 @@ export default function EditDetail() {
                 </View>
 
                 <View style={{ marginLeft: 16, marginBottom: 16 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Quốc gia</Text>
+                    <Text style={{ fontSize: 18, fontWeight: '700', marginBottom: 8 }}>Quốc gia</Text>
                     <TextInput
                         style={{
                             fontSize: 16,

@@ -90,7 +90,7 @@ const Header = () => {
 
                 <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
                     <View style={styles.youThink}>
-                        <Text style={{ fontSize: 16, fontWeight: 500 }}>Bạn đang nghĩ gì?</Text>
+                        <Text style={{ fontSize: 16, fontWeight: '500' }}>Bạn đang nghĩ gì?</Text>
                     </View>
                 </TouchableOpacity>
 
@@ -123,7 +123,7 @@ const Header = () => {
                                 marginTop: heightScreen * 0.03,
                             }}
                         >
-                            <Text style={{ fontWeight: 600, fontSize: 18 }}>Tạo tin</Text>
+                            <Text style={{ fontWeight: '600', fontSize: 18 }}>Tạo tin</Text>
                         </View>
                     </View>
 
@@ -144,7 +144,7 @@ const Header = () => {
                                         bottom: 8,
                                         left: 8,
                                         fontSize: 16,
-                                        fontWeight: 600,
+                                        fontWeight: '600',
                                         width: withScreen * 0.26 - 8,
                                         color: 'white',
                                     }}

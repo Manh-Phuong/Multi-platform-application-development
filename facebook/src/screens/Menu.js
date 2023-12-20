@@ -75,7 +75,7 @@ const Menu = () => {
                                     uri: avatar,
                                 }}
                             />
-                            <Text style={{ fontSize: 16, fontWeight: 500 }}>{name}</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '500' }}>{name}</Text>
                         </View>
                     </TouchableOpacity>
                     <View style={styles.shortcutDivider} />
@@ -84,7 +84,7 @@ const Menu = () => {
                             <Icon name="plus" size={15} color="#fff" />
                         </View>
                         <View style={styles.textIconsPlus}>
-                            <Text style={{ color: '#828282', fontSize: 16, fontWeight: 500 }}>
+                            <Text style={{ color: '#828282', fontSize: 16, fontWeight: '500' }}>
                                 Tạo trang cá nhân khác
                             </Text>
                         </View>
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
         marginLeft: 16,
         marginTop: 15,
         fontSize: 16,
-        fontWeight: 800,
+        fontWeight: '800',
     },
     flatList: {
         marginLeft: 15,

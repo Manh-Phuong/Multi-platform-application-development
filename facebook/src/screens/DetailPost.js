@@ -390,7 +390,7 @@ const DetailPost = ({ route }) => {
                             <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
                         </TouchableOpacity>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-                            <Text style={{ fontSize: 18, fontWeight: 600 }}>Bài viết của {postInfo?.owner}</Text>
+                            <Text style={{ fontSize: 18, fontWeight: '600' }}>Bài viết của {postInfo?.owner}</Text>
                         </View>
                     </View>
 
@@ -453,7 +453,7 @@ const DetailPost = ({ route }) => {
                                     <View>
                                         {item?.comments?.length > 1 && selectedReply != index && (
                                             <TouchableOpacity onPress={() => setSelectedReply(index)}>
-                                                <Text style={{ paddingBottom: 6, fontWeight: 700 }}>
+                                                <Text style={{ paddingBottom: 6, fontWeight: '700' }}>
                                                     Xem tất cả trả lời...
                                                 </Text>
                                             </TouchableOpacity>

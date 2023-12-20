@@ -88,7 +88,7 @@ export default function PreviewImage() {
                                 marginLeft: 24,
                                 textAlign: 'center',
                                 fontSize: 18,
-                                fontWeight: 600,
+                                fontWeight: '600',
                             }}
                         >
                             Xem trước ảnh đại diện
@@ -101,7 +101,7 @@ export default function PreviewImage() {
                                 marginLeft: 24,
                                 textAlign: 'center',
                                 fontSize: 18,
-                                fontWeight: 600,
+                                fontWeight: '600',
                             }}
                         >
                             Xem trước ảnh đại diện

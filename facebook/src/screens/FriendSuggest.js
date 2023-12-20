@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     headerText: {
         color: 'black',
         fontSize: 16,
-        fontWeight: 800
+        fontWeight: '800'
     },
     wrapIcon: {
         width: 32,

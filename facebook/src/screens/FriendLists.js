@@ -148,7 +148,7 @@ const Option = ({ valueOption, handleClickAccept, setModalOption }) => {
                         </View>
                         <View>
                             <Text
-                                style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}
+                                style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}
                             >{`Nhắn tin cho ${valueOption.name}`}</Text>
                         </View>
                     </View>
@@ -162,7 +162,7 @@ const Option = ({ valueOption, handleClickAccept, setModalOption }) => {
                             />
                         </View>
                         <View style={{ marginLeft: 16, flex: 1 }}>
-                            <Text style={{ fontSize: 16, fontWeight: 600 }}>
+                            <Text style={{ fontSize: 16, fontWeight: '600' }}>
                                 Chặn trang cá nhân của {valueOption.name}
                             </Text>
                             <Text>{`${valueOption.name} sẽ không thể nhìn thấy bạn hoặc liên hệ với bạn trên Facebook`}</Text>
@@ -179,7 +179,7 @@ const Option = ({ valueOption, handleClickAccept, setModalOption }) => {
                         </View>
                         <View style={{ marginLeft: 16, flex: 1 }}>
                             <Text
-                                style={{ fontSize: 16, fontWeight: 600 }}
+                                style={{ fontSize: 16, fontWeight: '600' }}
                             >{`Hủy kết bạn với ${valueOption.name}`}</Text>
                             <Text>{`Xóa ${valueOption.name} khỏi danh sách bạn bè`}</Text>
                         </View>
@@ -427,7 +427,7 @@ const styles = StyleSheet.create({
     headerText: {
         color: 'black',
         fontSize: 18,
-        fontWeight: 800
+        fontWeight: '800'
     },
     wrapIcon: {
         width: 32,

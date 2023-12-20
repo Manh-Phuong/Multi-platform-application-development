@@ -123,7 +123,7 @@ const ActionMessage = ({ user }) => {
                         uri: 'https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg',
                     }}
                 />
-                <Text style={{ marginTop: 8, fontSize: 18, fontWeight: 600 }}>{user.name}</Text>
+                <Text style={{ marginTop: 8, fontSize: 18, fontWeight: '600' }}>{user.name}</Text>
             </View>
         </View>
     );
@@ -412,7 +412,7 @@ export default function MessagePrimary() {
                             marginLeft: 24,
                             textAlign: 'center',
                             fontSize: 18,
-                            fontWeight: 600,
+                            fontWeight: '600',
                         }}
                     >
                         Tin nhắn mới
@@ -431,7 +431,7 @@ export default function MessagePrimary() {
                             marginLeft: 12,
                             textAlign: 'center',
                             fontSize: 18,
-                            fontWeight: 600,
+                            fontWeight: '600',
                             maxWidth: withScreen * 0.39,
                         }}
                     >
@@ -535,8 +535,8 @@ export default function MessagePrimary() {
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <View style={{ backgroundColor: 'white', padding: 16, height: 300 }}>
-                    <Text style={{ fontSize: 18, fontWeight: 700 }}>Bạn có muốn chat không?</Text>
-                    <Text style={{ fontSize: 16, fontWeight: 400, color: '#666' }}>
+                    <Text style={{ fontSize: 18, fontWeight: '700' }}>Bạn có muốn chat không?</Text>
+                    <Text style={{ fontSize: 16, fontWeight: '400', color: '#666' }}>
                         Bạn có thể xóa cuộc trò chuyện, ngăn người này nhắn tin cho bạn hoặc cho chúng tôi biết nếu thấy
                         có gì không ổn. chúng tôi sẽ không tiết lộ với họ rằng bạn đã thực hiện những hành động này.
                     </Text>
@@ -551,7 +551,7 @@ export default function MessagePrimary() {
                                     width: withScreen,
                                 }}
                             >
-                                <Text style={{ fontSize: 16, fontWeight: 600, color: 'red' }}>Xóa cuộc trò chuyện</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '600', color: 'red' }}>Xóa cuộc trò chuyện</Text>
                                 <TouchableOpacity>
                                     <View style={[styles.wrapIcon2, { marginRight: 36 }]}>
                                         <FontAwesomeIcon icon={faTrash} size={20} color="black" />
@@ -570,7 +570,7 @@ export default function MessagePrimary() {
                                     width: withScreen,
                                 }}
                             >
-                                <Text style={{ fontSize: 16, fontWeight: 600 }}>Chặn</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '600' }}>Chặn</Text>
                                 <TouchableOpacity>
                                     <View style={[styles.wrapIcon2, { marginRight: 36 }]}>
                                         <FontAwesomeIcon icon={faCircleMinus} size={20} color="black" />
@@ -589,7 +589,7 @@ export default function MessagePrimary() {
                                     width: withScreen,
                                 }}
                             >
-                                <Text style={{ fontSize: 16, fontWeight: 600 }}>Có gì đó không ổn</Text>
+                                <Text style={{ fontSize: 16, fontWeight: '600' }}>Có gì đó không ổn</Text>
                                 <TouchableOpacity>
                                     <View style={[styles.wrapIcon2, { marginRight: 36 }]}>
                                         <FontAwesomeIcon icon={faTriangleExclamation} size={20} color="black" />
