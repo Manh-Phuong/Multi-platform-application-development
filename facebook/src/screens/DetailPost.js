@@ -58,7 +58,6 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
     };
     const handleRemoveEmoji = async () => {
         const res = await deleteFeel({ id: post.id });
-        console.log(res)
         if (res.code == 1000) {
             setIsChooseEmoji(-1);
             setDisplayEmoji(false);
@@ -112,9 +111,9 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                         {post.content}
                     </Text>
 
-                    {post && post?.images && post?.images.length ==  4 && (
+                    {post && post?.images && post?.images.length == 4 && (
                         <View style={styles.imagePart_4}>
-                            {post.images &&  
+                            {post.images &&
                                 post.images.map((item, index) => (
                                     <View
                                         key={index}
@@ -268,12 +267,19 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                                 style={{
                                     position: 'absolute',
                                     left: 20,
-                                    top: -36,
+                                    top: -44,
                                     backgroundColor: 'white',
                                     padding: 8,
                                     borderRadius: 20,
                                     flexDirection: 'row',
                                     columnGap: 16,
+                                    shadowColor: '#333333',
+                                    shadowOffset: {
+                                        width: 4,
+                                        height: 4,
+                                    },
+                                    shadowOpacity: 0.6,
+                                    shadowRadius: 4,
                                 }}
                             >
                                 <TouchableOpacity onPress={() => handleChooseEmoji(1)}>
@@ -286,13 +292,16 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                         )}
                     </View>
                     <View>
-                        {!reselect && <Text style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}>{`😊😔 ${
-                            post.feel
-                        }`}</Text>}
-                        {reselect && <Text style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}>{`😊😔 ${
-                            totalEmoji
-                        }`}</Text>}
-                        
+                        {!reselect && (
+                            <Text
+                                style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}
+                            >{`😊😔 ${post.feel}`}</Text>
+                        )}
+                        {reselect && (
+                            <Text
+                                style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}
+                            >{`😊😔 ${totalEmoji}`}</Text>
+                        )}
                     </View>
                     <View>
                         {0 < listCmt.length && listCmt.length > 9 && (
@@ -321,7 +330,6 @@ const DetailPost = ({ route }) => {
         const { postInfo, listCmt } = route.params;
         setPostInfo(postInfo);
         setListCmt(listCmt);
-        console.log(postInfo)
     }, []);
 
     const GenerateTime = ({ date }) => {
@@ -370,7 +378,7 @@ const DetailPost = ({ route }) => {
                 <View style={{ height: '100%' }}>
                     <View
                         style={{
-                            marginTop: 30,
+                            marginTop: 40,
                             flexDirection: 'row',
                             paddingTop: 20,
                             paddingLeft: 16,
@@ -379,7 +387,7 @@ const DetailPost = ({ route }) => {
                         }}
                     >
                         <TouchableOpacity onPress={() => navigation.goBack()}>
-                            <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
                         </TouchableOpacity>
                         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
                             <Text style={{ fontSize: 18, fontWeight: 600 }}>Bài viết của {postInfo?.owner}</Text>
@@ -548,8 +556,8 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         backgroundColor: 'white',
         paddingBottom: 6,
-        paddingLeft: 4, 
-        paddingRight: 4
+        paddingLeft: 4,
+        paddingRight: 4,
     },
     wrapIconNews: {
         backgroundColor: '#0866ff',

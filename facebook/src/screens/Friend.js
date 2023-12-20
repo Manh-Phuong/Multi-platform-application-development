@@ -6,6 +6,8 @@ import * as FriendServices from '../services/FriendServices';
 import { calculateTimeAgo } from '../components/Convert';
 import { setStoreRequestFriend, setStoreUserFriend, setStoreSuggestFriend } from '../feature/friend';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -13,27 +15,37 @@ heightScreen = Dimensions.get('window').height;
 const Header = ({ totalRequest }) => {
     const navigation = useNavigation();
     return (
-        <>
+        <View style={{ marginTop: 50 }}>
             <View>
-                <View style={[styles.flexRow, styles.flexBetween, { marginTop: 8 }]}>
-                    <View>
-                        <Text style={styles.headerText}>Bạn bè</Text>
-                    </View>
-                    <TouchableOpacity>
-                        <View style={styles.wrapIcon}>
-                            <Icon name="search" size={20} color="black" />
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: 12 }}>
+                        <View>
+                            <TouchableOpacity onPress={() => navigation.goBack()}>
+                                <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" style={{ marginLeft: 4 }} />
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
+                        <View>
+                            <Text style={styles.headerText}>Bạn bè</Text>
+                        </View>
+                    </View>
+
+                    <View style={[styles.flexRow, styles.flexBetween, { marginTop: 8 }]}>
+                        <TouchableOpacity>
+                            <View style={styles.wrapIcon}>
+                                <Icon name="search" size={20} color="black" />
+                            </View>
+                        </TouchableOpacity>
+                    </View>
                 </View>
                 <View style={[styles.flexRow, { marginVertical: 8 }]}>
                     <TouchableOpacity onPress={() => navigation.navigate('FriendSuggest')}>
-                        <View>
-                            <Text style={styles.textBtn}>Gợi ý</Text>
+                        <View style={styles.textBtn}>
+                            <Text style={{ fontWeight: 700 }}>Gợi ý</Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate('FriendLists')}>
-                        <View>
-                            <Text style={styles.textBtn}>Bạn bè</Text>
+                        <View style={styles.textBtn}>
+                            <Text style={{ fontWeight: 700 }}>Bạn bè</Text>
                         </View>
                     </TouchableOpacity>
                 </View>
@@ -47,7 +59,7 @@ const Header = ({ totalRequest }) => {
                     </View>
                 </View>
             </View>
-        </>
+        </View>
     );
 };
 const Friend = () => {

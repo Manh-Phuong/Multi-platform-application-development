@@ -16,6 +16,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useSelector } from 'react-redux';
 import { signup } from '../services/AuthServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const CreatePassword = () => {
     const navigation = useNavigation();
@@ -25,20 +27,35 @@ const CreatePassword = () => {
 
     const handleSubmit = async () => {
         try {
-          const data = await signup({
-            email: email,
-            password: password,
-            uuid: "string"
-          })
-          console.log(data)
-          if (data.data.code == "1000") {
-            await AsyncStorage.setItem('email', email);
-            await AsyncStorage.setItem('password', password);
-            navigation.navigate('PolicyConfirm');
-          }
+            const data = await signup({
+                email: email,
+                password: password,
+                uuid: 'string',
+            });
+            if (data.data.code == '1000') {
+                await AsyncStorage.setItem('email', email);
+                await AsyncStorage.setItem('password', password);
+                navigation.navigate('PolicyConfirm');
+            }
+        } catch (err) {
+            console.log(err);
         }
-        catch(err) {
-          console.log(err);
+    };
+
+    const handleSubmit2 = async () => {
+        try {
+            const data = await signup({
+                email: email,
+                password: password,
+                uuid: 'string',
+            });
+
+            console.log(data)
+            if (data.data.code == '1000') {
+                navigation.navigate('PolicyConfirm');
+            }
+        } catch (err) {
+            console.log(err);
         }
     };
 
@@ -54,12 +71,8 @@ const CreatePassword = () => {
                 end={{ x: 1, y: 1 }}
                 style={styles.container}
             >
-                <TouchableOpacity onPress={goBackHandler}>
-                    <Image
-                        style={[styles.vectorIcon, styles.iconLayout]}
-                        contentFit="cover"
-                        source={require('../assets/images/vector.png')}
-                    />
+                <TouchableOpacity onPress={goBackHandler} style={{ marginTop: 60, marginLeft: 16 }}>
+                    <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
                 </TouchableOpacity>
                 <Text style={[styles.bnTnG]}>Lưu thông tin đăng nhập?</Text>
                 <Text style={[styles.nhpTnBn1]}>
@@ -73,7 +86,7 @@ const CreatePassword = () => {
                 </View>
 
                 <View>
-                    <TouchableOpacity style={styles.buttonSub} onPress={handleSubmit}>
+                    <TouchableOpacity style={styles.buttonSub} onPress={handleSubmit2}>
                         <Text style={styles.logIn2}>Lúc khác</Text>
                     </TouchableOpacity>
                 </View>
@@ -148,7 +161,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
     },
     buttonprimary: {
-        bottom: -150,
+        bottom: -60,
         borderRadius: Border.br_81xl,
         backgroundColor: Color.colorRoyalblue_200,
         alignItems: 'center',
@@ -159,7 +172,7 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     buttonSub: {
-        bottom: -170,
+        bottom: -80,
         borderRadius: Border.br_81xl,
         borderColor: '#ccc',
         color: 'black',
@@ -177,7 +190,7 @@ const styles = StyleSheet.create({
         objectFit: 'cover',
     },
     bnTnG: {
-        top: 117,
+        top: 20,
         left: 16,
         fontSize: 24,
         width: '100%',
@@ -186,14 +199,14 @@ const styles = StyleSheet.create({
         color: Color.colorBlack,
     },
     nhpTnBn1: {
-        top: 125,
+        top: 28,
         fontSize: 16,
         left: 16,
         maxWidth: '100%',
         marginRight: 16,
     },
     nhpTnBn2: {
-        top: 215,
+        top: 118,
         fontSize: 14,
         left: 16,
         maxWidth: '100%',

@@ -9,6 +9,8 @@ import {
 import { Color, FontSize, Border, Padding } from "../GlobalStyles";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const IntroCreateAccount = () => {
   const navigation = useNavigation();
@@ -28,12 +30,8 @@ const IntroCreateAccount = () => {
       end={{ x: 1, y: 1 }}
       style={styles.createName}
     >
-      <TouchableOpacity onPress={goBackHandler}>
-        <Image
-          style={[styles.vectorIcon, styles.iconLayout]}
-          contentFit="cover"
-          source={require("../assets/images/vector.png")}
-        />
+      <TouchableOpacity onPress={goBackHandler} style={{marginTop: 60}}>
+        <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
       </TouchableOpacity>
 
       <Text style={[styles.bnTnG]}>Tham gia Facebook</Text>

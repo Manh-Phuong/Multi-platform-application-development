@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faBell, faCoins, faUserXmark } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../services/AuthServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -28,10 +29,30 @@ const Menu = () => {
         { id: '8', title: ' Sự kiện', iconLink: require('../assets/icons/suKienIcon.png') },
     ];
 
-    const handleLogout = () => {
-
-    }
-    
+    const handleLogout = async () => {
+        Alert.alert(
+            'Xác nhận',
+            'Bạn có chắc chắn muốn đăng xuất không?',
+            [
+                {
+                    text: 'Hủy',
+                    style: 'cancel',
+                },
+                {
+                    text: 'OK',
+                    onPress: async () => {
+                        setIsLoadApi(true);
+                        const res = await logout();
+                        setIsLoadApi(false);
+                        await AsyncStorage.removeItem("token");
+                        navigation.navigate('SaveAccountLogin');
+                    },
+                },
+            ],
+            { cancelable: false },
+        );
+    };
+        
     return (
         <View style={styles.container}>
             <View style={styles.header}>

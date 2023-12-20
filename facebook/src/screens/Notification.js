@@ -17,11 +17,11 @@ const Header = () => {
                     <View>
                         <Text style={styles.headerText}>Thông báo</Text>
                     </View>
-                    <TouchableOpacity>
+                    {/* <TouchableOpacity>
                         <View style={styles.wrapIcon}>
                             <Icon name="search" size={20} color="black" />
                         </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                 </View>
             </View>
             <View>

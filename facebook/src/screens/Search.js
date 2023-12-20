@@ -18,7 +18,15 @@ import { useNavigation } from '@react-navigation/native';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { HomeIcon, VideoIcon, FriendIcon, MarketIcon, MessageIcon, SendIcon } from '../assets/icons';
-import { faAngleRight, faEllipsis, faLink, faPlus, faThumbTack, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {
+    faAngleRight,
+    faArrowLeft,
+    faEllipsis,
+    faLink,
+    faPlus,
+    faThumbTack,
+    faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import {
     faBell,
     faBookmark,
@@ -70,7 +78,6 @@ export default function Search() {
         setSearchInput(newValue);
     };
     const handlePress = async () => {
-       
         setSearchInput('');
         setDataRender([]);
         setShowSearchResults(false);
@@ -160,11 +167,7 @@ export default function Search() {
                 )}
                 <View style={styles.header}>
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <Image
-                            style={styles.backIcon}
-                            contentFit="cover"
-                            source={require('../assets/images/vector.png')}
-                        />
+                        <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
                     </TouchableOpacity>
                     <TextInput
                         style={styles.inputField}
@@ -177,7 +180,7 @@ export default function Search() {
                     ></TextInput>
                     {searchInput && (
                         <TouchableOpacity
-                            style={{ position: 'absolute', bottom: 20, right: 24, zIndex: 1 }}
+                            style={{ position: 'absolute', bottom: 18, right: 24, zIndex: 1 }}
                             onPress={handlePress}
                         >
                             <Image
@@ -211,23 +214,23 @@ export default function Search() {
                                                 />
                                                 <Text style={styles.menuText}>{item.keyword}</Text>
                                             </View>
+
                                             <View style={styles.itemRight}>
-                                                <Icon
-                                                    name="ellipsis-h"
-                                                    size={20}
-                                                    color="black"
+                                                <TouchableOpacity
                                                     onPress={() => {
                                                         setIsShowModal(true);
                                                         setIdSelect(item.id);
                                                     }}
-                                                />
+                                                >
+                                                    <FontAwesomeIcon size={20} icon={faEllipsis}></FontAwesomeIcon>
+                                                </TouchableOpacity>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
                                 )}
                             />
                         )}
-                        {isHasHistory && (
+                        {!isHasHistory && (
                             <Text style={{ paddingLeft: 16, paddingTop: 20, fontSize: 20, fontWeight: 600 }}>
                                 Không có lịch sử tìm kiếm
                             </Text>
@@ -345,7 +348,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 100,
         // backgroundColor: ",
-        paddingTop: 32,
+        paddingTop: 40,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
