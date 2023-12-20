@@ -36,6 +36,8 @@ const CreatePost = () => {
     const [video, setVideo] = useState('');
     const [textInput, setTextInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isCreatePost, setIsCreatePost] = useState(false);
+
 
     const name = useSelector((state) => state.profile.name);
     const avatar = useSelector((state) => state.profile.avatar);
@@ -199,6 +201,8 @@ const CreatePost = () => {
             formData.append('status', status || 'Hyped');
             formData.append('auto_accept', '1.0');
 
+            setIsCreatePost(true)
+
             const result = await PostServices.addPost(formData);
             if (result.data.code == '1000') {
                 Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
@@ -223,6 +227,7 @@ const CreatePost = () => {
         } catch (error) {
             console.log('handlePost PostServices addPost', error);
         }
+        setIsCreatePost(false)
     };
 
     return (
@@ -237,7 +242,7 @@ const CreatePost = () => {
                         />
                         {/* <Icon name="close" size={24} color="black" onPress={showAlert} /> */}
                         <Text style={styles.textBigBold}>Tạo bài viết</Text>
-                        <TouchableOpacity
+                        {!isCreatePost && <TouchableOpacity
                             style={[
                                 !textInput.length || !(image && image.length) || video == '' ? styles.buttonDisable : '',
                                 textInput.length || (image && image.length) || video != '' ? styles.buttonNotDisable : '',
@@ -255,7 +260,28 @@ const CreatePost = () => {
                             >
                                 Đăng
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
+
+
+                        {isCreatePost && <TouchableOpacity
+                            style={[
+                                !textInput.length || !(image && image.length) || video == '' ? styles.buttonDisable : '',
+                                textInput.length || (image && image.length) || video != '' ? styles.buttonNotDisable : '',
+                            ]}
+                            disabled={!textInput.length && !(image && image.length) && video == ''}
+                            onPress={handlePost}
+                        >
+                            <Text
+                                style={[
+                                    styles.textBigBold,
+                                    !textInput.length && !(image && image.length) && video == ''
+                                        ? styles.textDisable
+                                        : { color: 'white' },
+                                ]}
+                            >
+                                    <ActivityIndicator size="small" style={{paddingLeft: 10}}></ActivityIndicator>
+                            </Text>
+                        </TouchableOpacity>}
                     </View>
                     <View style={styles.body}>
                         <View style={[styles.bodyHead, { width: withScreen - 32 }]}>

@@ -49,7 +49,8 @@ export default function Search() {
     const [dataList, setDataList] = useState([]);
     const [idSelect, setIdSelect] = useState('');
     const [isLogining, setIsLogining] = useState(true);
-    const [isHasHistory, setIsHasHistory] = useState(false);
+    const [isHasHistory, setIsHasHistory] = useState(true);
+    const [isHasSearchResult, setIsHasSearchResult] = useState(true);
 
     const isLoadingApi = useSelector((state) => state.loading.isLoadingApi);
 
@@ -63,7 +64,7 @@ export default function Search() {
                     if (res.data.length > 0) {
                         setDataList(res.data);
                     } else {
-                        setIsHasHistory(true);
+                        setIsHasHistory(false);
                     }
                 }
             } catch (error) {
@@ -89,7 +90,7 @@ export default function Search() {
                 if (res.data.length > 0) {
                     setDataList(res.data);
                 } else {
-                    setIsHasHistory(true);
+                    setIsHasHistory(false);
                 }
             }
         } catch (error) {
@@ -101,39 +102,44 @@ export default function Search() {
             setDataRender([]);
             setShowSearchResults(false);
         } else {
+            setIsHasHistory(true);
             try {
                 dispatch(setLoading(true));
                 const res = await search({ keyword: searchInput });
                 dispatch(setLoading(false));
                 if (res.code == '1000') {
-                    const newData = res.data.map((item) => {
-                        var imageArray = null;
-                        if (item?.image.length > 0) {
-                            imageArray = Array.isArray(item?.image) ? item.image.map((image) => image.url) : null;
-                        } else {
-                            console.log('rong', item?.image);
-                        }
+                    if (res.data.length == 0) {
+                        setIsHasSearchResult(false);
+                    } else {
+                        const newData = res.data.map((item) => {
+                            var imageArray = null;
+                            if (item?.image.length > 0) {
+                                imageArray = Array.isArray(item?.image) ? item.image.map((image) => image.url) : null;
+                            } else {
+                                console.log('rong', item?.image);
+                            }
 
-                        return {
-                            id: item?.id,
-                            owner: item.author.name,
-                            avatar: item.author.avatar,
-                            content: item.described,
-                            // image: imageArray,
-                            image: null,
-                            video: item?.video?.url,
-                            created: item?.created,
-                            feel: item?.feel,
-                            comment_mark: item?.comment_mark,
-                            is_felt: item?.is_felt,
-                            is_blocked: item?.is_blocked,
-                            can_edit: item?.can_edit,
-                            banned: item?.banned,
-                            state: item?.state,
-                        };
-                    });
-
-                    setDataRender(newData);
+                            return {
+                                id: item?.id,
+                                owner: item.author.name,
+                                avatar: item.author.avatar,
+                                content: item.described,
+                                // image: imageArray,
+                                image: null,
+                                video: item?.video?.url,
+                                created: item?.created,
+                                feel: item?.feel,
+                                comment_mark: item?.comment_mark,
+                                is_felt: item?.is_felt,
+                                is_blocked: item?.is_blocked,
+                                can_edit: item?.can_edit,
+                                banned: item?.banned,
+                                state: item?.state,
+                            };
+                        });
+                        setIsHasSearchResult(true);
+                        setDataRender(newData);
+                    }
                     setShowSearchResults(true);
                 }
             } catch (err) {
@@ -150,11 +156,20 @@ export default function Search() {
     };
     const handleDelete = async () => {
         const res = await deleteHistory({ search_id: idSelect, all: 0 });
-
         const updatedDataList = dataList.filter((item) => item.id != idSelect);
         setDataList(updatedDataList);
+        if (updatedDataList.length == 0) {
+            setIsHasHistory(false);
+        }
         setIsShowModal(false);
     };
+
+    const resetListSearch = () => {
+        setDataList([])
+        setIsHasHistory(false)
+    }
+
+
     return (
         <TouchableWithoutFeedback>
             <View style={styles.container}>
@@ -195,7 +210,7 @@ export default function Search() {
                     <View>
                         <View style={styles.title}>
                             <Text style={styles.titleLeft}>Gần đây</Text>
-                            <Text style={styles.titleRight} onPress={() => navigation.navigate('ActivityLog')}>
+                            <Text style={styles.titleRight} onPress={() => navigation.navigate('ActivityLog', {resetListSearch})}>
                                 Chỉnh sửa
                             </Text>
                         </View>
@@ -231,13 +246,19 @@ export default function Search() {
                             />
                         )}
                         {!isHasHistory && (
-                            <Text style={{ paddingLeft: 16, paddingTop: 20, fontSize: 20, fontWeight: '600' }}>
-                                Không có lịch sử tìm kiếm
-                            </Text>
+                            <View style={{ marginTop: 100, alignItems: 'center' }}>
+                                <Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 12 }}>
+                                    Không có lịch sử tìm kiếm
+                                </Text>
+                                <Image
+                                    source={require('../assets/images/folder.png')}
+                                    style={{ width: 64, height: 64 }}
+                                />
+                            </View>
                         )}
                     </View>
                 )}
-                {showSearchResults && (
+                {showSearchResults && isHasSearchResult && (
                     <FlatList
                         data={dataRender}
                         keyExtractor={(item) => item.id}
@@ -251,6 +272,15 @@ export default function Search() {
                             </View>
                         )}
                     />
+                )}
+
+                {showSearchResults && !isHasSearchResult && (
+                    <View style={{ marginTop: 100, alignItems: 'center' }}>
+                        <Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 12 }}>
+                            Không có dữ liệu tìm thấy
+                        </Text>
+                        <Image source={require('../assets/images/folder.png')} style={{ width: 64, height: 64 }} />
+                    </View>
                 )}
 
                 <Modal

@@ -58,10 +58,12 @@ export const changeProfileAfterSignUp = async ({username}) => {
 export const logout = async () => {
     try {
         const headers = await createAuthHeader();
+        console.log(headers)
         const res = await request.post('/logout',{ headers });
+        console.log("res", res.data)
         return res.data;
     } catch (err) {
-        console.log(err.response);
+        console.log("err",err.response.data);
     }
 }
 

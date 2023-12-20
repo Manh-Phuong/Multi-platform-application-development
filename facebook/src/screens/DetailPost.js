@@ -408,20 +408,29 @@ const DetailPost = ({ route }) => {
                         contentContainerStyle={{ paddingBottom: 50 }}
                         renderItem={({ item, index }) => (
                             <View style={{ flexDirection: 'row', columnGap: 16, paddingLeft: 16 }}>
-                                <Image
-                                    source={{
-                                        uri:
-                                            item?.poster?.avatar ||
-                                            'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        if (route.params.postInfo.owner_id == item?.poster?.id) {
+                                            navigation.navigate('ProfileDetail');
+                                        } else navigation.navigate('ProfileOtherDetail', { props: item?.poster?.id });
                                     }}
-                                    style={{
-                                        width: 36,
-                                        height: 36,
-                                        objectFit: 'cover',
-                                        borderRadius: 999,
-                                        marginTop: 12,
-                                    }}
-                                ></Image>
+                                >
+                                    <Image
+                                        source={{
+                                            uri:
+                                                item?.poster?.avatar ||
+                                                'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                        }}
+                                        style={{
+                                            width: 36,
+                                            height: 36,
+                                            objectFit: 'cover',
+                                            borderRadius: 999,
+                                            marginTop: 12,
+                                        }}
+                                    ></Image>
+                                </TouchableOpacity>
+
                                 <View>
                                     <View
                                         style={{
@@ -471,19 +480,34 @@ const DetailPost = ({ route }) => {
                                                                 width: '80%',
                                                             }}
                                                         >
-                                                            <Image
-                                                                source={{
-                                                                    uri:
-                                                                        cmt?.poster.avatar ||
-                                                                        'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    if (
+                                                                        route.params.postInfo.owner_id ==
+                                                                        cmt?.poster?.id
+                                                                    ) {
+                                                                        navigation.navigate('ProfileDetail');
+                                                                    } else
+                                                                        navigation.navigate('ProfileOtherDetail', {
+                                                                            props: cmt?.poster?.id,
+                                                                        });
                                                                 }}
-                                                                style={{
-                                                                    width: 36,
-                                                                    height: 36,
-                                                                    borderRadius: 999,
-                                                                    objectFit: 'cover',
-                                                                }}
-                                                            ></Image>
+                                                            >
+                                                                <Image
+                                                                    source={{
+                                                                        uri:
+                                                                            cmt?.poster.avatar ||
+                                                                            'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                                                    }}
+                                                                    style={{
+                                                                        width: 36,
+                                                                        height: 36,
+                                                                        borderRadius: 999,
+                                                                        objectFit: 'cover',
+                                                                    }}
+                                                                ></Image>
+                                                            </TouchableOpacity>
+
                                                             <View
                                                                 style={{
                                                                     backgroundColor: '#ddd',
