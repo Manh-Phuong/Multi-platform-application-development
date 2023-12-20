@@ -557,13 +557,13 @@ const ProfileDetail = () => {
                 count: '10',
             });
 
-            setLastId(response?.data?.data?.last_id);
+            setLastId(response?.data?.last_id);
 
             // console.log(response.data.data.post);
 
             setData((prevData) => [
                 ...prevData,
-                ...response?.data?.data?.post?.map((item) => {
+                ...response?.data?.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -584,7 +584,7 @@ const ProfileDetail = () => {
                 }),
             ]);
 
-            setHasData(response.data?.data?.post?.length > 0);
+            setHasData(response?.data?.post?.length > 0);
 
             // dispatch(
             //     setStoreListUser((prevData) => [

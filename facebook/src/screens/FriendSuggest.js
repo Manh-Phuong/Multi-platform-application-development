@@ -35,7 +35,7 @@ const Header = () => {
         navigation.goBack(); // Quay lại màn hình trước đó
     };
     return (
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
             <View style={{ paddingHorizontal: 12 }}>
                 <View style={[styles.flexRow, { marginTop: 8 }]}>
                     <View>
@@ -47,7 +47,7 @@ const Header = () => {
                         <View>
                             <Text style={styles.headerText}>Gợi ý</Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                             <View style={styles.wrapIcon}>
                                 <Icon name="search" size={20} color="black" />
                             </View>
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     headerText: {
         color: 'black',
         fontSize: 16,
-        fontWeight: '800'
+        fontWeight: '800',
     },
     wrapIcon: {
         width: 32,

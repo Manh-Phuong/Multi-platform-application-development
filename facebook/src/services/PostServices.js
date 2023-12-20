@@ -60,16 +60,9 @@ export const getListPost = async (formData) => {
     try {
         const headers = await createAuthHeader();
         const res = await request.post('/get_list_posts', formData, { headers });
-        return res;
+        return res.data;
     } catch (err) {
-        if (err.response.data.code == '9998') {
-            Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
-                {
-                    text: 'OK',
-                },
-            ]);
-        }
-        return err;
+        return err.response;
     }
 };
 
@@ -150,9 +143,10 @@ export const reportPost = async (formData) => {
         const headers = await createAuthHeader();
         const res = await request.post('/report_post', formData, { headers });
 
-        return res;
+        return res.data;
     } catch (err) {
         console.log(err.response.data);
+        return err.response;
     }
 };
 

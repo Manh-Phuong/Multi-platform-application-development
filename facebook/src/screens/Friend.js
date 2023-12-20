@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import * as FriendServices from '../services/FriendServices';
@@ -12,25 +12,25 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
 
-const Header = ({ totalRequest }) => {
+const Header = ({ totalRequest, notification }) => {
     const navigation = useNavigation();
     return (
-        <View style={{ marginTop: 50 }}>
+        <View style={{ marginTop: notification ? 40 : 8 }}>
             <View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: 12 }}>
-                        <View>
+                        {notification && <View>
                             <TouchableOpacity onPress={() => navigation.goBack()}>
                                 <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" style={{ marginLeft: 4 }} />
                             </TouchableOpacity>
-                        </View>
+                        </View>}
                         <View>
                             <Text style={styles.headerText}>Bạn bè</Text>
                         </View>
                     </View>
 
                     <View style={[styles.flexRow, styles.flexBetween, { marginTop: 8 }]}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                             <View style={styles.wrapIcon}>
                                 <Icon name="search" size={20} color="black" />
                             </View>
@@ -65,6 +65,8 @@ const Header = ({ totalRequest }) => {
 const Friend = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const route = useRoute();
+    const { notification } = route.params || false;
     const [listRequest, setListRequest] = useState([]);
     const [totalRequest, setTotalRequest] = useState(null);
     // const [onClickAccept, setOnClickAccept] = useState(-1);
@@ -173,7 +175,7 @@ const Friend = () => {
                 <FlatList
                     data={listRequestFriend.requests}
                     showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
-                    ListHeaderComponent={<Header totalRequest={listRequestFriend?.total} />}
+                    ListHeaderComponent={<Header totalRequest={listRequestFriend?.total} notification={notification} />}
                     renderItem={({ item }) => (
                         <View style={[styles.flexRow, styles.itemFriend]}>
                             {/* avatar */}
@@ -245,8 +247,8 @@ const styles = StyleSheet.create({
         height: '100%',
         flex: 1,
         backgroundColor: '#fff',
-        //   paddingTop: 40,
-        paddingHorizontal: 12,
+        // paddingTop: 40,
+        paddingHorizontal: 16,
     },
     divLarge: {
         height: 1.5,

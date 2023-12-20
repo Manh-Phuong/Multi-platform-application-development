@@ -83,66 +83,66 @@ const NotificationContent = ({ notification }) => {
         case '1':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã gửi cho bạn lời mời kết bạn.</Text>
                 </Text>
             );
         case '2':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã chấp nhận yêu cầu kết bạn.</Text>
                 </Text>
             );
         case '3':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã đăng bài viết mới.</Text>
                 </Text>
             );
         case '4':
             <Text>
-                <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                 <Text>đã cập nhật bài viết.</Text>
             </Text>;
         case '5':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã bày tỏ cảm xúc về bài viết của bạn</Text>
                 </Text>
             );
         case '6':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã bình luận về bài viết</Text>
                 </Text>
             );
         case '7':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã bình luận về bài viết.</Text>
                 </Text>
             );
         case '8':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã đăng một video mới.</Text>{' '}
                 </Text>
             );
         case '9':
             return (
                 <Text>
-                    <Text style={{ fontWeight: 'bold' }}>{notification.user.username}</Text>{' '}
+                    <Text style={{ fontWeight: 'bold' }}>{notification?.user?.username}</Text>{' '}
                     <Text>đã bình luận về bài viết của bạn.</Text>
                 </Text>
             );
         default:
-            return <Text>Unknown notification type.</Text>
+            return <Text>Unknown notification type.</Text>;
     }
 };
 
@@ -218,28 +218,38 @@ const Notification = () => {
             navigation.navigate('DetailPost', { postInfo: postInfo, listCmt: resCmt?.data, type });
         }
     };
-    const handlePressComment = (type, id, index) => {
+    const handlePressComment = (type, id, index, item) => {
         listNotify.at(index).read = 1;
-        console.log(index)
+        console.log(index);
+        console.log('item', item);
         switch (type) {
             case '1':
-                navigation.navigate('Friend');
-            case '1':
-                navigation.navigate('Friend');
+                navigation.navigate('Friend', { notification: true });
+                break;
+            case '2':
+                navigation.navigate('ProfileOtherDetail', { props: item?.user?.id });
+                break;
             case '3':
                 getSinglePost(id);
+                break;
             case '4':
                 getSinglePost(id);
+                break;
             case '5':
                 getSinglePost(id);
+                break;
             case '6':
                 getSinglePost(id);
+                break;
             case '7':
                 getSinglePost(id);
+                break;
             case '8':
                 getSinglePost(id);
+                break;
             case '9':
                 getSinglePost(id);
+                break;
             default:
                 return <Text>Unknown notification type.</Text>;
         }
@@ -252,7 +262,7 @@ const Notification = () => {
                     showsVerticalScrollIndicator={false} //ẩn thanh cuộn dọc
                     ListHeaderComponent={<Header />}
                     renderItem={({ item, index }) => (
-                        <TouchableOpacity onPress={() => handlePressComment(item.type, item.object_id, index)}>
+                        <TouchableOpacity onPress={() => handlePressComment(item.type, item.object_id, index, item)}>
                             <View style={[styles.itemNoti, item.read ? styles.seenBackgr : styles.notSeenBackgr]}>
                                 <View style={[styles.flexRow, styles.contentNoti]}>
                                     {/* avatar */}

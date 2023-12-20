@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 import { useState, useEffect } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import * as FriendServices from '../services/FriendServices';
+import * as BlockServices from '../services/BlockServices';
 import { calculateTimeAgo } from '../components/Convert';
 import { setStoreRequestFriend, setStoreUserFriend, setStoreSuggestFriend } from '../feature/friend';
 import { useDispatch, useSelector } from 'react-redux';
@@ -49,7 +50,7 @@ const Header = () => {
         navigation.goBack(); // Quay lại màn hình trước đó
     };
     return (
-        <View style={{marginTop: 10}}>
+        <View style={{ marginTop: 10 }}>
             <View style={{ paddingHorizontal: 12 }}>
                 <View style={[styles.flexRow, { marginTop: 8 }]}>
                     <View>
@@ -61,7 +62,7 @@ const Header = () => {
                         <View>
                             <Text style={styles.headerText}>Tất cả bạn bè</Text>
                         </View>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
                             <View style={styles.wrapIcon}>
                                 <Icon name="search" size={20} color="black" />
                             </View>
@@ -121,6 +122,35 @@ const Option = ({ valueOption, handleClickAccept, setModalOption }) => {
         }
     };
 
+    const handleBlockUser = async (id) => {
+        try {
+            Alert.alert(
+                'Xác nhận',
+                `Bạn có chắc chắn muốn chặn ${valueOption.name} không?`,
+                [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Chặn',
+                        onPress: async () => {
+                            try {
+                                const result = await BlockServices.setBlockUser({ user_id: id });
+                                setModalOption(false);
+                            } catch (error) {
+                                console.log('handleBlockUser FriendList BlockServices setBlockUser 1', error);
+                            }
+                        },
+                    },
+                ],
+                { cancelable: false },
+            );
+        } catch (error) {
+            console.log('handleBlockUser FriendList BlockServices setBlockUser 2', error);
+        }
+    };
+
     return (
         <View style={styles.option}>
             <View style={[styles.flexRow, { paddingHorizontal: 12, marginTop: 12 }]}>
@@ -153,7 +183,7 @@ const Option = ({ valueOption, handleClickAccept, setModalOption }) => {
                         </View>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => handleBlockUser(valueOption.user_id)}>
                     <View style={[styles.flexRow, styles.itemOption]}>
                         <View>
                             <Image
@@ -427,7 +457,7 @@ const styles = StyleSheet.create({
     headerText: {
         color: 'black',
         fontSize: 18,
-        fontWeight: '800'
+        fontWeight: '800',
     },
     wrapIcon: {
         width: 32,

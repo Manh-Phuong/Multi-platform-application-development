@@ -38,42 +38,44 @@ import BuyCoins from './BuyCoins';
 import * as PostServices from '../services/PostServices';
 import { setStoreListPost, setStoreLasIdPost } from '../feature/listPost';
 import { useDispatch, useSelector } from 'react-redux';
+import Modal from 'react-native-modal';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
 
-const listNews = [
-    {
-        id: '1',
-        name: 'Thu Phương',
-        image: 'https://bloggiaima.com/wp-content/uploads/2023/03/hinh-anh-gai-sinh-vien-sexy-khoe-noi-y-nong-bong-bloggiaima-10-576x1024.jpg',
-    },
-    {
-        id: '2',
-        name: 'Thu Trang',
-        image: 'https://kenh14cdn.com/thumb_w/660/2018/11/17/photo-1-15424548896091911165278.jpg',
-    },
-    {
-        id: '3',
-        name: 'Bảo Ngọc',
-        image: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-gai-xinh-viet-nam-mac-vay-hoa.jpg',
-    },
-    {
-        id: '4',
-        name: 'Ngọc Đặng',
-        image: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/09/hinh-anh-gai-trung-quoc.jpg',
-    },
-    {
-        id: '5',
-        name: 'Phương Thảo',
-        image: 'https://keomoi.com/wp-content/uploads/2019/05/anh-gai-xinh-toc-ngan-de-thuong.jpg',
-    },
-];
+// const listNews = [
+//     {
+//         id: '1',
+//         name: 'Thu Phương',
+//         image: 'https://bloggiaima.com/wp-content/uploads/2023/03/hinh-anh-gai-sinh-vien-sexy-khoe-noi-y-nong-bong-bloggiaima-10-576x1024.jpg',
+//     },
+//     {
+//         id: '2',
+//         name: 'Thu Trang',
+//         image: 'https://kenh14cdn.com/thumb_w/660/2018/11/17/photo-1-15424548896091911165278.jpg',
+//     },
+//     {
+//         id: '3',
+//         name: 'Bảo Ngọc',
+//         image: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-gai-xinh-viet-nam-mac-vay-hoa.jpg',
+//     },
+//     {
+//         id: '4',
+//         name: 'Ngọc Đặng',
+//         image: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/09/hinh-anh-gai-trung-quoc.jpg',
+//     },
+//     {
+//         id: '5',
+//         name: 'Phương Thảo',
+//         image: 'https://keomoi.com/wp-content/uploads/2019/05/anh-gai-xinh-toc-ngan-de-thuong.jpg',
+//     },
+// ];
 
 const Header = () => {
     const navigation = useNavigation();
     const name = useSelector((state) => state.profile.name);
     const avatar = useSelector((state) => state.profile.avatar);
+    const listNews = useSelector((state) => state.friend.listUserFriend.friends);
 
     return (
         <View>
@@ -182,6 +184,8 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const [hasData, setHasData] = useState(true);
     const flatListRef = useRef(null);
+    const fadeAnim = new Animated.Value(0);
+    const coins = useSelector((state) => state.profile.coins);
 
     const handleActive = (detailName) => {
         setActive((prevState) => ({
@@ -198,13 +202,26 @@ export default function Home() {
     const handleScroll = async (event) => {
         // console.log('event', event.nativeEvent.contentOffset.y);
         const currentOffset = event.nativeEvent.contentOffset.y;
-        // const isScrollingUp = currentOffset < lastOffset;
-        // setShowHeader(isScrollingUp);
-        // setLastOffset(currentOffset);
+        const isScrollingUp = currentOffset < lastOffset;
+        console.log('ket qua', isScrollingUp);
+        setShowHeader(isScrollingUp);
+        setLastOffset(currentOffset);
+        // if (isScrollingUp) {
+        //     toggleVisibility();
+        // }
         if (currentOffset == 0) {
             await refreshData();
         }
     };
+
+    const toggleVisibility = () => {
+        Animated.timing(fadeAnim, {
+            toValue: showHeader ? 0 : 1,
+            duration: 500,
+            useNativeDriver: false,
+        }).start(() => setShowHeader(!showHeader));
+    };
+
     const animatedValue = useRef(new Animated.Value(0)).current;
 
     // Hung start
@@ -287,13 +304,23 @@ export default function Home() {
                 last_id: lastId,
                 index: '0',
                 count: '10',
-            },navigation);
-            setLastId(response.data.data.last_id);
+            });
+
+            if (response?.code == '9998') {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
+
+            setLastId(response?.data?.last_id);
 
             // console.log(response.data.data.post);
             setListPost((prevData) => [
                 ...prevData,
-                ...(response.data.data.post?.map((item) => {
+                ...(response?.data.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -315,7 +342,7 @@ export default function Home() {
                 ,
             ]);
 
-            setHasData(response.data.data.post?.length > 0);
+            setHasData(response?.data.post?.length > 0);
 
             // dispatch(
             //     setStoreListPost((prevData) => [
@@ -349,7 +376,7 @@ export default function Home() {
 
     const refreshData = async () => {
         try {
-            setListPost([])
+            setListPost([]);
             setLoading(true);
             const response = await PostServices.getListPost({
                 user_id: null,
@@ -361,9 +388,9 @@ export default function Home() {
                 index: '0',
                 count: '10',
             });
-            setLastId(response.data.data.last_id);
+            setLastId(response?.data?.last_id);
             setListPost(
-                response.data.data.post?.map((item) => {
+                response?.data.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -384,7 +411,7 @@ export default function Home() {
                 }) || [],
             );
 
-            setHasData(response.data.data.post?.length > 0);
+            setHasData(response?.data.post?.length > 0);
 
             // dispatch(
             //     setStoreListPost((prevData) => [
@@ -483,12 +510,16 @@ export default function Home() {
     return (
         <View style={styles.container}>
             {/* <Collapsible collapsed={!showHeader}> */}
-            <Collapsible collapsed={false}>
+            {showHeader && (
                 <View style={styles.header}>
                     <View>
                         <Text style={styles.logo}>facebook</Text>
                     </View>
                     <View style={styles.rightButton}>
+                        <View style={[styles.rightButton, { marginRight: 8 }]}>
+                            <Image source={require('../assets/icons/dollar.png')} style={{ width: 22, height: 24 }} />
+                            <Text style={{ fontSize: 16, marginLeft: 4 }}>{coins}</Text>
+                        </View>
                         <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
                             <View style={styles.wrapIcon}>
                                 <Icon name="plus" size={24} color="black" />
@@ -506,7 +537,47 @@ export default function Home() {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </Collapsible>
+            )}
+            {/* <Modal
+                isVisible={showHeader}
+                onSwipeComplete={() => setShowHeader(false)}
+                swipeDirection={['down']}
+                onBackdropPress={() => setShowHeader(false)}
+                animationOutTiming={1000}
+                backdropOpacity={0}
+                style={{ justifyContent: 'flex-start', margin: 0 }}
+            >
+                <View
+                    style={{
+                        backgroundColor: 'white',
+                        height: 20,
+                        paddingTop: 12,
+                    }}
+                >
+                    <View style={styles.header}>
+                        <View>
+                            <Text style={styles.logo}>facebook</Text>
+                        </View>
+                        <View style={styles.rightButton}>
+                            <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
+                                <View style={styles.wrapIcon}>
+                                    <Icon name="plus" size={24} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+                                <View style={styles.wrapIcon}>
+                                    <Icon name="search" size={22} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => navigation.navigate('MessageHome')}>
+                                <View style={styles.wrapIcon}>
+                                    <MessageIcon width="24" height="24" fill="#000" />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal> */}
             <View style={styles.nav}>
                 <TouchableOpacity onPress={() => handleActive('home')}>
                     <View style={styles.wrapIconNav}>
@@ -731,6 +802,7 @@ const styles = StyleSheet.create({
 
     rightButton: {
         flexDirection: 'row',
+        alignItems: 'center',
     },
 
     wrapIcon: {
