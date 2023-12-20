@@ -50,7 +50,7 @@ import {
 import { calculateTimeAgo } from '../components/Convert';
 import * as PostServices from '../services/PostServices';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListComment, getListFeel } from '../services/CommentServices';
+import { deleteFeel, getListComment, getListFeel, setFeel } from '../services/CommentServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import _ from 'lodash';
@@ -267,6 +267,44 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
         'Khủng bố',
         'Vấn đề khác',
     ];
+
+    const [displayEmoji, setDisplayEmoji] = useState(false);
+    const [isChooseEmoji, setIsChooseEmoji] = useState(-1);
+    const [totalEmoji, setTotalEmoji] = useState('');
+    const [reselect, setReselect] = useState('');
+    const [type_, setType_] = useState(props?.item?.is_felt);
+    // const [images, setImages] = useState(post?.images);
+    let pressTimer;
+
+    const handlePressIn = () => {
+        setDisplayEmoji(true);
+    };
+
+    const handlePressOut = () => {
+        clearTimeout(pressTimer);
+        setDisplayEmoji(false);
+    };
+
+    const handleChooseEmoji = async (type) => {
+        const res = await setFeel({ id: props.item.id, type });
+        if (res.code == 1000) {
+            setIsChooseEmoji(type);
+            setDisplayEmoji(false);
+            setReselect(true);
+            setTotalEmoji(parseInt(res.data.kudos, 10) + parseInt(res.data.disappointed, 10));
+        }
+    };
+    const handleRemoveEmoji = async () => {
+        const res = await deleteFeel({ id: props.item.id });
+        if (res.code == 1000) {
+            setIsChooseEmoji(-1);
+            setDisplayEmoji(false);
+            setType_(-1);
+            setReselect(true);
+            setTotalEmoji(parseInt(res.data.kudos, 10) + parseInt(res.data.disappointed, 10));
+        }
+    };
+
     const onOptionPress = (option) => {
         if (selectedReports.includes(option)) {
             setSelectedReports(selectedReports.filter((item) => item !== option));
@@ -378,647 +416,664 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
     };
 
     return (
-        <View style={[styles.container, { backgroundColor: darkMode ? '#242526' : '#fff' }]}>
-            <View style={styles.header}>
-                <View style={styles.profile}>
-                    {/* <Image
-            style={styles.wrapAvatar}
-            source={require("../assets/images/avatar-sample.png")}
-          ></Image> */}
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (user_id != props?.item?.owner_id) {
-                                navigation.navigate('ProfileOtherDetail', { props: props?.item?.owner_id });
-                            } else {
-                                navigation.navigate('ProfileDetail');
-                            }
-                        }}
-                    >
-                        <Image
-                            style={styles.wrapAvatar}
-                            source={{
-                                uri:
-                                    props.item?.avatar ||
-                                    'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+        <TouchableWithoutFeedback onPress={handlePressOut}>
+            <View style={[styles.container, { backgroundColor: darkMode ? '#242526' : '#fff' }]}>
+                <View style={styles.header}>
+                    <View style={styles.profile}>
+                        {/* <Image
+        style={styles.wrapAvatar}
+        source={require("../assets/images/avatar-sample.png")}
+      ></Image> */}
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (user_id != props?.item?.owner_id) {
+                                    navigation.navigate('ProfileOtherDetail', { props: props?.item?.owner_id });
+                                } else {
+                                    navigation.navigate('ProfileDetail');
+                                }
                             }}
-                        />
-                    </TouchableOpacity>
-
-                    <View
-                        style={{
-                            maxWidth: withScreen * 0.7,
-                            marginLeft: 8,
-                        }}
-                    >
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    if (user_id != props?.item?.owner_id) {
-                                        navigation.navigate('ProfileOtherDetail', { props: props?.item?.owner_id });
-                                    } else {
-                                        navigation.navigate('ProfileDetail');
-                                    }
+                        >
+                            <Image
+                                style={styles.wrapAvatar}
+                                source={{
+                                    uri:
+                                        props.item?.avatar ||
+                                        'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
                                 }}
-                            >
+                            />
+                        </TouchableOpacity>
+
+                        <View
+                            style={{
+                                maxWidth: withScreen * 0.7,
+                                marginLeft: 8,
+                            }}
+                        >
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        if (user_id != props?.item?.owner_id) {
+                                            navigation.navigate('ProfileOtherDetail', { props: props?.item?.owner_id });
+                                        } else {
+                                            navigation.navigate('ProfileDetail');
+                                        }
+                                    }}
+                                >
+                                    <Text
+                                        numberOfLines={2}
+                                        ellipsizeMode="tail"
+                                        style={{
+                                            fontWeight: 600,
+                                            fontSize: 16,
+                                            color: darkMode ? '#fff' : '#000',
+                                        }}
+                                    >
+                                        {props.item?.owner}
+                                        <Text
+                                            style={{
+                                                fontWeight: 400,
+                                                fontSize: 16,
+                                                color: '#65676b',
+                                            }}
+                                        >
+                                            {props?.item?.state != 'Hyped' &&
+                                                props?.item?.state != '{"type":"activities"}' &&
+                                                typeof props?.item?.state === 'string' &&
+                                                props?.item?.state != '' &&
+                                                ` đang cảm thấy ${props?.item?.state}`}
+                                        </Text>
+                                    </Text>
+                                </TouchableOpacity>
+                                {/* <Text
+                            numberOfLines={2}
+                            ellipsizeMode="tail"
+                            style={{
+                                fontWeight: 600,
+                                fontSize: 14,
+                                color: '#65676b',
+                            }}
+                        >
+                            {props?.item?.state != 'Hyped' &&
+                                props?.item?.state != '' &&
+                                `đang cảm thấy ${props?.item?.state}`}
+                        </Text> */}
+                            </View>
+                            <View>
                                 <Text
                                     numberOfLines={2}
                                     ellipsizeMode="tail"
                                     style={{
                                         fontWeight: 600,
-                                        fontSize: 18,
-                                        color: darkMode ? '#fff' : '#000',
+                                        fontSize: 14,
+                                        color: '#65676b',
                                     }}
                                 >
-                                    {props.item?.owner}
-                                    <Text
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: 18,
-                                            color: '#65676b',
-                                        }}
-                                    >
-                                        {props?.item?.state != 'Hyped' &&
-                                            props?.item?.state != '{"type":"activities"}' &&
-                                            typeof props?.item?.state === 'string' &&
-                                            props?.item?.state != '' &&
-                                            ` đang cảm thấy ${props?.item?.state}`}
-                                    </Text>
+                                    Gợi ý cho bạn - {calculateTimeAgo(props.item?.created)}
                                 </Text>
-                            </TouchableOpacity>
-                            {/* <Text
-                                numberOfLines={2}
-                                ellipsizeMode="tail"
-                                style={{
-                                    fontWeight: 600,
-                                    fontSize: 14,
-                                    color: '#65676b',
-                                }}
-                            >
-                                {props?.item?.state != 'Hyped' &&
-                                    props?.item?.state != '' &&
-                                    `đang cảm thấy ${props?.item?.state}`}
-                            </Text> */}
-                        </View>
-                        <View>
-                            <Text
-                                numberOfLines={2}
-                                ellipsizeMode="tail"
-                                style={{
-                                    fontWeight: 600,
-                                    fontSize: 14,
-                                    color: '#65676b',
-                                }}
-                            >
-                                Gợi ý cho bạn - {calculateTimeAgo(props.item?.created)}
-                            </Text>
+                            </View>
                         </View>
                     </View>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => setModalReport(true)}>
+                            <FontAwesomeIcon icon={faEllipsis} size={24} color="#65676b" />
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <FontAwesomeIcon style={{ marginLeft: 12 }} icon={faXmark} size={24} color="#65676b" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={{ flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => setModalReport(true)}>
-                        <FontAwesomeIcon icon={faEllipsis} size={24} color="#65676b" />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <FontAwesomeIcon style={{ marginLeft: 12 }} icon={faXmark} size={24} color="#65676b" />
-                    </TouchableOpacity>
+                <View style={{ margin: 8 }}>
+                    <Text
+                        Text
+                        numberOfLines={3}
+                        ellipsizeMode="tail"
+                        style={{
+                            fontWeight: 400,
+                            fontSize: 15,
+                            color: darkMode ? '#fff' : '#65676b',
+                        }}
+                    >
+                        {props.item?.content}{' '}
+                    </Text>
                 </View>
-            </View>
-            <View style={{ margin: 8 }}>
-                <Text
-                    Text
-                    numberOfLines={3}
-                    ellipsizeMode="tail"
-                    style={{
-                        fontWeight: 400,
-                        fontSize: 15,
-                        color: darkMode ? '#fff' : '#65676b',
-                    }}
-                >
-                    {props.item?.content}{' '}
-                </Text>
-            </View>
-            <View>
-                {props.item?.images ? (
-                    <View>
-                        {props.item?.images && props.item?.images.length == 4 && (
-                            <View style={styles.imagePart_4}>
-                                {props.item?.images &&
-                                    props.item?.images?.map((item, index) => (
-                                        <View
-                                            key={index}
-                                            style={{ width: '50%', height: 200, paddingRight: 4, marginBottom: 4 }}
-                                        >
+                <View>
+                    {props.item?.images ? (
+                        <View>
+                            {props.item?.images && props.item?.images.length == 4 && (
+                                <View style={styles.imagePart_4}>
+                                    {props.item?.images &&
+                                        props.item?.images?.map((item, index) => (
+                                            <View
+                                                key={index}
+                                                style={{ width: '50%', height: 200, paddingRight: 4, marginBottom: 4 }}
+                                            >
+                                                <Image
+                                                    source={{ uri: item?.url }}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                />
+                                            </View>
+                                        ))}
+                                </View>
+                            )}
+                            {props.item?.images && props.item?.images.length == 3 && (
+                                <View style={styles.imagePart_3}>
+                                    <View style={{ display: 'flex', flexDirection: 'row', width: '100%', height: 400 }}>
+                                        <View style={{ width: '50%', height: 400, paddingRight: 4, marginBottom: 4 }}>
                                             <Image
-                                                source={{ uri: item?.url }}
+                                                source={{ uri: props.item?.images[0]?.url }}
                                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                             />
                                         </View>
-                                    ))}
-                            </View>
-                        )}
-                        {props.item?.images && props.item?.images.length == 3 && (
-                            <View style={styles.imagePart_3}>
-                                <View style={{ display: 'flex', flexDirection: 'row', width: '100%', height: 400 }}>
-                                    <View style={{ width: '50%', height: 400, paddingRight: 4, marginBottom: 4 }}>
+                                        <View style={{ display: 'flex', rowGap: 4, width: '50%', height: 198 }}>
+                                            <Image
+                                                source={{ uri: props.item?.images[1]?.url }}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                            <Image
+                                                source={{ uri: props.item?.images[2]?.url }}
+                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        </View>
+                                    </View>
+                                </View>
+                            )}
+                            {props.item?.images && props.item?.images.length == 2 && (
+                                <View style={styles.imagePart_2}>
+                                    {props.item?.images &&
+                                        props.item?.images?.map((item, index) => (
+                                            <View
+                                                key={index}
+                                                style={{ width: '50%', height: 400, paddingRight: 4, marginBottom: 4 }}
+                                            >
+                                                <Image
+                                                    source={{ uri: item?.url }}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                />
+                                            </View>
+                                        ))}
+                                </View>
+                            )}
+                            {props.item?.images && props.item?.images.length == 1 && (
+                                <View style={styles.imagePart_1}>
+                                    <View style={{ width: '100%', height: 400, marginBottom: 4 }}>
                                         <Image
                                             source={{ uri: props.item?.images[0]?.url }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                         />
-                                    </View>
-                                    <View style={{ display: 'flex', rowGap: 4, width: '50%', height: 198 }}>
-                                        <Image
-                                            source={{ uri: props.item?.images[1]?.url }}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        />
-                                        <Image
-                                            source={{ uri: props.item?.images[2]?.url }}
-                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                        />
+                                        {/* <Text>{ props.item?.images[0]?.url }</Text> */}
                                     </View>
                                 </View>
-                            </View>
-                        )}
-                        {props.item?.images && props.item?.images.length == 2 && (
-                            <View style={styles.imagePart_2}>
-                                {props.item?.images &&
-                                    props.item?.images?.map((item, index) => (
-                                        <View
-                                            key={index}
-                                            style={{ width: '50%', height: 400, paddingRight: 4, marginBottom: 4 }}
-                                        >
-                                            <Image
-                                                source={{ uri: item?.url }}
-                                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            />
-                                        </View>
-                                    ))}
-                            </View>
-                        )}
-                        {props.item?.images && props.item?.images.length == 1 && (
-                            <View style={styles.imagePart_1}>
-                                <View style={{ width: '100%', height: 400, marginBottom: 4 }}>
-                                    <Image
-                                        source={{ uri: props.item?.images[0]?.url }}
-                                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            )}
+                        </View>
+                    ) : (
+                        <>
+                            {props.item?.video && (
+                                <View>
+                                    <VideoPlay
+                                        urlVideo={props.item?.video}
+                                        offsetY={offsetY}
+                                        item={props?.item}
+                                        activeVideo={activeVideo}
                                     />
-                                    {/* <Text>{ props.item?.images[0]?.url }</Text> */}
                                 </View>
-                            </View>
-                        )}
-                    </View>
-                ) : (
-                    <>
-                        {props.item?.video && (
-                            <View>
-                                <VideoPlay
-                                    urlVideo={props.item?.video}
-                                    offsetY={offsetY}
-                                    item={props?.item}
-                                    activeVideo={activeVideo}
-                                />
-                            </View>
-                        )}
-                    </>
-                )}
-            </View>
-
-            <View
-                style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    width: withScreen - 16,
-                    paddingTop: 8,
-                    marginLeft: 8,
-                    marginRight: 8,
-                }}
-            >
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Text>😊😔</Text>
-                    <Text
-                        style={{
-                            fontSize: 16,
-                            marginLeft: 6,
-                            color: '#65676b',
-                        }}
-                    >
-                        {props?.item?.feel}
-                    </Text>
+                            )}
+                        </>
+                    )}
                 </View>
+
                 <View
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'space-between',
+                        width: withScreen - 16,
+                        marginLeft: 8,
+                        marginBottom: 8,
                     }}
                 >
-                    {/* <View>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                marginLeft: 6,
-                                color: '#65676b',
-                            }}
-                        >
-                            {props?.item?.feel} bình luận
-                        </Text>
-                    </View> */}
-                    {/* <View>
-                        <Text
-                            style={{
-                                fontSize: 16,
-                                marginLeft: 6,
-                                color: '#65676b',
-                            }}
-                        >
-                            9 chia sẻ
-                        </Text>
-                    </View> */}
-                </View>
-            </View>
-
-            <View style={[styles.divSmall, { backgroundColor: darkMode ? '#242526' : '#f0f2f5' }]}></View>
-
-            <View style={styles.footer}>
-                <View style={styles.footerItem}>
-                    <Image
-                        style={{
-                            width: 26,
-                            height: 26,
-                        }}
-                        contentFit="cover"
-                        source={require('../assets/icons/likeIcon.png')}
-                    />
-                    <Text
-                        style={{
-                            marginLeft: 4,
-                            fontSize: 15,
-                            color: '#65676b',
-                        }}
-                    >
-                        Thích
-                    </Text>
+                    <View>
+                        {!reselect && (
+                            <Text
+                                style={{ paddingLeft: 8, fontSize: 16, paddingTop: 8, fontSize: 16 }}
+                            >{`😊😔 ${props?.item?.feel}`}</Text>
+                        )}
+                        {reselect && (
+                            <Text
+                                style={{ paddingLeft: 8, fontSize: 16, paddingTop: 8, fontSize: 16 }}
+                            >{`😊😔 ${totalEmoji}`}</Text>
+                        )}
+                    </View>
                 </View>
 
-                {/* onpress -> oncommentPress */}
-                <TouchableOpacity onPress={handleShowDetailPost}>
-                    <View style={styles.footerItem}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        paddingLeft: 16,
+                        paddingRight: 16,
+                        borderTopWidth: 1,
+                        borderBottomWidth: 1,
+                        borderColor: '#ddd',
+                        paddingTop: 12,
+                        paddingBottom: 12,
+                    }}
+                >
+                    <TouchableOpacity onPress={handleRemoveEmoji} onLongPress={handlePressIn} delayLongPress={500}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                columnGap: 8,
+                                alignItems: 'center',
+                                flex: 1,
+                                justifyContent: 'center',
+                            }}
+                        >
+                            {type_ == 1 && (
+                                <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
+                                    <Text style={{ fontSize: 16 }}>😊</Text>
+                                    <Text style={{ fontSize: 16, color: '#ffc83d' }}>Kudos</Text>
+                                </View>
+                            )}
+                            {type_ == 0 && (
+                                <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
+                                    <Text style={{ fontSize: 16 }}>😔</Text>
+                                    <Text style={{ fontSize: 16, color: '#ffc83d' }}>Disappoint</Text>
+                                </View>
+                            )}
+                            {type_ == '-1' && (
+                                <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
+                                    {isChooseEmoji == -1 && (
+                                        <Image
+                                            style={{
+                                                width: 20,
+                                                height: 20,
+                                            }}
+                                            contentFit="cover"
+                                            source={require('../assets/icons/likeIcon.png')}
+                                        />
+                                    )}
+                                    {isChooseEmoji == -1 && <Text style={{ fontSize: 16 }}>Cảm xúc</Text>}
+                                    {isChooseEmoji == 1 && <Text style={{ fontSize: 16 }}>😊</Text>}
+                                    {isChooseEmoji == 1 && (
+                                        <Text style={{ fontSize: 16, color: '#ffc83d' }}>Kudos</Text>
+                                    )}
+                                    {isChooseEmoji == 0 && <Text style={{ fontSize: 16 }}>😔</Text>}
+                                    {isChooseEmoji == 0 && (
+                                        <Text style={{ fontSize: 16, color: '#ffc83d' }}>Disappoint</Text>
+                                    )}
+                                </View>
+                            )}
+                        </View>
+                    </TouchableOpacity>
+
+                    <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
                         <Image
                             style={{
-                                width: 26,
-                                height: 26,
+                                width: 20,
+                                height: 20,
                             }}
                             contentFit="cover"
                             source={require('../assets/icons/commentIcon.png')}
                         />
-                        <Text
+
+                        <TouchableOpacity onPress={handleShowDetailPost}>
+                            <Text style={{ fontSize: 16 }}>Bình luận</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
+                        <Image
                             style={{
-                                marginLeft: 4,
-                                fontSize: 15,
-                                color: '#65676b',
+                                width: 20,
+                                height: 20,
+                            }}
+                            contentFit="cover"
+                            source={require('../assets/icons/shareIcon.png')}
+                        />
+                        <Text style={{ fontSize: 16 }}>Chia sẻ</Text>
+                    </View>
+                    {displayEmoji && (
+                        <View
+                            style={{
+                                position: 'absolute',
+                                left: 20,
+                                top: -48,
+                                backgroundColor: 'white',
+                                padding: 8,
+                                borderRadius: 20,
+                                flexDirection: 'row',
+                                columnGap: 16,
+                                shadowColor: '#333333',
+                                shadowOffset: {
+                                    width: 4,
+                                    height: 4,
+                                },
+                                shadowOpacity: 0.6,
+                                shadowRadius: 4,
                             }}
                         >
-                            Bình luận
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.footerItem}>
-                    <Image
-                        style={{
-                            width: 26,
-                            height: 26,
-                        }}
-                        contentFit="cover"
-                        source={require('../assets/icons/shareIcon.png')}
-                    />
-                    <Text
-                        style={{
-                            marginLeft: 4,
-                            fontSize: 15,
-                            color: '#65676b',
-                        }}
-                    >
-                        Chia sẻ
-                    </Text>
-                </View>
-            </View>
-
-            <Modal
-                isVisible={isModalReport}
-                onSwipeComplete={toggleModalReport}
-                swipeDirection={['down']}
-                onBackdropPress={toggleModalReport}
-                animationOutTiming={1000}
-                style={{ justifyContent: 'flex-end', margin: 0 }}
-            >
-                <View
-                    style={{
-                        backgroundColor: 'white',
-                        height: props?.item?.can_edit == '1' ? heightScreen * 0.45 : heightScreen * 0.6,
-                        borderTopLeftRadius: 20,
-                        borderTopRightRadius: 20,
-                        paddingTop: 12,
-                    }}
-                >
-                    <View
-                        style={{
-                            height: 6,
-                            width: withScreen * 0.16,
-                            backgroundColor: '#ccc',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            borderRadius: 4,
-                            marginBottom: 8,
-                        }}
-                    ></View>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faBookmark} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Lưu {props.item?.image ? <Text>bài viết</Text> : <Text>video</Text>}{' '}
-                                    </Text>
-                                    <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                        Thêm vào danh sách{' '}
-                                        {props.item?.image ? <Text>các mục</Text> : <Text>video</Text>} đã lưu
-                                    </Text>
-                                </View>
-                            </View>
+                            <TouchableOpacity onPress={() => handleChooseEmoji(1)}>
+                                <Text style={{ fontSize: 20 }}>😊</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleChooseEmoji(0)}>
+                                <Text style={{ fontSize: 20 }}>😔</Text>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-
-                    {props?.item?.can_edit == '1' ? (
-                        <>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    navigation.navigate('EditPost', {
-                                        info: {
-                                            listImage: props?.item?.images,
-                                            video: props?.item?.video,
-                                            described: props?.item?.content,
-                                            status: props?.item?.state,
-                                            id: props?.item?.id,
-                                        },
-                                    });
-                                    setModalReport(false);
-                                }}
-                            >
-                                <View style={styles.item}>
-                                    <View style={styles.flexRow}>
-                                        <FontAwesomeIcon icon={faPen} size={20} color="black" />
-                                        <View>
-                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                                Chỉnh sửa bài viết
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => handleDeletePost(props?.item?.id)}>
-                                <View style={styles.item}>
-                                    <View style={styles.flexRow}>
-                                        <FontAwesomeIcon icon={faTrashCan} size={20} color="black" />
-                                        <View>
-                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                                Xóa bài viết
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        </>
-                    ) : (
-                        <>
-                            <TouchableOpacity>
-                                <View style={styles.item}>
-                                    <View style={styles.flexRow}>
-                                        <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
-                                        <View>
-                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                                Ẩn bài viết
-                                            </Text>
-                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                                Ẩn bớt các bài viết tương tự
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={styles.item}>
-                                    <View style={styles.flexRow}>
-                                        <FontAwesomeIcon icon={faClock} size={20} color="black" />
-                                        <View>
-                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                                Tạm ẩn trong 30 ngày
-                                            </Text>
-                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                                Tạm thời dừng xem bài viết
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity>
-                                <View style={styles.item}>
-                                    <View style={styles.flexRow}>
-                                        <FontAwesomeIcon icon={faCircleQuestion} size={20} color="black" />
-                                        <View>
-                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                                Tại sao tôi nhìn thấy bài viết này?
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => handleReportButtonClick()}>
-                                <View style={styles.item}>
-                                    <View style={styles.flexRow}>
-                                        <Image
-                                            style={{ height: 20, width: 20, objectFit: 'cover' }}
-                                            source={require('../assets/icons/warning.png')}
-                                        ></Image>
-                                        <View>
-                                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                                Báo cáo bài viết
-                                            </Text>
-                                            <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
-                                                Tôi lo ngại về bài viết này
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
-                            </TouchableOpacity>
-                        </>
                     )}
-
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faBell} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Bật thông báo cho bài viết này
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faLink} size={20} color="black" />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Sao chép liên kết
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
                 </View>
-            </Modal>
-            <Modal
-                isVisible={isModalReportSubmit}
-                onSwipeComplete={toggleModalReportSubmit}
-                swipeDirection={['down']}
-                onBackdropPress={toggleModalReportSubmit}
-                animationOutTiming={1000}
-                style={{ justifyContent: 'flex-end', margin: 0 }}
-            >
-                <View
-                    style={{
-                        backgroundColor: 'white',
-                        height: heightScreen * 0.8,
-                        borderTopLeftRadius: 20,
-                        borderTopRightRadius: 20,
-                        paddingTop: 12,
-                    }}
+
+                <Modal
+                    isVisible={isModalReport}
+                    onSwipeComplete={toggleModalReport}
+                    swipeDirection={['down']}
+                    onBackdropPress={toggleModalReport}
+                    animationOutTiming={1000}
+                    style={{ justifyContent: 'flex-end', margin: 0 }}
                 >
                     <View
                         style={{
-                            height: 6,
-                            width: withScreen * 0.16,
-                            backgroundColor: '#ccc',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            borderRadius: 4,
-                            marginBottom: 8,
-                        }}
-                    ></View>
-                    <Text style={{ fontSize: 18, fontWeight: '600', marginLeft: 10 }}>
-                        Vui lòng chọn vấn đề để tiếp tục
-                    </Text>
-                    <Text style={{ fontSize: 16, marginLeft: 10, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>
-                        Bạn có thể báo cáo bài viết sau khi chọn vấn đề
-                    </Text>
-                    <View style={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap' }}>
-                        {options.map((option, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                style={[
-                                    styles.boxReport,
-                                    selectedReports.includes(option) ? styles.boxReportSelected : {},
-                                ]}
-                                onPress={() => onOptionPress(option)}
-                            >
-                                {option === 'Vấn đề khác' ? <FontAwesomeIcon icon={faSearch} /> : null}
-                                <Text style={styles.buttonText}>{option}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </View>
-                    <View style={styles.divSmall}></View>
-                    <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 10, marginTop: 10, marginBottom: 8 }}>
-                        Các bước khác mà bạn có thể thực hiện
-                    </Text>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faUserLock} size={20} />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Chặn nó</Text>
-                                    <Text
-                                        style={{
-                                            fontSize: 14,
-                                            fontWeight: 400,
-                                            marginLeft: 16,
-                                            opacity: 0.6,
-                                            flexWrap: 'wrap',
-                                            width: 300,
-                                        }}
-                                    >
-                                        Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <View style={styles.item}>
-                            <View style={styles.flexRow}>
-                                <FontAwesomeIcon icon={faRectangleXmark} size={20} />
-                                <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
-                                        Bỏ theo dõi nó
-                                    </Text>
-                                    <Text
-                                        style={{
-                                            fontSize: 14,
-                                            fontWeight: 400,
-                                            marginLeft: 16,
-                                            opacity: 0.6,
-                                            flexWrap: 'wrap',
-                                            width: 300,
-                                        }}
-                                    >
-                                        Dừng xem bài viết nhưng vẫn là bạn bè
-                                    </Text>
-                                </View>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
-                    <View style={styles.inputContainer}>
-                        <FontAwesomeIcon icon={faSearch} size={20} style={styles.iconStyle} />
-                        {!inputValue && (
-                            <Text style={styles.placeholderStyle}>
-                                Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch vụ
-                                cấp cứu địa phương
-                            </Text>
-                        )}
-                        <TextInput
-                            style={styles.textInputStyle}
-                            multiline
-                            value={inputValue}
-                            onChangeText={(text) => setInputValue(text)}
-                            placeholderTextColor="#ccc"
-                        />
-                    </View>
-                    <TouchableOpacity
-                        style={{
-                            backgroundColor: '#e5e6ed',
-                            paddingVertical: 10,
-                            paddingHorizontal: 20,
-                            width: 320,
-                            borderRadius: 5,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            height: 40,
-                            marginLeft: 30,
-                            marginTop: 15,
+                            backgroundColor: 'white',
+                            height: props?.item?.can_edit == '1' ? heightScreen * 0.45 : heightScreen * 0.6,
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                            paddingTop: 12,
                         }}
                     >
-                        <Text style={{ color: '#000', fontSize: 16, fontWeight: '500', opacity: 0.6 }}>Tiếp</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
-        </View>
+                        <View
+                            style={{
+                                height: 6,
+                                width: withScreen * 0.16,
+                                backgroundColor: '#ccc',
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                borderRadius: 4,
+                                marginBottom: 8,
+                            }}
+                        ></View>
+                        <TouchableOpacity>
+                            <View style={styles.item}>
+                                <View style={styles.flexRow}>
+                                    <FontAwesomeIcon icon={faBookmark} size={20} color="black" />
+                                    <View>
+                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                            Lưu {props.item?.image ? <Text>bài viết</Text> : <Text>video</Text>}{' '}
+                                        </Text>
+                                        <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                            Thêm vào danh sách{' '}
+                                            {props.item?.image ? <Text>các mục</Text> : <Text>video</Text>} đã lưu
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+
+                        {props?.item?.can_edit == '1' ? (
+                            <>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigation.navigate('EditPost', {
+                                            info: {
+                                                listImage: props?.item?.images,
+                                                video: props?.item?.video,
+                                                described: props?.item?.content,
+                                                status: props?.item?.state,
+                                                id: props?.item?.id,
+                                            },
+                                        });
+                                        setModalReport(false);
+                                    }}
+                                >
+                                    <View style={styles.item}>
+                                        <View style={styles.flexRow}>
+                                            <FontAwesomeIcon icon={faPen} size={20} color="black" />
+                                            <View>
+                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                    Chỉnh sửa bài viết
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleDeletePost(props?.item?.id)}>
+                                    <View style={styles.item}>
+                                        <View style={styles.flexRow}>
+                                            <FontAwesomeIcon icon={faTrashCan} size={20} color="black" />
+                                            <View>
+                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                    Xóa bài viết
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </>
+                        ) : (
+                            <>
+                                <TouchableOpacity>
+                                    <View style={styles.item}>
+                                        <View style={styles.flexRow}>
+                                            <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
+                                            <View>
+                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                    Ẩn bài viết
+                                                </Text>
+                                                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                    Ẩn bớt các bài viết tương tự
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <View style={styles.item}>
+                                        <View style={styles.flexRow}>
+                                            <FontAwesomeIcon icon={faClock} size={20} color="black" />
+                                            <View>
+                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                    Tạm ẩn trong 30 ngày
+                                                </Text>
+                                                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                    Tạm thời dừng xem bài viết
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity>
+                                    <View style={styles.item}>
+                                        <View style={styles.flexRow}>
+                                            <FontAwesomeIcon icon={faCircleQuestion} size={20} color="black" />
+                                            <View>
+                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                    Tại sao tôi nhìn thấy bài viết này?
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => handleReportButtonClick()}>
+                                    <View style={styles.item}>
+                                        <View style={styles.flexRow}>
+                                            <Image
+                                                style={{ height: 20, width: 20, objectFit: 'cover' }}
+                                                source={require('../assets/icons/warning.png')}
+                                            ></Image>
+                                            <View>
+                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                    Báo cáo bài viết
+                                                </Text>
+                                                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                    Tôi lo ngại về bài viết này
+                                                </Text>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </TouchableOpacity>
+                            </>
+                        )}
+
+                        <TouchableOpacity>
+                            <View style={styles.item}>
+                                <View style={styles.flexRow}>
+                                    <FontAwesomeIcon icon={faBell} size={20} color="black" />
+                                    <View>
+                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                            Bật thông báo cho bài viết này
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={styles.item}>
+                                <View style={styles.flexRow}>
+                                    <FontAwesomeIcon icon={faLink} size={20} color="black" />
+                                    <View>
+                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                            Sao chép liên kết
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+                <Modal
+                    isVisible={isModalReportSubmit}
+                    onSwipeComplete={toggleModalReportSubmit}
+                    swipeDirection={['down']}
+                    onBackdropPress={toggleModalReportSubmit}
+                    animationOutTiming={1000}
+                    style={{ justifyContent: 'flex-end', margin: 0 }}
+                >
+                    <View
+                        style={{
+                            backgroundColor: 'white',
+                            height: heightScreen * 0.8,
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                            paddingTop: 12,
+                        }}
+                    >
+                        <View
+                            style={{
+                                height: 6,
+                                width: withScreen * 0.16,
+                                backgroundColor: '#ccc',
+                                marginLeft: 'auto',
+                                marginRight: 'auto',
+                                borderRadius: 4,
+                                marginBottom: 8,
+                            }}
+                        ></View>
+                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 10 }}>
+                            Vui lòng chọn vấn đề để tiếp tục
+                        </Text>
+                        <Text style={{ fontSize: 16, marginLeft: 10, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>
+                            Bạn có thể báo cáo bài viết sau khi chọn vấn đề
+                        </Text>
+                        <View style={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap' }}>
+                            {options.map((option, index) => (
+                                <TouchableOpacity
+                                    key={index}
+                                    style={[
+                                        styles.boxReport,
+                                        selectedReports.includes(option) ? styles.boxReportSelected : {},
+                                    ]}
+                                    onPress={() => onOptionPress(option)}
+                                >
+                                    {option === 'Vấn đề khác' ? <FontAwesomeIcon icon={faSearch} /> : null}
+                                    <Text style={styles.buttonText}>{option}</Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+                        <View style={styles.divSmall}></View>
+                        <Text
+                            style={{ fontSize: 16, fontWeight: '500', marginLeft: 10, marginTop: 10, marginBottom: 8 }}
+                        >
+                            Các bước khác mà bạn có thể thực hiện
+                        </Text>
+                        <TouchableOpacity>
+                            <View style={styles.item}>
+                                <View style={styles.flexRow}>
+                                    <FontAwesomeIcon icon={faUserLock} size={20} />
+                                    <View>
+                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Chặn nó</Text>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: 400,
+                                                marginLeft: 16,
+                                                opacity: 0.6,
+                                                flexWrap: 'wrap',
+                                                width: 300,
+                                            }}
+                                        >
+                                            Các bạn sẽ không thể nhìn thấy hoặc liên hệ với nhau
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity>
+                            <View style={styles.item}>
+                                <View style={styles.flexRow}>
+                                    <FontAwesomeIcon icon={faRectangleXmark} size={20} />
+                                    <View>
+                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                            Bỏ theo dõi nó
+                                        </Text>
+                                        <Text
+                                            style={{
+                                                fontSize: 14,
+                                                fontWeight: 400,
+                                                marginLeft: 16,
+                                                opacity: 0.6,
+                                                flexWrap: 'wrap',
+                                                width: 300,
+                                            }}
+                                        >
+                                            Dừng xem bài viết nhưng vẫn là bạn bè
+                                        </Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={styles.inputContainer}>
+                            <FontAwesomeIcon icon={faSearch} size={20} style={styles.iconStyle} />
+                            {!inputValue && (
+                                <Text style={styles.placeholderStyle}>
+                                    Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch
+                                    vụ cấp cứu địa phương
+                                </Text>
+                            )}
+                            <TextInput
+                                style={styles.textInputStyle}
+                                multiline
+                                value={inputValue}
+                                onChangeText={(text) => setInputValue(text)}
+                                placeholderTextColor="#ccc"
+                            />
+                        </View>
+                        <TouchableOpacity
+                            style={{
+                                backgroundColor: '#e5e6ed',
+                                paddingVertical: 10,
+                                paddingHorizontal: 20,
+                                width: 320,
+                                borderRadius: 5,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                height: 40,
+                                marginLeft: 30,
+                                marginTop: 15,
+                            }}
+                        >
+                            <Text style={{ color: '#000', fontSize: 16, fontWeight: '500', opacity: 0.6 }}>Tiếp</Text>
+                        </TouchableOpacity>
+                    </View>
+                </Modal>
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 

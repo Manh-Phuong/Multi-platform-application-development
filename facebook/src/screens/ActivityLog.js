@@ -18,6 +18,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteHistory, getListHistory } from '../services/SearchServices';
 import { setLoading } from '../feature/loading';
 import { useDispatch, useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 const ActivityLog = () => {
     const navigation = useNavigation();
     const [dataSearch, setDataSearch] = React.useState('');
@@ -69,11 +71,7 @@ const ActivityLog = () => {
             <View>
                 <View style={styles.header}>
                     <TouchableOpacity onPress={goBackHandler}>
-                        <Image
-                            style={styles.backIcon}
-                            contentFit="cover"
-                            source={require('../assets/images/vector.png')}
-                        />
+                        <FontAwesomeIcon icon={faArrowLeft} size={20}></FontAwesomeIcon>
                     </TouchableOpacity>
                     <Text style={{ fontSize: 20 }}>Nhật ký hoạt động</Text>
                 </View>
@@ -148,7 +146,7 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 92,
         // backgroundColor: "red",
-        paddingTop: 32,
+        paddingTop: 40,
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',

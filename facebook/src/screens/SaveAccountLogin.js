@@ -11,7 +11,7 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; 
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import { login } from '../services/AuthServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,6 +22,7 @@ const SaveAccountLogin = () => {
     const togglePopup = () => {
         setIsShowPopup(!isShowPopup);
     };
+
     const handleLogin = async () => {
         let account = await AsyncStorage.getItem('accountInfo');
         account = JSON.parse(account);
@@ -29,6 +30,7 @@ const SaveAccountLogin = () => {
         const password = account.password;
         try {
             const res = await login({ email, password });
+            await AsyncStorage.setItem('token', res.data.data.token);
             if (res.data.code == '1000') {
                 navigation.navigate('Home');
             }
@@ -48,7 +50,7 @@ const SaveAccountLogin = () => {
         const getInfo = async () => {
             const value = await AsyncStorage.getItem('accountInfo');
             if (!value) {
-              navigation.navigate('Login')
+                navigation.navigate('Login');
             }
             setInfo(JSON.parse(value));
         };
@@ -96,7 +98,14 @@ const SaveAccountLogin = () => {
                 <View style={[styles.infoLoginBar, styles.boxShadow]}>
                     <TouchableOpacity onPress={handleLogin} style={{ width: '80%' }}>
                         <View style={styles.infoLoginBarRight}>
-                            <Image style={styles.accountImage} source={{ uri: info.avatar }}></Image>
+                            <Image
+                                style={styles.accountImage}
+                                source={{
+                                    uri:
+                                        info.avatar ||
+                                        'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                }}
+                            ></Image>
                             <Text style={styles.accountName}>{info.username}</Text>
                         </View>
                     </TouchableOpacity>

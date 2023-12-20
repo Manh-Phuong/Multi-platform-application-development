@@ -46,7 +46,6 @@ export const checkVerifyCode = async (email, code) => {
 export const changeProfileAfterSignUp = async ({username}) => {
     try {
         const headers = await createAuthHeader();
-        console.log(headers)
         const res = await request.post('/change_profile_after_signup', { 
             username,
         },{ headers });
@@ -59,8 +58,16 @@ export const changeProfileAfterSignUp = async ({username}) => {
 export const logout = async () => {
     try {
         const headers = await createAuthHeader();
-        console.log(headers)
         const res = await request.post('/logout',{ headers });
+        return res.data;
+    } catch (err) {
+        console.log(err.response);
+    }
+}
+
+export const getVerifyCode = async ({email}) => {
+    try {
+        const res = await request.post('/get_verify_code', {email});
         return res.data;
     } catch (err) {
         console.log(err.response);
