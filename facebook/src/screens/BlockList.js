@@ -178,7 +178,7 @@ const BlockList = () => {
                                         }}
                                     />
 
-                                    <Text style={{ fontSize: 16, fontWeight: 600 }}>{item.name}</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600' }}>{item.name}</Text>
                                 </View>
                                 <View>
                                     <Text>BỎ CHẶN</Text>

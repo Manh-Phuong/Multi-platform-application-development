@@ -90,7 +90,7 @@ const VideoActive = () => {
                             <FontAwesomeIcon icon={faArrowLeft} size={24} color="white" />
                         </TouchableOpacity>
                         <View>
-                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: 500 }}>Video khác</Text>
+                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '500' }}>Video khác</Text>
                         </View>
                         <View style={{ flexDirection: 'row', columnGap: 12 }}>
                             <View

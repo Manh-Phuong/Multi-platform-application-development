@@ -69,6 +69,7 @@ export const getListPost = async (formData) => {
                 },
             ]);
         }
+        return err;
     }
 };
 

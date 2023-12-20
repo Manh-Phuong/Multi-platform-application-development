@@ -63,7 +63,7 @@ export default function MessageProfile() {
             marginLeft: 24,
             textAlign: "center",
             fontSize: 18,
-            fontWeight: 600,
+            fontWeight: '600',
           }}
         >
           Tôi
@@ -85,7 +85,7 @@ export default function MessageProfile() {
             uri: "https://hinhnen4k.com/wp-content/uploads/2023/02/anh-gai-xinh-vn-2.jpg",
           }}
         />
-        <Text style={{ marginTop: 8, fontSize: 18, fontWeight: 600 }}>
+        <Text style={{ marginTop: 8, fontSize: 18, fontWeight: '600' }}>
           Mạnh Phương
         </Text>
       </View>
@@ -103,7 +103,7 @@ export default function MessageProfile() {
               style={{ height: 32, width: 32, objectFit: "cover" }}
               source={require("../assets/icons/darkModeIcon.png")}
             ></Image>
-            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
               Chế độ tối
             </Text>
           </View>
@@ -130,15 +130,15 @@ export default function MessageProfile() {
                 style={{ height: 36, width: 36, objectFit: "cover" }}
                 source={require("../assets/icons/messageWaitingIcon2.jpg")}
               ></Image>
-              <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+              <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                 Tin nhắn đang chờ
               </Text>
             </View>
           </View>
         </TouchableOpacity>
 
-        {/* <Text style={{fontSize: 15, color: "#a2a1a1", fontWeight: 500, marginTop: 8 }}>Trang cá nhân</Text> */}
-        <Text style={{marginBottom: 8, fontSize: 15, color: "#a2a1a1", fontWeight: 500, marginTop: 8 }}>Trang cá nhân</Text>
+        {/* <Text style={{fontSize: 15, color: "#a2a1a1", fontWeight: '500', marginTop: 8 }}>Trang cá nhân</Text> */}
+        <Text style={{marginBottom: 8, fontSize: 15, color: "#a2a1a1", fontWeight: '500', marginTop: 8 }}>Trang cá nhân</Text>
 
         <View style={styles.item}>
           <View
@@ -153,10 +153,10 @@ export default function MessageProfile() {
               source={require("../assets/icons/statusActionIcon.jpg")}
             ></Image>
             <View>
-                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                   Trạng thái hoạt động
                 </Text>
-                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16, color: "#65676b" }}>
+                <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16, color: "#65676b" }}>
                   Bật
                 </Text>
             </View>
@@ -176,17 +176,17 @@ export default function MessageProfile() {
               source={require("../assets/icons/messageUserNameIcon.jpg")}
             ></Image>
             <View>
-                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                   Tên người dùng
                 </Text>
-                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16, color: "#65676b" }}>
+                <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16, color: "#65676b" }}>
                   m.me/manhphuongg
                 </Text>
             </View>
           </View>
         </View>
 
-        <Text style={{marginBottom: 8, fontSize: 15, color: "#a2a1a1", fontWeight: 500, marginTop: 8 }}>Tùy chọn</Text>
+        <Text style={{marginBottom: 8, fontSize: 15, color: "#a2a1a1", fontWeight: '500', marginTop: 8 }}>Tùy chọn</Text>
 
         <View style={styles.item}>
           <View
@@ -200,7 +200,7 @@ export default function MessageProfile() {
               style={{ height: 36, width: 36, objectFit: "cover" }}
               source={require("../assets/icons/privacyIcon.jpg")}
             ></Image>
-            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
               Quyền riêng tư
             </Text>
           </View>

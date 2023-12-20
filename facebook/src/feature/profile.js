@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    user_id: '762',
-    name: 'username',
+    user_id: '',
+    name: '',
     avatar: 'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
     imageBackground: 'https://res.cloudinary.com/manhphuong/image/upload/v1702693703/default-thumbnail_lscmuo.jpg',
     description: '',
@@ -10,7 +10,7 @@ const initialState = {
     city: '',
     country: '',
     link: '',
-    coins: '50',
+    coins: '',
     temp: '',
 };
 
@@ -64,6 +64,7 @@ export const profileSlice = createSlice({
         },
         setStoreProfile: (state, action) => {
             // console.log(action);
+            state.user_id = action.payload.id;
             state.name = action.payload.username;
             if (action.payload.avatar) {
                 state.avatar = action.payload.avatar;

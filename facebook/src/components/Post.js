@@ -463,7 +463,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         numberOfLines={2}
                                         ellipsizeMode="tail"
                                         style={{
-                                            fontWeight: 600,
+                                            fontWeight: '600',
                                             fontSize: 16,
                                             color: darkMode ? '#fff' : '#000',
                                         }}
@@ -471,7 +471,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         {props.item?.owner}
                                         <Text
                                             style={{
-                                                fontWeight: 400,
+                                                fontWeight: '400',
                                                 fontSize: 16,
                                                 color: '#65676b',
                                             }}
@@ -488,7 +488,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                             numberOfLines={2}
                             ellipsizeMode="tail"
                             style={{
-                                fontWeight: 600,
+                                fontWeight: '600',
                                 fontSize: 14,
                                 color: '#65676b',
                             }}
@@ -503,7 +503,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                     numberOfLines={2}
                                     ellipsizeMode="tail"
                                     style={{
-                                        fontWeight: 600,
+                                        fontWeight: '600',
                                         fontSize: 14,
                                         color: '#65676b',
                                     }}
@@ -528,7 +528,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                         numberOfLines={3}
                         ellipsizeMode="tail"
                         style={{
-                            fontWeight: 400,
+                            fontWeight: '400',
                             fontSize: 15,
                             color: darkMode ? '#fff' : '#65676b',
                         }}
@@ -794,10 +794,10 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 <View style={styles.flexRow}>
                                     <FontAwesomeIcon icon={faBookmark} size={20} color="black" />
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                             Lưu {props.item?.image ? <Text>bài viết</Text> : <Text>video</Text>}{' '}
                                         </Text>
-                                        <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16 }}>
                                             Thêm vào danh sách{' '}
                                             {props.item?.image ? <Text>các mục</Text> : <Text>video</Text>} đã lưu
                                         </Text>
@@ -826,7 +826,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         <View style={styles.flexRow}>
                                             <FontAwesomeIcon icon={faPen} size={20} color="black" />
                                             <View>
-                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                                     Chỉnh sửa bài viết
                                                 </Text>
                                             </View>
@@ -838,7 +838,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         <View style={styles.flexRow}>
                                             <FontAwesomeIcon icon={faTrashCan} size={20} color="black" />
                                             <View>
-                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                                     Xóa bài viết
                                                 </Text>
                                             </View>
@@ -853,10 +853,10 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         <View style={styles.flexRow}>
                                             <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
                                             <View>
-                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                                     Ẩn bài viết
                                                 </Text>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16 }}>
                                                     Ẩn bớt các bài viết tương tự
                                                 </Text>
                                             </View>
@@ -868,10 +868,10 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         <View style={styles.flexRow}>
                                             <FontAwesomeIcon icon={faClock} size={20} color="black" />
                                             <View>
-                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                                     Tạm ẩn trong 30 ngày
                                                 </Text>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16 }}>
                                                     Tạm thời dừng xem bài viết
                                                 </Text>
                                             </View>
@@ -883,7 +883,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         <View style={styles.flexRow}>
                                             <FontAwesomeIcon icon={faCircleQuestion} size={20} color="black" />
                                             <View>
-                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                                     Tại sao tôi nhìn thấy bài viết này?
                                                 </Text>
                                             </View>
@@ -898,10 +898,10 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                                 source={require('../assets/icons/warning.png')}
                                             ></Image>
                                             <View>
-                                                <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                                     Báo cáo bài viết
                                                 </Text>
-                                                <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                                <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16 }}>
                                                     Tôi lo ngại về bài viết này
                                                 </Text>
                                             </View>
@@ -916,7 +916,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 <View style={styles.flexRow}>
                                     <FontAwesomeIcon icon={faBell} size={20} color="black" />
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                             Bật thông báo cho bài viết này
                                         </Text>
                                     </View>
@@ -928,7 +928,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 <View style={styles.flexRow}>
                                     <FontAwesomeIcon icon={faLink} size={20} color="black" />
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                             Sao chép liên kết
                                         </Text>
                                     </View>
@@ -997,11 +997,11 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 <View style={styles.flexRow}>
                                     <FontAwesomeIcon icon={faUserLock} size={20} />
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Chặn nó</Text>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Chặn nó</Text>
                                         <Text
                                             style={{
                                                 fontSize: 14,
-                                                fontWeight: 400,
+                                                fontWeight: '400',
                                                 marginLeft: 16,
                                                 opacity: 0.6,
                                                 flexWrap: 'wrap',
@@ -1019,13 +1019,13 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 <View style={styles.flexRow}>
                                     <FontAwesomeIcon icon={faRectangleXmark} size={20} />
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                             Bỏ theo dõi nó
                                         </Text>
                                         <Text
                                             style={{
                                                 fontSize: 14,
-                                                fontWeight: 400,
+                                                fontWeight: '400',
                                                 marginLeft: 16,
                                                 opacity: 0.6,
                                                 flexWrap: 'wrap',

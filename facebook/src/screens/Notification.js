@@ -69,7 +69,7 @@ const Option = ({ valueOption }) => {
                             <FontAwesomeIcon icon={faRectangleXmark} size={20} color="black" />
                         </View>
                         <View>
-                            <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Gỡ thông báo này</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Gỡ thông báo này</Text>
                         </View>
                     </View>
                 </TouchableOpacity>

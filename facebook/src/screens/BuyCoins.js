@@ -42,7 +42,7 @@ const Header = () => {
 
     return (
         <View style={{ marginTop: 12, alignItems: 'center', marginBottom: 24 }}>
-            <Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 12, fontWeight: 800 }}>Xu hiện tại</Text>
+            <Text style={{ fontSize: 18, textAlign: 'center', marginBottom: 12, fontWeight: '800' }}>Xu hiện tại</Text>
             <View
                 style={{
                     flexDirection: 'row',
@@ -53,7 +53,7 @@ const Header = () => {
                 }}
             >
                 <Image source={require('../assets/icons/dollar.png')} style={{ width: 36, height: 36 }} />
-                <Text style={{ fontSize: 22, textAlign: 'center', fontWeight: 800 }}>{coinsBalance}</Text>
+                <Text style={{ fontSize: 22, textAlign: 'center', fontWeight: '800' }}>{coinsBalance}</Text>
             </View>
         </View>
     );
@@ -207,7 +207,7 @@ const BuyCoins = ({ hiddenHeader }) => {
                                         style={{ width: 24, height: 24 }}
                                     />
 
-                                    <Text style={{ fontSize: 16, fontWeight: 600 }}>{item.value} xu</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600' }}>{item.value} xu</Text>
                                 </View>
                                 <View
                                     style={{
@@ -218,7 +218,7 @@ const BuyCoins = ({ hiddenHeader }) => {
                                         width: 90,
                                     }}
                                 >
-                                    <Text style={{ fontSize: 16, fontWeight: 600, color: '#fff', textAlign: 'center' }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', color: '#fff', textAlign: 'center' }}>
                                         {item.price} $
                                     </Text>
                                 </View>

@@ -231,7 +231,7 @@ export default function Search() {
                             />
                         )}
                         {!isHasHistory && (
-                            <Text style={{ paddingLeft: 16, paddingTop: 20, fontSize: 20, fontWeight: 600 }}>
+                            <Text style={{ paddingLeft: 16, paddingTop: 20, fontSize: 20, fontWeight: '600' }}>
                                 Không có lịch sử tìm kiếm
                             </Text>
                         )}
@@ -299,8 +299,8 @@ export default function Search() {
                                         <FontAwesomeIcon icon={faTrashCan} size={22} color="black" />
                                     </View>
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Xóa</Text>
-                                        <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Xóa</Text>
+                                        <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16 }}>
                                             Gỡ khỏi lịch sử tìm kiếm của bạn
                                         </Text>
                                     </View>
@@ -323,10 +323,10 @@ export default function Search() {
                                         <FontAwesomeIcon icon={faThumbTack} size={20} color="black" />
                                     </View>
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                             Ghim nội dung tìm kiếm này
                                         </Text>
-                                        <Text style={{ fontSize: 14, fontWeight: 400, marginLeft: 16 }}>
+                                        <Text style={{ fontSize: 14, fontWeight: '400', marginLeft: 16 }}>
                                             Bạn chỉ có thể ghim 3 nội dung tìm kiếm cùng lúc.
                                         </Text>
                                     </View>

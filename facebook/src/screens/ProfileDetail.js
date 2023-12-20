@@ -368,7 +368,7 @@ const Header = ({
                     />
                     <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
                         <View style={styles.youThink}>
-                            <Text style={{ fontSize: 16, fontWeight: 500 }}>Bạn đang nghĩ gì?</Text>
+                            <Text style={{ fontSize: 16, fontWeight: '500' }}>Bạn đang nghĩ gì?</Text>
                         </View>
                     </TouchableOpacity>
 
@@ -712,7 +712,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faImage} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Xem ảnh bìa</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Xem ảnh bìa</Text>
                                 </View>
                             </View>
                         </View>
@@ -724,7 +724,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faWandMagicSparkles} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Tạo ảnh bìa bằng avatar
                                     </Text>
                                 </View>
@@ -738,7 +738,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faArrowUpFromBracket} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Tải ảnh lên</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Tải ảnh lên</Text>
                                 </View>
                             </View>
                         </View>
@@ -750,7 +750,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faFacebook} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Chọn ảnh trên Facebook
                                     </Text>
                                 </View>
@@ -764,7 +764,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faTableCellsLarge} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Tạo nhóm ảnh bìa
                                     </Text>
                                 </View>
@@ -810,7 +810,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faImage} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Xem ảnh đại diện
                                     </Text>
                                 </View>
@@ -824,7 +824,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faCamera} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>Chụp ảnh</Text>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Chụp ảnh</Text>
                                 </View>
                             </View>
                         </View>
@@ -836,7 +836,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faArrowUpFromBracket} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Chọn ảnh đại diện
                                     </Text>
                                 </View>
@@ -850,7 +850,7 @@ const ProfileDetail = () => {
                                     <FontAwesomeIcon icon={faFacebook} size={20} color="black" />
                                 </View>
                                 <View>
-                                    <Text style={{ fontSize: 16, fontWeight: 600, marginLeft: 16 }}>
+                                    <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                                         Chọn ảnh trên Facebook
                                     </Text>
                                 </View>

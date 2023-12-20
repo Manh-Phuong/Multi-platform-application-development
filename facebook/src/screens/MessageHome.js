@@ -200,7 +200,7 @@ const Header = () => {
             <Text
               style={{
                 fontSize: 18,
-                fontWeight: 500,
+                fontWeight: '500',
                 color: "#65676b",
                 marginLeft: 12,
               }}
@@ -233,7 +233,7 @@ const Header = () => {
                     textAlign: "center",
                     marginTop: 4,
                     fontSize: 15,
-                    fontWeight: 400,
+                    fontWeight: '400',
                     width: withScreen * 0.22 - 8,
                     color: "#000",
                   }}
@@ -277,7 +277,7 @@ const Message = () => {
                     style={{
                       marginTop: 4,
                       fontSize: 15,
-                      fontWeight: 700,
+                      fontWeight: '700',
                       width: withScreen * 0.7 - 8,
                       color: "#000",
                     }}
@@ -299,7 +299,7 @@ const Message = () => {
                       maxWidth: withScreen * 0.6,
                       marginTop: 4,
                       fontSize: 15,
-                      fontWeight: 400,
+                      fontWeight: '400',
   
                       // width: withScreen * 0.7 - 8,
                       color: "#65676b",
@@ -315,7 +315,7 @@ const Message = () => {
                       maxWidth: withScreen * 0.2,
                       marginTop: 4,
                       fontSize: 15,
-                      fontWeight: 400,
+                      fontWeight: '400',
                       marginLeft: 12,
                       color: "#65676b",
                     }}
@@ -391,11 +391,11 @@ export default function MessageHome() {
       <View style={styles.bottom}>
         <View style={styles.wrapIconBottom}>
           <FontAwesomeIcon icon={faComment} size={20} color="#373737" />
-          <Text style={{textAlign: "center", fontSize: 14, fontWeight: 500}}>Chat</Text>
+          <Text style={{textAlign: "center", fontSize: 14, fontWeight: '500'}}>Chat</Text>
         </View>
         <View style={styles.wrapIconBottom}>
           <FontAwesomeIcon icon={faUserGroup} size={20} color="#a2a1a1" />
-          <Text style={{textAlign: "center", fontSize: 14, fontWeight: 500, color: "#a2a1a1"}}>Danh bạ</Text>
+          <Text style={{textAlign: "center", fontSize: 14, fontWeight: '500', color: "#a2a1a1"}}>Danh bạ</Text>
         </View>
       </View>
     </View>

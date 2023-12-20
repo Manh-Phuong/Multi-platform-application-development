@@ -144,7 +144,7 @@ const ChooseNumberPhone = () => {
                         <Text
                             style={{
                                 color: '#0062e0',
-                                fontWeight: 600,
+                                fontWeight: '600',
                             }}
                         >
                             Tìm hiểu thêm
