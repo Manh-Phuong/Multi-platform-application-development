@@ -114,7 +114,7 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
 
         try {
             const result = await FriendServices.delRequestFriend({ user_id: id });
-            // console.log(result);
+            console.log('del request add friend', result);
         } catch (error) {
             console.log('handleAddFriend FriendSuggest setRequestFriend', error);
         }
@@ -189,18 +189,39 @@ const Header = ({ setModalVisible, selectedButton, setSelectedButton, handleButt
                                     <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Hủy lời mời</Text>
                                 </TouchableOpacity>
                             ) : (
-                                <TouchableOpacity
-                                    onPress={() => handleAddFriend(profile?.id, profile?.is_friend)}
-                                    style={[styles.buttonAddInfo, { flexDirection: 'row' }]}
-                                >
-                                    <FontAwesomeIcon
-                                        icon={faUserPlus}
-                                        size={20}
-                                        color="white"
-                                        style={{ marginRight: 6 }}
-                                    />
-                                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>Thêm bạn bè</Text>
-                                </TouchableOpacity>
+                                <>
+                                    {acceptFriend != '0' && profile?.is_friend == '0' ? (
+                                        <TouchableOpacity
+                                            onPress={() => handleCancelAddFriend(profile?.id, profile?.is_friend)}
+                                            style={[styles.buttonAddInfo, { flexDirection: 'row' }]}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faUserClock}
+                                                size={20}
+                                                color="white"
+                                                style={{ marginRight: 6 }}
+                                            />
+                                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+                                                Hủy lời mời
+                                            </Text>
+                                        </TouchableOpacity>
+                                    ) : (
+                                        <TouchableOpacity
+                                            onPress={() => handleAddFriend(profile?.id, profile?.is_friend)}
+                                            style={[styles.buttonAddInfo, { flexDirection: 'row' }]}
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faUserPlus}
+                                                size={20}
+                                                color="white"
+                                                style={{ marginRight: 6 }}
+                                            />
+                                            <Text style={{ color: '#fff', fontSize: 16, fontWeight: '600' }}>
+                                                Thêm bạn bè
+                                            </Text>
+                                        </TouchableOpacity>
+                                    )}
+                                </>
                             )}
                             <TouchableOpacity
                                 style={styles.buttonEdit}
@@ -582,14 +603,14 @@ const ProfileOtherDetail = () => {
                 count: '10',
             });
 
-            setLastId(response.data.data.last_id);
+            setLastId(response?.data?.last_id);
 
             // console.log(response.data);
 
-            if (response.data.code == '1000') {
+            if (response?.code == '1000') {
                 setData((prevData) => [
                     ...prevData,
-                    ...response.data.data.post?.map((item) => {
+                    ...response?.data?.post?.map((item) => {
                         return {
                             id: item?.id,
                             owner: item.author.name,
@@ -613,7 +634,7 @@ const ProfileOtherDetail = () => {
                 setLoading(false);
             }
 
-            setHasData(response.data.data.post?.length > 0);
+            setHasData(response?.data.post?.length > 0);
         } catch (error) {
             console.error('Error fetching data5', error);
             setLoading(false);
@@ -637,14 +658,14 @@ const ProfileOtherDetail = () => {
                 count: '10',
             });
 
-            setLastId(response.data.data.last_id);
+            setLastId(response?.data?.last_id);
 
             console.log('new data', response.data);
 
-            if (response.data.code == '1000') {
+            if (response?.code == '1000') {
                 setData((prevData) => [
                     ...prevData,
-                    ...response.data.data.post?.map((item) => {
+                    ...response?.data?.post?.map((item) => {
                         return {
                             id: item?.id,
                             owner: item.author.name,
@@ -668,7 +689,7 @@ const ProfileOtherDetail = () => {
                 setLoading(false);
             }
 
-            setHasData(response.data.data.post?.length > 0);
+            setHasData(response?.data?.post?.length > 0);
         } catch (error) {
             console.error('Error fetching data5', error);
             setLoading(false);
@@ -696,7 +717,7 @@ const ProfileOtherDetail = () => {
     useEffect(() => {
         fetchApi();
         fetchNewData();
-        console.log('props data', props)
+        console.log('props data', props);
         // fetchData();
     }, [props]);
 

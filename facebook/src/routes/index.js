@@ -48,6 +48,7 @@ import Test from '../screens/Test';
 import ActivityLog from '../screens/ActivityLog';
 import DetailPost from '../screens/DetailPost';
 import EditPost from '../screens/EditPost';
+import ReportPost from '../screens/ReportPost';
 
 const publicRoutes = [
     {
@@ -249,6 +250,10 @@ const publicRoutes = [
     {
         name: 'EditPost',
         component: EditPost,
+    },
+    {
+        name: 'ReportPost',
+        component: ReportPost,
     },
 ];
 

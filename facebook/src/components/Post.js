@@ -890,7 +890,18 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         </View>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => handleReportButtonClick()}>
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        navigation.navigate('ReportPost', {
+                                            props: {
+                                                id: props?.item?.owner_id,
+                                                name: props?.item?.owner,
+                                                id_post: props?.item?.id,
+                                            },
+                                        });
+                                        setModalReport(false);
+                                    }}
+                                >
                                     <View style={styles.item}>
                                         <View style={styles.flexRow}>
                                             <Image
@@ -965,13 +976,21 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 marginBottom: 8,
                             }}
                         ></View>
-                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 10 }}>
+                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
                             Vui lòng chọn vấn đề để tiếp tục
                         </Text>
-                        <Text style={{ fontSize: 16, marginLeft: 10, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>
+                        <Text style={{ fontSize: 16, marginLeft: 16, opacity: 0.5, marginTop: 4, marginBottom: 8 }}>
                             Bạn có thể báo cáo bài viết sau khi chọn vấn đề
                         </Text>
-                        <View style={{ flexDirection: 'row', display: 'flex', flexWrap: 'wrap' }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                marginLeft: 16,
+                                marginRight: 16,
+                            }}
+                        >
                             {options.map((option, index) => (
                                 <TouchableOpacity
                                     key={index}
@@ -982,13 +1001,20 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                     onPress={() => onOptionPress(option)}
                                 >
                                     {option === 'Vấn đề khác' ? <FontAwesomeIcon icon={faSearch} /> : null}
-                                    <Text style={styles.buttonText}>{option}</Text>
+                                    <Text
+                                        style={[
+                                            styles.buttonText,
+                                            { color: selectedReports.includes(option) ? '#fff' : '#000' },
+                                        ]}
+                                    >
+                                        {option}
+                                    </Text>
                                 </TouchableOpacity>
                             ))}
                         </View>
                         <View style={styles.divSmall}></View>
                         <Text
-                            style={{ fontSize: 16, fontWeight: '500', marginLeft: 10, marginTop: 10, marginBottom: 8 }}
+                            style={{ fontSize: 16, fontWeight: '500', marginLeft: 16, marginTop: 10, marginBottom: 8 }}
                         >
                             Các bước khác mà bạn có thể thực hiện
                         </Text>
@@ -997,7 +1023,9 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                 <View style={styles.flexRow}>
                                     <FontAwesomeIcon icon={faUserLock} size={20} />
                                     <View>
-                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>Chặn nó</Text>
+                                        <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
+                                            Chặn {props?.item?.owner}
+                                        </Text>
                                         <Text
                                             style={{
                                                 fontSize: 14,
@@ -1020,7 +1048,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                     <FontAwesomeIcon icon={faRectangleXmark} size={20} />
                                     <View>
                                         <Text style={{ fontSize: 16, fontWeight: '600', marginLeft: 16 }}>
-                                            Bỏ theo dõi nó
+                                            Bỏ theo dõi {props?.item?.owner}
                                         </Text>
                                         <Text
                                             style={{
@@ -1040,18 +1068,20 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                         </TouchableOpacity>
                         <View style={styles.inputContainer}>
                             <FontAwesomeIcon icon={faSearch} size={20} style={styles.iconStyle} />
-                            {!inputValue && (
+                            {/* {!inputValue && (
                                 <Text style={styles.placeholderStyle}>
                                     Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch
                                     vụ cấp cứu địa phương
                                 </Text>
-                            )}
+                            )} */}
                             <TextInput
                                 style={styles.textInputStyle}
                                 multiline
                                 value={inputValue}
                                 onChangeText={(text) => setInputValue(text)}
                                 placeholderTextColor="#ccc"
+                                placeholder=" Nếu bạn nhận thấy ai đó đang gặp nguy hiểm, đừng chần chừ mà hãy báo ngay cho dịch
+                                    vụ cấp cứu địa phương"
                             />
                         </View>
                         <TouchableOpacity

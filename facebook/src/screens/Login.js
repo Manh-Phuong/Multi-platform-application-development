@@ -108,6 +108,8 @@ const Login = () => {
                         await AsyncStorage.setItem('accountInfo', JSON.stringify(info));
                         // console.log('thong tin', res.data);
                         const result = await ProfileServices.getUserInfo({ user_id: res.data.data.id });
+                        setAccount('');
+                        setPassword('');
                         if (result?.data.code == '1000') {
                             // console.log('thong tin nguoi dung', result.data.data);
                             dispatch(setStoreProfile(result?.data?.data));
@@ -206,6 +208,7 @@ const Login = () => {
                             onChangeText={changeAccount}
                             onFocus={handleFocusAccount}
                             onBlur={handleBlurAccount}
+                            value={account}
                         ></TextInput>
                     </View>
                 </View>
@@ -222,6 +225,7 @@ const Login = () => {
                             onChangeText={changePassword}
                             onFocus={handleFocusPassword}
                             onBlur={handleBlurPassword}
+                            value={password}
                         />
                         {(isFocusedPassword || password.trim()) && (
                             <Icon
