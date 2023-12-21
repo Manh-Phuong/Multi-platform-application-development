@@ -46,6 +46,7 @@ export default function ReportPost() {
     const navigation = useNavigation();
     const route = useRoute();
     const { props } = route.params || '';
+    console.log(props.handleRemovePost)
 
     const address = useSelector((state) => state.profile.address);
     const city = useSelector((state) => state.profile.city);
@@ -71,8 +72,6 @@ export default function ReportPost() {
     ];
 
     const handleSaveReport = async () => {
-        console.log('thong tin bao cao');
-        console.log('thong tin bao cao', selectedReports.join(', '), inputValue);
         if (inputValue.trim().length > 0 != '' && selectedReports.length > 0) {
             try {
                 const result = await PostServices.reportPost({
@@ -86,6 +85,7 @@ export default function ReportPost() {
                         {
                             text: 'OK',
                             onPress: () => {
+                                props?.handleRemovePost(props?.id_post);
                                 navigation.goBack();
                             }
                         },
@@ -100,8 +100,6 @@ export default function ReportPost() {
             } catch (error) {
                 console.log('fetchApi ReportPost handleSaveReport PostServices reportPost' + error);
             }
-
-            navigation.goBack();
         } else {
         }
     };

@@ -208,7 +208,6 @@ const EditPost = () => {
                     },
                 ]);
             }
-            console.log('ket qua', result);
         } catch (error) {
             console.log('handleSaveEditPost EditPost.js PostServices editPost', error);
         }

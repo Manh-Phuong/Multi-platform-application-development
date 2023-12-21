@@ -49,6 +49,7 @@ import ActivityLog from '../screens/ActivityLog';
 import DetailPost from '../screens/DetailPost';
 import EditPost from '../screens/EditPost';
 import ReportPost from '../screens/ReportPost';
+import ChangePassword from '../screens/ChangePassword';
 
 const publicRoutes = [
     {
@@ -254,6 +255,10 @@ const publicRoutes = [
     {
         name: 'ReportPost',
         component: ReportPost,
+    },
+    {
+        name: 'ChangePassword',
+        component: ChangePassword,
     },
 ];
 

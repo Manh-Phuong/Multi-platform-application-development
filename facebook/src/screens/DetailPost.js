@@ -26,10 +26,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft, faCamera, faEllipsis, faLeftLong, faPlug, faShare } from '@fortawesome/free-solid-svg-icons';
 import { SendIcon } from '../assets/icons';
 import { faComment, faShareFromSquare, faShareSquare, faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { deleteFeel, getListComment, setComment, setFeel } from '../services/CommentServices';
+import { deleteFeel, getListComment, getListFeel, setComment, setFeel } from '../services/CommentServices';
 import post from '../feature/post';
+import Modal from 'react-native-modal';
+import { readAsStringAsync } from 'expo-file-system';
 
-const Header = ({ post, type, handleFocusInput, listCmt }) => {
+const Header = ({ post, type, handleFocusInput, listCmt, resetReact, showModal }) => {
     const [displayEmoji, setDisplayEmoji] = useState(false);
     const [isChooseEmoji, setIsChooseEmoji] = useState(-1);
     const [totalEmoji, setTotalEmoji] = useState('');
@@ -52,8 +54,11 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
         if (res.code == 1000) {
             setIsChooseEmoji(type);
             setDisplayEmoji(false);
+            setType_(type);
             setReselect(true);
             setTotalEmoji(parseInt(res.data.kudos, 10) + parseInt(res.data.disappointed, 10));
+
+            resetReact(type, post?.is_felt);
         }
     };
     const handleRemoveEmoji = async () => {
@@ -64,6 +69,7 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
             setType_(-1);
             setReselect(true);
             setTotalEmoji(parseInt(res.data.kudos, 10) + parseInt(res.data.disappointed, 10));
+            resetReact(-1, post?.is_felt);
         }
     };
     useEffect(() => {
@@ -201,14 +207,14 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                             >
                                 {type_ == 1 && (
                                     <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 18 }}>😊</Text>
-                                        <Text style={{ fontSize: 18, color: '#ffc83d' }}>Kudos</Text>
+                                        <Text style={{ fontSize: 16 }}>😊</Text>
+                                        <Text style={{ fontSize: 16, color: '#ffc83d' }}>Kudos</Text>
                                     </View>
                                 )}
                                 {type_ == 0 && (
                                     <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
-                                        <Text style={{ fontSize: 18 }}>😔</Text>
-                                        <Text style={{ fontSize: 18, color: '#ffc83d' }}>Disappoint</Text>
+                                        <Text style={{ fontSize: 16 }}>😔</Text>
+                                        <Text style={{ fontSize: 16, color: '#ffc83d' }}>Disappoint</Text>
                                     </View>
                                 )}
                                 {type_ == '-1' && (
@@ -223,14 +229,14 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                                                 source={require('../assets/icons/likeIcon.png')}
                                             />
                                         )}
-                                        {isChooseEmoji == -1 && <Text style={{ fontSize: 18 }}>Cảm xúc</Text>}
-                                        {isChooseEmoji == 1 && <Text style={{ fontSize: 18 }}>😊</Text>}
+                                        {isChooseEmoji == -1 && <Text style={{ fontSize: 16 }}>Cảm xúc</Text>}
+                                        {isChooseEmoji == 1 && <Text style={{ fontSize: 16 }}>😊</Text>}
                                         {isChooseEmoji == 1 && (
-                                            <Text style={{ fontSize: 18, color: '#ffc83d' }}>Kudos</Text>
+                                            <Text style={{ fontSize: 16, color: '#ffc83d' }}>Kudos</Text>
                                         )}
-                                        {isChooseEmoji == 0 && <Text style={{ fontSize: 18 }}>😔</Text>}
+                                        {isChooseEmoji == 0 && <Text style={{ fontSize: 16 }}>😔</Text>}
                                         {isChooseEmoji == 0 && (
-                                            <Text style={{ fontSize: 18, color: '#ffc83d' }}>Disappoint</Text>
+                                            <Text style={{ fontSize: 16, color: '#ffc83d' }}>Disappoint</Text>
                                         )}
                                     </View>
                                 )}
@@ -248,7 +254,7 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                             />
 
                             <TouchableOpacity onPress={() => handleFocusInput(0)}>
-                                <Text style={{ fontSize: 18 }}>Bình luận</Text>
+                                <Text style={{ fontSize: 16 }}>Bình luận</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
@@ -260,7 +266,7 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                                 contentFit="cover"
                                 source={require('../assets/icons/shareIcon.png')}
                             />
-                            <Text style={{ fontSize: 18 }}>Chia sẻ</Text>
+                            <Text style={{ fontSize: 16 }}>Chia sẻ</Text>
                         </View>
                         {displayEmoji && (
                             <View
@@ -291,7 +297,7 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                             </View>
                         )}
                     </View>
-                    <View>
+                    <TouchableOpacity onPress={showModal}>
                         {!reselect && (
                             <Text
                                 style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}
@@ -302,7 +308,7 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
                                 style={{ paddingLeft: 8, fontSize: 20, paddingTop: 8, paddingBottom: 8 }}
                             >{`😊😔 ${totalEmoji}`}</Text>
                         )}
-                    </View>
+                    </TouchableOpacity>
                     <View>
                         {0 < listCmt.length && listCmt.length > 9 && (
                             <Text style={{ fontWeight: 'bold', fontSize: 16, paddingLeft: 8 }}>
@@ -317,12 +323,14 @@ const Header = ({ post, type, handleFocusInput, listCmt }) => {
 };
 
 const DetailPost = ({ route }) => {
+    const resetReact = route?.params?.resetReact || {};
     const navigation = useNavigation();
     const [listCmt, setListCmt] = useState([]);
     const [postInfo, setPostInfo] = useState({});
     const [selectedReply, setSelectedReply] = useState(-1);
     const [newComment, setNewComment] = useState('');
     const [typeOfCmt, setTypeOfCmt] = useState(0);
+    const [isShowModal, setIsShowModal] = useState(false);
     const [idMark, setIdMark] = useState(0);
     const inputRef = React.useRef(null);
 
@@ -363,6 +371,26 @@ const DetailPost = ({ route }) => {
                 setNewComment('');
                 inputRef.current.blur();
             }
+            else if (res.code == 2001) {
+                Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Mua xu',
+                        onPress: async () => navigation.navigate('BuyCoins'),
+                    },
+                ]);
+            }
+            else if (res.code == 9998) {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
         } else if (typeOfCmt == 1) {
             const res = await setComment({ id: postInfo.id, content: newComment, mark_id: idMark, type: '' });
             if (res.code == 1000) {
@@ -370,8 +398,40 @@ const DetailPost = ({ route }) => {
                 setNewComment('');
                 inputRef.current.blur();
             }
+            else if (res.code == 2001) {
+                Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Mua xu',
+                        onPress: async () => navigation.navigate('BuyCoins'),
+                    },
+                ]);
+            }
+            else if (res.code == 9998) {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
         }
     };
+
+    const toggleModal = () => {
+        setIsShowModal(false);
+    };
+
+    const [listReact, setListReact] = useState([]);
+    const showModal = async () => {
+        setIsShowModal(true);
+        const res = await getListFeel({ id: postInfo?.id });
+        if (res.code == 1000) setListReact(res.data);
+    };
+
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : ''}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -403,25 +463,36 @@ const DetailPost = ({ route }) => {
                                 type={route.params.type}
                                 handleFocusInput={handleFocusInput}
                                 listCmt={listCmt}
+                                resetReact={resetReact}
+                                showModal={showModal}
                             />
                         }
                         contentContainerStyle={{ paddingBottom: 50 }}
                         renderItem={({ item, index }) => (
                             <View style={{ flexDirection: 'row', columnGap: 16, paddingLeft: 16 }}>
-                                <Image
-                                    source={{
-                                        uri:
-                                            item?.poster?.avatar ||
-                                            'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                <TouchableOpacity
+                                    onPress={() => {
+                                        if (route.params.postInfo.owner_id == item?.poster?.id) {
+                                            navigation.navigate('ProfileDetail');
+                                        } else navigation.navigate('ProfileOtherDetail', { props: item?.poster?.id });
                                     }}
-                                    style={{
-                                        width: 36,
-                                        height: 36,
-                                        objectFit: 'cover',
-                                        borderRadius: 999,
-                                        marginTop: 12,
-                                    }}
-                                ></Image>
+                                >
+                                    <Image
+                                        source={{
+                                            uri:
+                                                item?.poster?.avatar ||
+                                                'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                        }}
+                                        style={{
+                                            width: 36,
+                                            height: 36,
+                                            objectFit: 'cover',
+                                            borderRadius: 999,
+                                            marginTop: 12,
+                                        }}
+                                    ></Image>
+                                </TouchableOpacity>
+
                                 <View>
                                     <View
                                         style={{
@@ -471,19 +542,34 @@ const DetailPost = ({ route }) => {
                                                                 width: '80%',
                                                             }}
                                                         >
-                                                            <Image
-                                                                source={{
-                                                                    uri:
-                                                                        cmt?.poster.avatar ||
-                                                                        'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                                            <TouchableOpacity
+                                                                onPress={() => {
+                                                                    if (
+                                                                        route.params.postInfo.owner_id ==
+                                                                        cmt?.poster?.id
+                                                                    ) {
+                                                                        navigation.navigate('ProfileDetail');
+                                                                    } else
+                                                                        navigation.navigate('ProfileOtherDetail', {
+                                                                            props: cmt?.poster?.id,
+                                                                        });
                                                                 }}
-                                                                style={{
-                                                                    width: 36,
-                                                                    height: 36,
-                                                                    borderRadius: 999,
-                                                                    objectFit: 'cover',
-                                                                }}
-                                                            ></Image>
+                                                            >
+                                                                <Image
+                                                                    source={{
+                                                                        uri:
+                                                                            cmt?.poster.avatar ||
+                                                                            'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
+                                                                    }}
+                                                                    style={{
+                                                                        width: 36,
+                                                                        height: 36,
+                                                                        borderRadius: 999,
+                                                                        objectFit: 'cover',
+                                                                    }}
+                                                                ></Image>
+                                                            </TouchableOpacity>
+
                                                             <View
                                                                 style={{
                                                                     backgroundColor: '#ddd',
@@ -539,6 +625,80 @@ const DetailPost = ({ route }) => {
                             <SendIcon width="24" height="24" />
                         </TouchableOpacity>
                     </View>
+
+                    <Modal
+                        isVisible={isShowModal}
+                        onSwipeComplete={toggleModal}
+                        swipeDirection={['down']}
+                        onBackdropPress={toggleModal}
+                        animationOutTiming={1000}
+                        style={{ justifyContent: 'flex-end', margin: 0 }}
+                    >
+                        <View
+                            style={{
+                                backgroundColor: 'white',
+                                height: 400,
+                                borderTopLeftRadius: 20,
+                                borderTopRightRadius: 20,
+                                paddingTop: 12,
+                                padding: 16,
+                            }}
+                        >
+                            <FlatList
+                                data={listReact}
+                                keyExtractor={(item, index) => index}
+                                showsVerticalScrollIndicator={false}
+                                ListHeaderComponent={
+                                    <View style={{ borderBottomColor: '#ddd', borderBottomWidth: 1 }}>
+                                        <View style={{width: 60, borderBottomColor: '#0063e0', borderBottomWidth: 1.5 }}>
+                                            <Text
+                                                style={{
+                                                    padding: 10,
+                                                    paddingLeft: 0,
+                                                    paddingTop: 4,
+                                                    width: 70,
+                                                    color: '#0063e0',
+                                                    fontWeight: 600,
+                                                }}
+                                            >
+                                                Tất cả: {listReact?.length}
+                                            </Text>
+                                        </View>
+                                    </View>
+                                }
+                                renderItem={({ item }) => (
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: 12 }}>
+                                        <Image
+                                            source={{ uri: item?.feel.user.avatar }}
+                                            style={{ width: 48, height: 48, borderRadius: 999 }}
+                                        ></Image>
+                                        {item?.feel.type == 1 && (
+                                            <View style={{ position: 'absolute', bottom: 0, left: 32 }}>
+                                                <Text>😊</Text>
+                                            </View>
+                                        )}
+                                        {item?.feel.type == 0 && (
+                                            <View style={{ position: 'absolute', bottom: -4, left: 36 }}>
+                                                <Text>😔</Text>
+                                            </View>
+                                        )}
+                                        <View
+                                            style={{
+                                                flex: 1,
+                                                borderBottomColor: '#ddd',
+                                                borderBottomWidth: 1,
+                                                height: 60,
+                                                flexDirection: 'row',
+                                                alignItems: 'center',
+                                            }}
+                                        >
+                                            <Text style={{ fontSize: 18 }}>{item?.feel.user.name}</Text>
+                                        </View>
+                                    </View>
+                                )}
+                            />
+                        </View>
+                    </Modal>
                 </View>
             </TouchableWithoutFeedback>
         </KeyboardAvoidingView>

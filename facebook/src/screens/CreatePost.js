@@ -40,6 +40,8 @@ const CreatePost = () => {
     const [video, setVideo] = useState('');
     const [textInput, setTextInput] = useState('');
     const [loading, setLoading] = useState(false);
+    const [isCreatePost, setIsCreatePost] = useState(false);
+
 
     const name = useSelector((state) => state.profile.name);
     const avatar = useSelector((state) => state.profile.avatar);
@@ -258,6 +260,8 @@ const CreatePost = () => {
             formData.append('status', status || 'Hyped');
             formData.append('auto_accept', '1.0');
 
+            setIsCreatePost(true)
+
             const result = await PostServices.addPost(formData);
             if (result.data.code == '1000') {
                 // Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
@@ -288,10 +292,18 @@ const CreatePost = () => {
                     },
                 ]);
             }
-            console.log('ket qua', result.data);
+            else if (result.data.code == '9998') {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
         } catch (error) {
             console.log('handlePost PostServices addPost', error);
         }
+        setIsCreatePost(false)
     };
 
     return (
@@ -306,7 +318,7 @@ const CreatePost = () => {
                         />
                         {/* <Icon name="close" size={24} color="black" onPress={showAlert} /> */}
                         <Text style={styles.textBigBold}>Tạo bài viết</Text>
-                        <TouchableOpacity
+                        {!isCreatePost && <TouchableOpacity
                             style={[
                                 !textInput.length || !(image && image.length) || video == ''
                                     ? styles.buttonDisable
@@ -328,7 +340,28 @@ const CreatePost = () => {
                             >
                                 Đăng
                             </Text>
-                        </TouchableOpacity>
+                        </TouchableOpacity>}
+
+
+                        {isCreatePost && <TouchableOpacity
+                            style={[
+                                !textInput.length || !(image && image.length) || video == '' ? styles.buttonDisable : '',
+                                textInput.length || (image && image.length) || video != '' ? styles.buttonNotDisable : '',
+                            ]}
+                            disabled={!textInput.length && !(image && image.length) && video == ''}
+                            onPress={handlePost}
+                        >
+                            <Text
+                                style={[
+                                    styles.textBigBold,
+                                    !textInput.length && !(image && image.length) && video == ''
+                                        ? styles.textDisable
+                                        : { color: 'white' },
+                                ]}
+                            >
+                                    <ActivityIndicator size="small" style={{paddingLeft: 10}}></ActivityIndicator>
+                            </Text>
+                        </TouchableOpacity>}
                     </View>
                     <View style={styles.body}>
                         <View style={[styles.bodyHead, { width: withScreen - 32 }]}>
@@ -813,6 +846,8 @@ const styles = StyleSheet.create({
         paddingLeft: 14,
         paddingRight: 14,
         borderRadius: 8,
+        minWidth: 70, 
+        minHeight: 40
     },
     buttonNotDisable: {
         backgroundColor: '#0866ff',
@@ -821,6 +856,8 @@ const styles = StyleSheet.create({
         paddingLeft: 14,
         paddingRight: 14,
         borderRadius: 8,
+        minWidth: 70, 
+        minHeight: 40
     },
     textDisable: {
         color: '#8b8d91',

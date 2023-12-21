@@ -14,14 +14,14 @@ export const addPost = async (data) => {
 
         return res;
     } catch (err) {
-        console.log('addPost', err.response);
-        if (err.response.data.code != '2001') {
-            Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại.', [
-                {
-                    text: 'OK',
-                },
-            ]);
-        }
+        // console.log('addPost', err.response);
+        // if (err.response.data.code != '2001') {
+        //     Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại.', [
+        //         {
+        //             text: 'OK',
+        //         },
+        //     ]);
+        // }
         return err.response;
     }
 };
@@ -52,7 +52,7 @@ export const getPost = async ({ id = '737' }) => {
         return res;
     } catch (err) {
         console.log(err);
-        return err;
+        return err.response;
     }
 };
 

@@ -33,6 +33,7 @@ import {
 } from '../feature/profile';
 import { useDispatch, useSelector } from 'react-redux';
 import * as ProfileServices from '../services/ProfileServices';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -66,6 +67,11 @@ export default function PreviewImage() {
                 formData.append('cover_image', { uri: temp, type: 'image/jpeg', name: 'image.jpg' });
             }
             const result = await ProfileServices.setUserInfo(formData);
+
+            let account = await AsyncStorage.getItem('accountInfo');
+            account = JSON.parse(account)
+            account.avatar = result.data.data.avatar
+            await AsyncStorage.setItem('accountInfo', JSON.stringify(account));
             console.log('Preview ProfileServices setUserInfo', result.data);
         } catch (error) {
             console.log('fetchApi Preview ProfileServices setUserInfo' + error);
@@ -117,7 +123,7 @@ export default function PreviewImage() {
                             borderRadius: 6,
                         }}
                     >
-                        <Text style={{ color: '#fff', fontSize: 16 }}>LƯU</Text>
+                        <Text style={{ color: '#fff', fontSize: 16, fontWeight: 700 }}>Lưu</Text>
                     </View>
                 </TouchableOpacity>
             </View>

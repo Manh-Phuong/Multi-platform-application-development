@@ -242,7 +242,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     );
 };
 
-export default function Post({ onCommentPress, darkMode, isMute, offsetY, activeVideo = false, ...props }) {
+export default function Post({ onCommentPress, darkMode, isMute, offsetY, activeVideo = false,handleRemovePost, ...props }) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const user_id = useSelector((state) => state.profile.user_id);
@@ -292,6 +292,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
         if (res.code == 1000) {
             setIsChooseEmoji(type);
             setDisplayEmoji(false);
+            setType_(type);
             setReselect(true);
             setTotalEmoji(parseInt(res.data.kudos, 10) + parseInt(res.data.disappointed, 10));
         }
@@ -444,17 +445,42 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
             let type = false;
             const res = await getListComment({ id: props.item.id });
             const res2 = await PostServices.getPost({ id: props.item.id });
-            if (res2.data.code == 1000) {
+            console.log(res2)
+            if (res2.data.code == 9998) {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
+            else if (res2.data.code == 1000) {
                 props.item['feel'] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10);
                 type = res2.data.data.is_felt;
                 // props.item["disappointed"] = res.data.data.disappointed
                 // props.item["kudos"] = res.data.data.kudos
             }
             if (res.code == 1000) {
-                navigation.navigate('DetailPost', { postInfo: props.item, listCmt: res?.data, type });
+                navigation.navigate('DetailPost', { postInfo: props.item, listCmt: res?.data, type, resetReact });
             }
         }
     };
+
+
+    const resetReact = (type, isFeel) => {
+        setType_(type);
+        if (type == -1) {
+            setReselect(true);
+            setIsChooseEmoji(-1)
+            if (isFeel) {
+                setTotalEmoji(totalEmoji - 1)
+            }
+        }
+        else {
+            setReselect(true);
+                setTotalEmoji(totalEmoji + 1)
+            }
+    }
 
     return (
         <TouchableWithoutFeedback onPress={handlePressOut}>
@@ -938,6 +964,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                                 id: props?.item?.owner_id,
                                                 name: props?.item?.owner,
                                                 id_post: props?.item?.id,
+                                                handleRemovePost: handleRemovePost
                                             },
                                         });
                                         setModalReport(false);

@@ -58,10 +58,12 @@ export const changeProfileAfterSignUp = async ({username}) => {
 export const logout = async () => {
     try {
         const headers = await createAuthHeader();
+        console.log(headers)
         const res = await request.post('/logout',{ headers });
+        console.log("res", res.data)
         return res.data;
     } catch (err) {
-        console.log(err.response);
+        console.log("err",err.response.data);
     }
 }
 
@@ -71,5 +73,16 @@ export const getVerifyCode = async ({email}) => {
         return res.data;
     } catch (err) {
         console.log(err.response);
+    }
+}
+
+export const changePasswordAsync = async ({password, newPassword}) => {
+    try {
+        const data = {password, new_password: newPassword}
+        const headers = await createAuthHeader();
+        const res = await request.post('/change_password', {password, new_password: newPassword},{headers});
+        return res.data;
+    } catch (err) {
+        return err.response
     }
 }

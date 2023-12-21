@@ -633,9 +633,17 @@ const ProfileDetail = () => {
     return (
         <View style={styles.container}>
             <View>
-                <View style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', paddingBottom: 8 }}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        display: 'flex',
+                        alignItems: 'center',
+                        paddingBottom: 8,
+                        marginTop: 20,
+                    }}
+                >
                     <TouchableOpacity onPress={() => navigation.goBack()}>
-                        <FontAwesomeIcon icon={faArrowLeft} size={24} color="black" style={{ marginLeft: 10 }} />
+                        <FontAwesomeIcon icon={faArrowLeft} size={20} color="black" style={{ marginLeft: 10 }} />
                     </TouchableOpacity>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity style={{ flexDirection: 'row', display: 'flex', marginLeft: 50 }}>
@@ -644,8 +652,12 @@ const ProfileDetail = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row', display: 'flex', marginRight: 10 }}>
-                        <FontAwesomeIcon icon={faPen} size={24} color="black" style={{ marginRight: 16 }} />
-                        <FontAwesomeIcon icon={faSearch} size={24} color="black" style={{ marginRight: 8 }} />
+                        <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+                            <FontAwesomeIcon icon={faPen} size={20} color="black" style={{ marginRight: 16 }} />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+                            <FontAwesomeIcon icon={faSearch} size={20} color="black" style={{ marginRight: 8 }} />
+                        </TouchableOpacity>
                     </View>
                 </View>
 

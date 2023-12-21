@@ -230,16 +230,11 @@ export default function Home() {
     };
 
     const handleScroll = async (event) => {
-        // console.log('event', event.nativeEvent.contentOffset.y);
         const currentOffset = event.nativeEvent.contentOffset.y;
         const isScrollingUp = currentOffset < lastOffset;
-        // console.log('ket qua', isScrollingUp);
         setShowHeader(isScrollingUp);
         setLastOffset(currentOffset);
-        // if (isScrollingUp) {
-        //     toggleVisibility();
-        // }
-        if (currentOffset == 0) {
+        if (currentOffset < -20) {
             await refreshData();
         }
     };
@@ -516,6 +511,15 @@ export default function Home() {
     };
 
     useEffect(() => {
+        setActive({
+            home: true,
+            video: false,
+            friend: false,
+            market: false,
+            notification: false,
+            menu: false,
+        });
+
         setLoading(true);
         fetchData();
     }, []);
@@ -526,54 +530,17 @@ export default function Home() {
         }
     };
 
-    // useEffect(() => {
-    //     const fetchApi = async () => {
-    //         try {
-    //             const result = await PostServices.getListPost({
-    //                 user_id: null,
-    //                 in_campaign: '1',
-    //                 campaign_id: '1',
-    //                 latitude: '1.0',
-    //                 longitude: '1.0',
-    //                 last_id: lastId,
-    //                 index: '0',
-    //                 count: '10',
-    //             });
+    const handleRemovePost = (id) => {
+        setListPost(
+            listPost.filter((item) => {
+                return item.id != id;
+            }),
+        );
+    };
 
-    //             console.log('1                ', result.data.data.last_id);
-    //             // setPostIdBetween(result.data.data.post[7].id);
-    //             setLastId(result.data.data.last_id);
-    //             console.log('lastId', result.data.data.last_id);
-    //             dispatch(setStoreLasIdPost(result.data.data.last_id));
-
-    //             dispatch(
-    //                 setStoreListPost(
-    //                     result.data.data.post?.map((item) => {
-    //                         return {
-    //                             id: item?.id || 0,
-    //                             owner: item.author.name,
-    //                             avatar: item.author.avatar,
-    //                             content: item.described,
-    //                             images: item?.image,
-    //                             video: item?.video?.url,
-    //                             created: item?.created,
-    //                             feel: item?.feel,
-    //                             comment_mark: item?.comment_mark,
-    //                             is_felt: item?.is_felt,
-    //                             is_blocked: item?.is_blocked,
-    //                             can_edit: item?.can_edit,
-    //                             banned: item?.banned,
-    //                             state: item?.state,
-    //                         };
-    //                     }),
-    //                 ),
-    //             );
-    //         } catch (error) {
-    //             console.log('fetchApi PostServices ' + error);
-    //         }
-    //     };
-    //     fetchApi();
-    // }, []);
+    const handleAddPost = (newElement) => {
+        setListPost((prevList) => [newElement, ...prevList]);
+    };
 
     const renderFooter = () => {
         return loading ? <ActivityIndicator size="large" color="#0000ff" /> : null;
@@ -581,8 +548,8 @@ export default function Home() {
 
     return (
         <View style={styles.container}>
-            {/* <Collapsible collapsed={!showHeader}> */}
-            <View style={[styles.header]}>
+            <View style={styles.header}>
+
                 <View>
                     <Text style={styles.logo}>facebook</Text>
                 </View>
@@ -591,7 +558,7 @@ export default function Home() {
                         <Image source={require('../assets/icons/dollar.png')} style={{ width: 22, height: 24 }} />
                         <Text style={{ fontSize: 16, marginLeft: 4 }}>{coins}</Text>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreatePost', { handleAddPost })}>
                         <View style={styles.wrapIcon}>
                             <Icon name="plus" size={24} color="black" />
                         </View>
@@ -758,7 +725,6 @@ export default function Home() {
                     ></View>
                 )}
             </View>
-
             {active.home && (
                 <FlatList
                     // ref={flatListRef}
@@ -771,7 +737,7 @@ export default function Home() {
                             {/* <Post item={item} /> */}
                             {/* oncommentPress -> toggleComments */}
                             {/* <Post item={item} onCommentPress={toggleComments} /> */}
-                            <Post item={item} />
+                            <Post item={item} handleRemovePost={handleRemovePost} />
 
                             <View style={styles.divLarge}></View>
                         </View>
@@ -786,10 +752,9 @@ export default function Home() {
             )}
             {active.friend && <Friend />}
             {active.notification && <Notification />}
-            {active.menu && <Menu />}
+            {active.menu && <Menu handleActive={handleActive} />}
             {active.video && <VideoScreen />}
             {active.market && <BuyCoins hiddenHeader={true} />}
-
             {/* <View style={{ width: active.home ? 'auto' : 0 }}>
                 <FlatList
                     data={listPost}
@@ -818,7 +783,6 @@ export default function Home() {
             <View style={{ width: active.video ? 'auto' : 0 }}>
                 <VideoScreen />
             </View> */}
-
             {/* Khi showComments = true, thì hiện <Comment/> */}
             {/* <View style={styles.viewReport}>{showReport && <Report />}</View> */}
             {/* <View style={styles.viewcomment}> */}

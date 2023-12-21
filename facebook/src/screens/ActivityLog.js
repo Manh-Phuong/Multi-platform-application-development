@@ -20,7 +20,8 @@ import { setLoading } from '../feature/loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-const ActivityLog = () => {
+const ActivityLog = ({route}) => {
+    const { resetListSearch } = route.params || {};
     const navigation = useNavigation();
     const [dataSearch, setDataSearch] = React.useState('');
     const dispatch = useDispatch();
@@ -35,6 +36,9 @@ const ActivityLog = () => {
     const handleDeleteAll = async () => {
         const res = await deleteHistory({ search_id: '999', all: 1 });
         setDataSearch([]);
+        if (resetListSearch) {
+            resetListSearch();
+        }
     };
     React.useEffect(() => {
         const fetchData = async () => {
