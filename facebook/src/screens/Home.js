@@ -233,7 +233,7 @@ export default function Home() {
         // console.log('event', event.nativeEvent.contentOffset.y);
         const currentOffset = event.nativeEvent.contentOffset.y;
         const isScrollingUp = currentOffset < lastOffset;
-        console.log('ket qua', isScrollingUp);
+        // console.log('ket qua', isScrollingUp);
         setShowHeader(isScrollingUp);
         setLastOffset(currentOffset);
         // if (isScrollingUp) {
@@ -361,7 +361,7 @@ export default function Home() {
             // console.log(response.data.data.post);
             setListPost((prevData) => [
                 ...prevData,
-                ...(response?.data.post?.map((item) => {
+                ...(response?.data?.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -383,7 +383,7 @@ export default function Home() {
                 ,
             ]);
 
-            setHasData(response?.data.post?.length > 0);
+            setHasData(response?.data?.post?.length > 0 || true);
 
             dispatch(
                 setStoreListPost(
@@ -391,7 +391,7 @@ export default function Home() {
                         _.orderBy(
                             [
                                 ...listPostStore,
-                                ...(response?.data.post?.map((item) => {
+                                ...(response?.data?.post?.map((item) => {
                                     return {
                                         id: item?.id,
                                         owner: item.author.name,
@@ -441,8 +441,18 @@ export default function Home() {
                 count: '10',
             });
             setLastId(response?.data?.last_id);
+
+            // console.log('refresh data nhu nay: ', response);
+            if (response?.code == '9998') {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
             setListPost(
-                response?.data.post?.map((item) => {
+                response?.data?.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -463,7 +473,7 @@ export default function Home() {
                 }) || [],
             );
 
-            setHasData(response?.data.post?.length > 0);
+            setHasData(response?.data?.post?.length > 0);
 
             dispatch(
                 setStoreListPost(
@@ -471,7 +481,7 @@ export default function Home() {
                         _.orderBy(
                             [
                                 ...listPostStore,
-                                ...(response?.data.post?.map((item) => {
+                                ...(response?.data?.post?.map((item) => {
                                     return {
                                         id: item?.id,
                                         owner: item.author.name,

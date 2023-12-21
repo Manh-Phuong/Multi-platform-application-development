@@ -60,9 +60,11 @@ export const getListPost = async (formData) => {
     try {
         const headers = await createAuthHeader();
         const res = await request.post('/get_list_posts', formData, { headers });
+        // console.log('getlistport serviec', res.data);
         return res.data;
     } catch (err) {
-        return err.response;
+        // console.log('getlistport serviec err', err.response);
+        return err.response.data;
     }
 };
 
