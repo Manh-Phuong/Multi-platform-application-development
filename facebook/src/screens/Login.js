@@ -23,6 +23,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as ProfileServices from '../services/ProfileServices';
 import * as FriendServices from '../services/FriendServices';
 import { calculateTimeAgo } from '../components/Convert';
+import {
+    setStoreListPost,
+    setStoreListUser,
+    setStoreLasIdPost,
+    setStoreListVideos,
+    setStoreListVideoActive,
+} from '../feature/listPost';
+import * as PostServices from '../services/PostServices';
+import _ from 'lodash';
 
 const windowHeight = Dimensions.get('window').height;
 const customHeight = windowHeight - 100;
@@ -33,6 +42,7 @@ const Login = () => {
     const [isFocusedPassword, setIsFocusedPassword] = useState(false);
     const [isShowPassword, setIsShowPassword] = useState(false);
     const [isLogining, setIsLogining] = useState(false);
+    const listPostStore = useSelector((state) => state.listPost.listPost);
 
     const accountInputRef = useRef(null);
     const passwordInputRef = useRef(null);
@@ -108,8 +118,7 @@ const Login = () => {
                         await AsyncStorage.setItem('accountInfo', JSON.stringify(info));
                         // console.log('thong tin', res.data);
                         const result = await ProfileServices.getUserInfo({ user_id: res.data.data.id });
-                        setAccount('');
-                        setPassword('');
+
                         if (result?.data.code == '1000') {
                             // console.log('thong tin nguoi dung', result.data.data);
                             dispatch(setStoreProfile(result?.data?.data));
@@ -138,6 +147,96 @@ const Login = () => {
                                     }) || [],
                             }),
                         );
+                        const response = await PostServices.getListPost({
+                            user_id: null,
+                            in_campaign: '1',
+                            campaign_id: '1',
+                            latitude: '1.0',
+                            longitude: '1.0',
+                            last_id: null,
+                            index: '0',
+                            count: '10',
+                        });
+
+                        dispatch(
+                            setStoreListPost(
+                                _.uniqBy(
+                                    _.orderBy(
+                                        [
+                                            ...listPostStore,
+                                            ...(response?.data.post?.map((item) => {
+                                                return {
+                                                    id: item?.id,
+                                                    owner: item.author.name,
+                                                    owner_id: item.author.id,
+                                                    avatar: item.author.avatar,
+                                                    content: item.described,
+                                                    images: item?.image,
+                                                    video: item?.video?.url,
+                                                    created: item?.created,
+                                                    feel: item?.feel,
+                                                    comment_mark: item?.comment_mark,
+                                                    is_felt: item?.is_felt,
+                                                    is_blocked: item?.is_blocked,
+                                                    can_edit: item?.can_edit,
+                                                    banned: item?.banned,
+                                                    state: item?.state,
+                                                };
+                                            }) || []),
+                                        ],
+                                        ['id'],
+                                        ['desc'],
+                                    ),
+                                    'id',
+                                ),
+                            ),
+                        );
+
+                        const resultVideo = await PostServices.getListVideos({
+                            user_id: null,
+                            in_campaign: '1',
+                            campaign_id: '1',
+                            latitude: '1.0',
+                            longitude: '1.0',
+                            last_id: null,
+                            index: '0',
+                            count: '10',
+                        });
+
+                        dispatch(
+                            setStoreListVideos(
+                                _.uniqBy(
+                                    _.orderBy(
+                                        [
+                                            ...(resultVideo.data.data.post?.map((item) => {
+                                                return {
+                                                    id: item?.id,
+                                                    owner: item.author.name,
+                                                    avatar: item.author.avatar,
+                                                    content: item.described,
+                                                    image: null,
+                                                    video: item?.video?.url,
+                                                    created: item?.created,
+                                                    feel: item?.feel,
+                                                    comment_mark: item?.comment_mark,
+                                                    is_felt: item?.is_felt,
+                                                    is_blocked: item?.is_blocked,
+                                                    can_edit: item?.can_edit,
+                                                    banned: item?.banned,
+                                                    state: item?.state,
+                                                };
+                                            }) || []),
+                                        ],
+                                        ['id'],
+                                        ['desc'],
+                                    ),
+                                    'id',
+                                ),
+                            ),
+                        );
+
+                        setAccount('');
+                        setPassword('');
 
                         navigation.navigate('Home');
                     })
