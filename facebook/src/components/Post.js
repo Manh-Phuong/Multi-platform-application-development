@@ -179,7 +179,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
                     resizeMode="cover"
                     shouldPlay={false}
                     paused={true}
-                    isLooping
+                    // isLooping
                     // useNativeControls
                     onPlaybackStatusUpdate={(status) => {
                         if (status.didJustFinish) {
@@ -254,6 +254,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
     const [selectedReports, setSelectedReports] = useState([]);
     const [inputValue, setInputValue] = useState('');
     const [listCmt, setListCmt] = useState([]);
+    const listPostStore = useSelector((state) => state.listPost.listPost);
 
     const options = [
         'Ảnh thoả thân',
@@ -382,10 +383,49 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                             try {
                                 const result = await PostServices.deletePost(id);
 
-                                // Thực hiện các bước xóa hoặc thông báo thành công tùy thuộc vào kết quả
-                                // console.log('Bài viết đã được xóa thành công', result);
+                                const response = await PostServices.getListPost({
+                                    user_id: null,
+                                    in_campaign: '1',
+                                    campaign_id: '1',
+                                    latitude: '1.0',
+                                    longitude: '1.0',
+                                    last_id: null,
+                                    index: '0',
+                                    count: '10',
+                                });
 
-                                // Đối với ví dụ này, bạn có thể thêm các bước khác sau khi xóa bài viết ở đây
+                                dispatch(
+                                    setStoreListPost(
+                                        _.uniqBy(
+                                            _.orderBy(
+                                                [
+                                                    ...(response?.data.post?.map((item) => {
+                                                        return {
+                                                            id: item?.id,
+                                                            owner: item.author.name,
+                                                            owner_id: item.author.id,
+                                                            avatar: item.author.avatar,
+                                                            content: item.described,
+                                                            images: item?.image,
+                                                            video: item?.video?.url,
+                                                            created: item?.created,
+                                                            feel: item?.feel,
+                                                            comment_mark: item?.comment_mark,
+                                                            is_felt: item?.is_felt,
+                                                            is_blocked: item?.is_blocked,
+                                                            can_edit: item?.can_edit,
+                                                            banned: item?.banned,
+                                                            state: item?.state,
+                                                        };
+                                                    }) || []),
+                                                ],
+                                                ['id'],
+                                                ['desc'],
+                                            ),
+                                            'id',
+                                        ),
+                                    ),
+                                );
                             } catch (error) {
                                 console.log('handleDeletePost Post deletePost', error);
                             }

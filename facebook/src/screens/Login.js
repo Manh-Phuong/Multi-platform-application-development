@@ -143,7 +143,7 @@ const Login = () => {
                     })
                     .catch((err) => {
                         console.log(err);
-                        Alert.alert('Sai thông tin đăng nhập', 'Tên người dùng hoặc mật khẩu không hợp lệ');
+                        Alert.alert('Lỗi', 'Vui lòng thử lại sau!');
                     })
                     .finally(async () => {
                         setIsLogining(false);

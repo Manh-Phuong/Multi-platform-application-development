@@ -17,13 +17,15 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { setStoreStatus } from '../feature/post';
+import { useNavigation } from '@react-navigation/native';
+import { setStoreStatus, setStoreCreatePost } from '../feature/post';
+import { setStoreListPost, setStoreLasIdPost } from '../feature/listPost';
 import { useDispatch, useSelector } from 'react-redux';
 import { Video, ResizeMode } from 'expo-av';
 import * as PostServices from '../services/PostServices';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-regular-svg-icons';
+import _ from 'lodash';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -45,6 +47,8 @@ const CreatePost = () => {
     const avatar = useSelector((state) => state.profile.avatar);
 
     const status = useSelector((state) => state.post.status);
+    const createPost = useSelector((state) => state.post.createPost);
+    const listPostStore = useSelector((state) => state.listPost.listPost);
 
     const showAlert = () => {
         Alert.alert(
@@ -174,6 +178,59 @@ const CreatePost = () => {
         setTextInput(newInput);
     };
 
+    const refreshData = async () => {
+        try {
+            const response = await PostServices.getListPost({
+                user_id: null,
+                in_campaign: '1',
+                campaign_id: '1',
+                latitude: '1.0',
+                longitude: '1.0',
+                last_id: null,
+                index: '0',
+                count: '10',
+            });
+
+            dispatch(
+                setStoreListPost(
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...listPostStore,
+                                ...(response?.data.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        owner_id: item.author.id,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        images: item?.image,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }) || []),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                ),
+            );
+        } catch (error) {
+            console.error('Error fetching data3', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handlePost = async () => {
         try {
             const formData = new FormData();
@@ -210,10 +267,18 @@ const CreatePost = () => {
                 Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
                     {
                         text: 'OK',
-                        onPress: async () => navigation.goBack(),
+                        onPress: async () => {
+                            navigation.goBack();
+                        },
                     },
                 ]);
                 dispatch(setStoreStatus(''));
+                dispatch(setStoreCreatePost(true));
+                setTimeout(() => {
+                    dispatch(setStoreCreatePost(false));
+                    refreshData();
+                    console.log('da chay time out');
+                }, 4000);
             } else if (result.data.code == '2001') {
                 Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
                     {

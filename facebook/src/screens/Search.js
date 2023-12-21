@@ -122,10 +122,10 @@ export default function Search() {
                             return {
                                 id: item?.id,
                                 owner: item.author.name,
+                                owner_id: item.author.id,
                                 avatar: item.author.avatar,
                                 content: item.described,
-                                // image: imageArray,
-                                image: null,
+                                images: item?.image,
                                 video: item?.video?.url,
                                 created: item?.created,
                                 feel: item?.feel,
@@ -139,6 +139,7 @@ export default function Search() {
                         });
                         setIsHasSearchResult(true);
                         setDataRender(newData);
+                        console.log("new", newData)
                     }
                     setShowSearchResults(true);
                 }
