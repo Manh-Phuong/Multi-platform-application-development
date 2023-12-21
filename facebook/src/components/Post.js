@@ -150,7 +150,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     };
 
     useEffect(() => {
-        loadThumbnail();
+        // loadThumbnail();
         // const playTimeout = setTimeout(() => {
         //     if (video.current) {
         //         video.current.playAsync();
