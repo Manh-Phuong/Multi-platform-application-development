@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faEllipsis, faRectangleXmark } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +8,9 @@ import { getNotification } from '../services/NotificationServices';
 import { useNavigation } from '@react-navigation/native';
 import { getPost } from '../services/PostServices';
 import { getListComment } from '../services/CommentServices';
+
+withScreen = Dimensions.get('window').width;
+heightScreen = Dimensions.get('window').height;
 
 const Header = () => {
     return (
@@ -54,14 +57,24 @@ const Option = ({ valueOption }) => {
                 }}
             ></View>
             <View>
-                <View style={{ marginBottom: 50 }}>
+                <View style={{ marginBottom: 20 }}>
                     <Image
                         source={{
                             uri: valueOption.image,
                         }}
                         style={styles.imageOption}
                     />
-                    <Text style={{ textAlign: 'center', paddingHorizontal: 3 }}>{valueOption.content}</Text>
+                    <Text
+                        style={{
+                            textAlign: 'center',
+                            paddingHorizontal: 3,
+                            marginTop: 12,
+                            fontWeight: 600,
+                            fontSize: 18,
+                        }}
+                    >
+                        {valueOption.content}
+                    </Text>
                 </View>
                 <TouchableOpacity>
                     <View style={[styles.flexRow, { paddingHorizontal: 12, marginBottom: 20 }]}>
@@ -174,10 +187,11 @@ const Notification = () => {
         setModalOption(false);
     };
     const [valueOption, setOption] = useState();
-    const toggleOption = (image, content) => {
+    const toggleOption = (image, item) => {
+        console.log('item option', item);
         setOption({
             image: image,
-            content: content,
+            content: `${item.user.username}`,
         });
         setModalOption(true);
     };
@@ -284,7 +298,7 @@ const Notification = () => {
                                     <View style={{ marginLeft: 8 }}>
                                         <TouchableOpacity
                                             onPress={() => {
-                                                toggleOption(item.image, item.content);
+                                                toggleOption(item.avatar, item);
                                             }}
                                         >
                                             <FontAwesomeIcon icon={faEllipsis} size={20} color="#65676b" />
@@ -300,6 +314,7 @@ const Notification = () => {
                 isVisible={isModalOption}
                 onSwipeComplete={toggleModalOption}
                 swipeDirection={['down']}
+                onBackdropPress={() => setModalOption(false)}
                 style={{ justifyContent: 'flex-end', margin: 0 }}
             >
                 <Option valueOption={valueOption} />
@@ -385,6 +400,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 12,
         borderTopRightRadius: 12,
         paddingBottom: 20,
+        height: heightScreen * 0.3,
     },
 });
 export default Notification;

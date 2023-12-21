@@ -242,7 +242,15 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     );
 };
 
-export default function Post({ onCommentPress, darkMode, isMute, offsetY, activeVideo = false,handleRemovePost, ...props }) {
+export default function Post({
+    onCommentPress,
+    darkMode,
+    isMute,
+    offsetY,
+    activeVideo = false,
+    handleRemovePost,
+    ...props
+}) {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const user_id = useSelector((state) => state.profile.user_id);
@@ -445,7 +453,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
             let type = false;
             const res = await getListComment({ id: props.item.id });
             const res2 = await PostServices.getPost({ id: props.item.id });
-            console.log(res2)
+            console.log(res2);
             if (res2.data.code == 9998) {
                 Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
                     {
@@ -453,8 +461,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                         onPress: () => navigation.navigate('Login'),
                     },
                 ]);
-            }
-            else if (res2.data.code == 1000) {
+            } else if (res2.data.code == 1000) {
                 props.item['feel'] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10);
                 type = res2.data.data.is_felt;
                 // props.item["disappointed"] = res.data.data.disappointed
@@ -466,21 +473,19 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
         }
     };
 
-
     const resetReact = (type, isFeel) => {
         setType_(type);
         if (type == -1) {
             setReselect(true);
-            setIsChooseEmoji(-1)
+            setIsChooseEmoji(-1);
             if (isFeel) {
-                setTotalEmoji(totalEmoji - 1)
+                setTotalEmoji(totalEmoji - 1);
             }
-        }
-        else {
+        } else {
             setReselect(true);
-                setTotalEmoji(totalEmoji + 1)
-            }
-    }
+            setTotalEmoji(totalEmoji + 1);
+        }
+    };
 
     return (
         <TouchableWithoutFeedback onPress={handlePressOut}>
@@ -575,7 +580,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                         color: '#65676b',
                                     }}
                                 >
-                                    Gợi ý cho bạn - {calculateTimeAgo(props.item?.created)}
+                                    Công khai - {calculateTimeAgo(props.item?.created)}
                                 </Text>
                             </View>
                         </View>
@@ -759,7 +764,9 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                             source={require('../assets/icons/likeIcon.png')}
                                         />
                                     )}
-                                    {isChooseEmoji == -1 && <Text style={{ fontSize: 16 }}>Cảm xúc</Text>}
+                                    {isChooseEmoji == -1 && (
+                                        <Text style={{ fontSize: 16, color: darkMode ? '#fff' : '#000' }}>Cảm xúc</Text>
+                                    )}
                                     {isChooseEmoji == 1 && <Text style={{ fontSize: 16 }}>😊</Text>}
                                     {isChooseEmoji == 1 && (
                                         <Text style={{ fontSize: 16, color: '#ffc83d' }}>Kudos</Text>
@@ -784,7 +791,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                         />
 
                         <TouchableOpacity onPress={handleShowDetailPost}>
-                            <Text style={{ fontSize: 16 }}>Bình luận</Text>
+                            <Text style={{ fontSize: 16, color: darkMode ? '#fff' : '#000' }}>Bình luận</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={{ flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
@@ -796,7 +803,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                             contentFit="cover"
                             source={require('../assets/icons/shareIcon.png')}
                         />
-                        <Text style={{ fontSize: 16 }}>Chia sẻ</Text>
+                        <Text style={{ fontSize: 16, color: darkMode ? '#fff' : '#000' }}>Chia sẻ</Text>
                     </View>
                     {displayEmoji && (
                         <View
@@ -964,7 +971,7 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                                                 id: props?.item?.owner_id,
                                                 name: props?.item?.owner,
                                                 id_post: props?.item?.id,
-                                                handleRemovePost: handleRemovePost
+                                                handleRemovePost: handleRemovePost,
                                             },
                                         });
                                         setModalReport(false);
