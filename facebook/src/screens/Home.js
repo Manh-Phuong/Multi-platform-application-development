@@ -37,8 +37,10 @@ import VideoScreen from './VideoScreen';
 import BuyCoins from './BuyCoins';
 import * as PostServices from '../services/PostServices';
 import { setStoreListPost, setStoreLasIdPost } from '../feature/listPost';
+import { setStoreCreatePost } from '../feature/post';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'react-native-modal';
+import _ from 'lodash';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -76,6 +78,7 @@ const Header = () => {
     const name = useSelector((state) => state.profile.name);
     const avatar = useSelector((state) => state.profile.avatar);
     const listNews = useSelector((state) => state.friend.listUserFriend.friends);
+    const createPost = useSelector((state) => state.post.createPost);
 
     return (
         <View>
@@ -159,6 +162,32 @@ const Header = () => {
                 </ScrollView>
             </View>
             <View style={styles.divLarge}></View>
+            {createPost && (
+                <>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View
+                            style={{
+                                paddingVertical: 8,
+                                paddingHorizontal: 16,
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Image
+                                style={styles.wrapAvatar}
+                                source={{
+                                    uri: avatar,
+                                }}
+                            />
+                            <Text style={{ fontSize: 18, marginLeft: 8 }}>Đang đăng...</Text>
+                        </View>
+                        <View style={{ marginRight: 16 }}>
+                            <ActivityIndicator size="large" color="#0000ff" />
+                        </View>
+                    </View>
+                    <View style={styles.divLarge}></View>
+                </>
+            )}
         </View>
     );
 };
@@ -186,6 +215,7 @@ export default function Home() {
     const flatListRef = useRef(null);
     const fadeAnim = new Animated.Value(0);
     const coins = useSelector((state) => state.profile.coins);
+    const createPost = useSelector((state) => state.post.createPost);
 
     const handleActive = (detailName) => {
         setActive((prevState) => ({
@@ -292,6 +322,17 @@ export default function Home() {
         };
     }, [showReport]);
 
+    // useState(() => {
+    //     const timerId = setTimeout(() => {
+    //         dispatch(setStoreCreatePost(true));
+    //         console.log('da chay time out');
+    //     }, 2000);
+    //     // dispatch(setStoreCreatePost(false));
+
+    //     // Hủy bỏ timer nếu component unmount
+    //     return () => clearTimeout(timerId);
+    // }, [createPost == true]);
+
     const fetchData = async () => {
         try {
             setLoading(true);
@@ -344,29 +385,39 @@ export default function Home() {
 
             setHasData(response?.data.post?.length > 0);
 
-            // dispatch(
-            //     setStoreListPost((prevData) => [
-            //         ...prevData,
-            //         ...response.data.data.post?.map((item) => {
-            //             return {
-            //                 id: item?.id,
-            //                 owner: item.author.name,
-            //                 avatar: item.author.avatar,
-            //                 content: item.described,
-            //                 images: item?.image,
-            //                 video: item?.video?.url,
-            //                 created: item?.created,
-            //                 feel: item?.feel,
-            //                 comment_mark: item?.comment_mark,
-            //                 is_felt: item?.is_felt,
-            //                 is_blocked: item?.is_blocked,
-            //                 can_edit: item?.can_edit,
-            //                 banned: item?.banned,
-            //                 state: item?.state,
-            //             };
-            //         }),
-            //     ]),
-            // );
+            dispatch(
+                setStoreListPost(
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...listPostStore,
+                                ...(response?.data.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        owner_id: item.author.id,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        images: item?.image,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }) || []),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                ),
+            );
         } catch (error) {
             console.error('Error fetching data2', error);
         } finally {
@@ -413,29 +464,39 @@ export default function Home() {
 
             setHasData(response?.data.post?.length > 0);
 
-            // dispatch(
-            //     setStoreListPost((prevData) => [
-            //         ...prevData,
-            //         ...response.data.data.post?.map((item) => {
-            //             return {
-            //                 id: item?.id,
-            //                 owner: item.author.name,
-            //                 avatar: item.author.avatar,
-            //                 content: item.described,
-            //                 images: item?.image,
-            //                 video: item?.video?.url,
-            //                 created: item?.created,
-            //                 feel: item?.feel,
-            //                 comment_mark: item?.comment_mark,
-            //                 is_felt: item?.is_felt,
-            //                 is_blocked: item?.is_blocked,
-            //                 can_edit: item?.can_edit,
-            //                 banned: item?.banned,
-            //                 state: item?.state,
-            //             };
-            //         }),
-            //     ]),
-            // );
+            dispatch(
+                setStoreListPost(
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...listPostStore,
+                                ...(response?.data.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        owner_id: item.author.id,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        images: item?.image,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }) || []),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                ),
+            );
         } catch (error) {
             console.error('Error fetching data3', error);
         } finally {
@@ -510,34 +571,32 @@ export default function Home() {
     return (
         <View style={styles.container}>
             {/* <Collapsible collapsed={!showHeader}> */}
-            {showHeader && (
-                <View style={styles.header}>
-                    <View>
-                        <Text style={styles.logo}>facebook</Text>
-                    </View>
-                    <View style={styles.rightButton}>
-                        <View style={[styles.rightButton, { marginRight: 8 }]}>
-                            <Image source={require('../assets/icons/dollar.png')} style={{ width: 22, height: 24 }} />
-                            <Text style={{ fontSize: 16, marginLeft: 4 }}>{coins}</Text>
-                        </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
-                            <View style={styles.wrapIcon}>
-                                <Icon name="plus" size={24} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-                            <View style={styles.wrapIcon}>
-                                <Icon name="search" size={22} color="black" />
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('MessageHome')}>
-                            <View style={styles.wrapIcon}>
-                                <MessageIcon width="24" height="24" fill="#000" />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
+            <View style={[styles.header, { height: showHeader ? 'auto' : 0, opacity: showHeader ? 1 : 0 }]}>
+                <View>
+                    <Text style={styles.logo}>facebook</Text>
                 </View>
-            )}
+                <View style={styles.rightButton}>
+                    <View style={[styles.rightButton, { marginRight: 8 }]}>
+                        <Image source={require('../assets/icons/dollar.png')} style={{ width: 22, height: 24 }} />
+                        <Text style={{ fontSize: 16, marginLeft: 4 }}>{coins}</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('CreatePost')}>
+                        <View style={styles.wrapIcon}>
+                            <Icon name="plus" size={24} color="black" />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+                        <View style={styles.wrapIcon}>
+                            <Icon name="search" size={22} color="black" />
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('MessageHome')}>
+                        <View style={styles.wrapIcon}>
+                            <MessageIcon width="24" height="24" fill="#000" />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </View>
             {/* <Modal
                 isVisible={showHeader}
                 onSwipeComplete={() => setShowHeader(false)}
@@ -692,7 +751,7 @@ export default function Home() {
             {active.home && (
                 <FlatList
                     // ref={flatListRef}
-                    data={listPost}
+                    data={listPostStore}
                     keyExtractor={(item, index) => index}
                     showsVerticalScrollIndicator={false}
                     ListHeaderComponent={<Header />}

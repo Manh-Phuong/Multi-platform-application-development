@@ -43,6 +43,7 @@ import * as FriendServices from '../services/FriendServices';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateTimeAgo } from '../components/Convert';
+import _ from 'lodash';
 
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
@@ -608,28 +609,59 @@ const ProfileOtherDetail = () => {
             // console.log(response.data);
 
             if (response?.code == '1000') {
-                setData((prevData) => [
-                    ...prevData,
-                    ...response?.data?.post?.map((item) => {
-                        return {
-                            id: item?.id,
-                            owner: item.author.name,
-                            owner_id: item.author.id,
-                            avatar: item.author.avatar,
-                            content: item.described,
-                            images: item?.image,
-                            video: item?.video?.url,
-                            created: item?.created,
-                            feel: item?.feel,
-                            comment_mark: item?.comment_mark,
-                            is_felt: item?.is_felt,
-                            is_blocked: item?.is_blocked,
-                            can_edit: item?.can_edit,
-                            banned: item?.banned,
-                            state: item?.state,
-                        };
-                    }),
-                ]);
+                setData((prevData) =>
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...prevData,
+                                ...response?.data?.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        owner_id: item.author.id,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        images: item?.image,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                );
+                // setData((prevData) => [
+                //     ...prevData,
+                //     ...response?.data?.post?.map((item) => {
+                //         return {
+                //             id: item?.id,
+                //             owner: item.author.name,
+                //             owner_id: item.author.id,
+                //             avatar: item.author.avatar,
+                //             content: item.described,
+                //             images: item?.image,
+                //             video: item?.video?.url,
+                //             created: item?.created,
+                //             feel: item?.feel,
+                //             comment_mark: item?.comment_mark,
+                //             is_felt: item?.is_felt,
+                //             is_blocked: item?.is_blocked,
+                //             can_edit: item?.can_edit,
+                //             banned: item?.banned,
+                //             state: item?.state,
+                //         };
+                //     }),
+                // ]);
             } else {
                 setLoading(false);
             }
@@ -637,7 +669,6 @@ const ProfileOtherDetail = () => {
             setHasData(response?.data.post?.length > 0);
         } catch (error) {
             console.error('Error fetching data5', error);
-            setLoading(false);
         } finally {
             setLoading(false);
         }
@@ -646,7 +677,7 @@ const ProfileOtherDetail = () => {
     const fetchNewData = async () => {
         try {
             setLoading(true);
-            setData([]);
+            // setData([]);
             const response = await PostServices.getListPost({
                 user_id: props,
                 in_campaign: '1',
@@ -663,28 +694,58 @@ const ProfileOtherDetail = () => {
             console.log('new data', response.data);
 
             if (response?.code == '1000') {
-                setData((prevData) => [
-                    ...prevData,
-                    ...response?.data?.post?.map((item) => {
-                        return {
-                            id: item?.id,
-                            owner: item.author.name,
-                            owner_id: item.author.id,
-                            avatar: item.author.avatar,
-                            content: item.described,
-                            images: item?.image,
-                            video: item?.video?.url,
-                            created: item?.created,
-                            feel: item?.feel,
-                            comment_mark: item?.comment_mark,
-                            is_felt: item?.is_felt,
-                            is_blocked: item?.is_blocked,
-                            can_edit: item?.can_edit,
-                            banned: item?.banned,
-                            state: item?.state,
-                        };
-                    }),
-                ]);
+                // setData((prevData) => [
+                //     ...prevData,
+                //     ...response?.data?.post?.map((item) => {
+                //         return {
+                //             id: item?.id,
+                //             owner: item.author.name,
+                //             owner_id: item.author.id,
+                //             avatar: item.author.avatar,
+                //             content: item.described,
+                //             images: item?.image,
+                //             video: item?.video?.url,
+                //             created: item?.created,
+                //             feel: item?.feel,
+                //             comment_mark: item?.comment_mark,
+                //             is_felt: item?.is_felt,
+                //             is_blocked: item?.is_blocked,
+                //             can_edit: item?.can_edit,
+                //             banned: item?.banned,
+                //             state: item?.state,
+                //         };
+                //     }),
+                // ]);
+                setData((prevData) =>
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...response?.data?.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        owner_id: item.author.id,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        images: item?.image,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                );
             } else {
                 setLoading(false);
             }
@@ -711,6 +772,7 @@ const ProfileOtherDetail = () => {
         if (propsData !== null) {
             // Gọi API bằng propsData mới
             fetchApi(propsData);
+            fetchNewData(propsData);
         }
     }, [propsData]);
 
@@ -729,7 +791,9 @@ const ProfileOtherDetail = () => {
         if (!loading && hasData) {
             fetchData();
         }
-        fetchNewData();
+        // fetchData();
+
+        // fetchNewData();
     };
 
     const renderFooter = () => {
