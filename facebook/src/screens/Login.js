@@ -241,8 +241,11 @@ const Login = () => {
                         navigation.navigate('Home');
                     })
                     .catch((err) => {
-                        console.log(err);
-                        Alert.alert('Lỗi', 'Vui lòng thử lại sau!');
+                        console.log(err.response.data);
+                        if (err.response.data.code == "9991") {
+                            Alert.alert('Lỗi', 'Tài khoản hoặc mật khẩu không đúng');
+                        }
+                        else Alert.alert('Lỗi', 'Vui lòng thử lại sau!');
                     })
                     .finally(async () => {
                         setIsLogining(false);

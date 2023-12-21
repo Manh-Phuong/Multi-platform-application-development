@@ -108,11 +108,11 @@ const SaveAccountLogin = () => {
                                 style={styles.accountImage}
                                 source={{
                                     uri:
-                                        info.avatar ||
+                                        info?.avatar ||
                                         'https://res.cloudinary.com/manhphuong/image/upload/v1702483093/default_avatar_orhez1.jpg',
                                 }}
                             ></Image>
-                            <Text style={styles.accountName}>{info.username}</Text>
+                            <Text style={styles.accountName}>{info?.username}</Text>
                         </View>
                     </TouchableOpacity>
 
