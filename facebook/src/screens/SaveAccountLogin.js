@@ -10,15 +10,18 @@ import {
     Image,
     Keyboard,
     TouchableWithoutFeedback,
+    ActivityIndicator
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { LinearGradient } from 'expo-linear-gradient';
 import { login } from '../services/AuthServices';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const SaveAccountLogin = () => {
     const navigation = useNavigation();
     const [isShowPopup, setIsShowPopup] = useState(false);
     const [info, setInfo] = useState({});
+    const [isLoadApi, setIsLoadApi] = useState(false);
     const togglePopup = () => {
         setIsShowPopup(!isShowPopup);
     };
@@ -29,7 +32,9 @@ const SaveAccountLogin = () => {
         const email = account.email;
         const password = account.password;
         try {
+            setIsLoadApi(true);
             const res = await login({ email, password });
+            setIsLoadApi(false);
             await AsyncStorage.setItem('token', res.data.data.token);
             if (res.data.code == '1000') {
                 console.log(res.data)
@@ -140,6 +145,12 @@ const SaveAccountLogin = () => {
                         <Text style={{ fontSize: 16, fontWeight: '600' }}>Tạo tài khoản mới</Text>
                     </TouchableOpacity>
                 </View>
+                {isLoadApi && (
+                <ActivityIndicator
+                    size="large"
+                    style={{ position: 'absolute', top: '50%', left: '48%' }}
+                ></ActivityIndicator>
+            )}
             </LinearGradient>
         </TouchableWithoutFeedback>
     );

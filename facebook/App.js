@@ -21,7 +21,6 @@ export default function App() {
             const info = await AsyncStorage.getItem('accountInfo');
             if (info) {
                 setRoute('SaveAccountLogin');
-                console.log(route);
             }
         };
 
@@ -31,7 +30,7 @@ export default function App() {
     return (
         <Provider store={store}>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
+                <Stack.Navigator initialRouteName="SaveAccountLogin" screenOptions={{ headerShown: false }}>
                     {publicRoutes.map((route, index) => (
                         <Stack.Screen key={index} name={route.name} component={route.component} />
                     ))}
