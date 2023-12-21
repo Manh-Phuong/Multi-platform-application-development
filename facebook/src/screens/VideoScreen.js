@@ -137,6 +137,7 @@ const VideoScreen = () => {
     const [lastId, setLastId] = useState(null);
     const [loading, setLoading] = useState(false);
     const [hasData, setHasData] = useState(true);
+    const listVideos = useSelector((state) => state.listPost.listVideos);
 
     const refreshData = async () => {
         try {
@@ -181,6 +182,39 @@ const VideoScreen = () => {
                     'id',
                 ),
             );
+
+            dispatch(
+                setStoreListVideos(
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...(result.data.data.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        image: null,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }) || []),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                ),
+            );
+
             setHasData(result.data.data.post?.length > 0);
         } catch (error) {
             console.log('refreshData PostServices ' + error);
@@ -205,7 +239,38 @@ const VideoScreen = () => {
 
             setLastId(result.data.data.last_id);
 
-            dispatch(setStoreListVideos());
+            dispatch(
+                setStoreListVideos(
+                    _.uniqBy(
+                        _.orderBy(
+                            [
+                                ...listVideos,
+                                ...(result.data.data.post?.map((item) => {
+                                    return {
+                                        id: item?.id,
+                                        owner: item.author.name,
+                                        avatar: item.author.avatar,
+                                        content: item.described,
+                                        image: null,
+                                        video: item?.video?.url,
+                                        created: item?.created,
+                                        feel: item?.feel,
+                                        comment_mark: item?.comment_mark,
+                                        is_felt: item?.is_felt,
+                                        is_blocked: item?.is_blocked,
+                                        can_edit: item?.can_edit,
+                                        banned: item?.banned,
+                                        state: item?.state,
+                                    };
+                                }) || []),
+                            ],
+                            ['id'],
+                            ['desc'],
+                        ),
+                        'id',
+                    ),
+                ),
+            );
 
             setListPost((prev) =>
                 _.uniqBy(
@@ -241,10 +306,10 @@ const VideoScreen = () => {
         }
     };
 
-    useEffect(() => {
-        dispatch(setStoreListVideos(listPost));
-        dispatch(setStoreListVideoActive(listPost));
-    }, [listPost]);
+    // useEffect(() => {
+    //     dispatch(setStoreListVideos(listPost));
+    //     dispatch(setStoreListVideoActive(listPost));
+    // }, [listPost]);
 
     useEffect(() => {
         setLoading(true);
@@ -334,7 +399,7 @@ const VideoScreen = () => {
                 </View> */}
                 <View style={styles.videoContainer}>
                     <FlatList
-                        data={listPost}
+                        data={listVideos}
                         keyExtractor={(item, index) => item.id + index}
                         ListHeaderComponent={<Header />}
                         contentContainerStyle={{ paddingBottom: 130 }}

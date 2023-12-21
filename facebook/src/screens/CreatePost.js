@@ -260,14 +260,15 @@ const CreatePost = () => {
 
             const result = await PostServices.addPost(formData);
             if (result.data.code == '1000') {
-                Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
-                    {
-                        text: 'OK',
-                        onPress: async () => {
-                            navigation.goBack();
-                        },
-                    },
-                ]);
+                // Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
+                //     {
+                //         text: 'OK',
+                //         onPress: async () => {
+                //             navigation.goBack();
+                //         },
+                //     },
+                // ]);
+                navigation.goBack();
                 dispatch(setStoreStatus(''));
                 dispatch(setStoreCreatePost(true));
                 setTimeout(() => {

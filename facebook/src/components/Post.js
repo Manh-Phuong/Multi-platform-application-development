@@ -82,6 +82,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     const [visiblePause, setVisiblePause] = useState(false);
     const [videoSize, setVideoSize] = useState({ width: withScreen, height: (withScreen * 9) / 16 });
     const listVideoActive = useSelector((state) => state.listPost.listVideoActive);
+    const listVideos = useSelector((state) => state.listPost.listVideos);
     // console.log('urlVideo', urlVideo);
     // console.log('offsetY', offsetY);
 
@@ -93,7 +94,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     const handleClickVideo = () => {
         // console.log('click roi')
         if (!activeVideo) {
-            dispatch(setStoreListVideoActive(_.uniqBy([item, ...listVideoActive]), 'id'));
+            dispatch(setStoreListVideoActive(_.uniqBy([item, ...listVideos]), 'id'));
             navigation.navigate('VideoActive', { item: item });
         }
         setVisiblePause(true);
@@ -378,9 +379,9 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                     {
                         text: 'OK',
                         onPress: async () => {
-                            // Người dùng nhấn "OK", thực hiện xóa bài viết
                             try {
                                 const result = await PostServices.deletePost(id);
+                                setModalReport(false);
 
                                 const response = await PostServices.getListPost({
                                     user_id: null,

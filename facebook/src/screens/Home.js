@@ -429,6 +429,7 @@ export default function Home() {
         try {
             setListPost([]);
             setLoading(true);
+            dispatch(setStoreListPost([]));
             const response = await PostServices.getListPost({
                 user_id: null,
                 in_campaign: '1',
@@ -571,7 +572,7 @@ export default function Home() {
     return (
         <View style={styles.container}>
             {/* <Collapsible collapsed={!showHeader}> */}
-            <View style={[styles.header, { height: showHeader ? 'auto' : 0, opacity: showHeader ? 1 : 0 }]}>
+            <View style={[styles.header]}>
                 <View>
                     <Text style={styles.logo}>facebook</Text>
                 </View>
