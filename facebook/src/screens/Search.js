@@ -288,6 +288,8 @@ export default function Search() {
                     onSwipeComplete={toggleModal}
                     swipeDirection={['down']}
                     style={{ justifyContent: 'flex-end', margin: 0 }}
+                    animationOutTiming={1000}
+                    onBackdropPress={toggleModal}
                 >
                     <View
                         style={{

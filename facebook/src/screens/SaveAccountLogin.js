@@ -32,6 +32,7 @@ const SaveAccountLogin = () => {
             const res = await login({ email, password });
             await AsyncStorage.setItem('token', res.data.data.token);
             if (res.data.code == '1000') {
+                console.log(res.data)
                 navigation.navigate('Home');
             }
         } catch (err) {
@@ -39,7 +40,7 @@ const SaveAccountLogin = () => {
         }
     };
 
-    const handleResetAccount = async () => {
+    const handleResetAccount = async () => {``
         await AsyncStorage.removeItem('accountInfo');
         navigation.navigate('Login');
         // const res = await AsyncStorage.getAllKeys()

@@ -17,7 +17,8 @@ import {
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { launchImageLibrary } from 'react-native-image-picker';
 import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { setStoreStatus } from '../feature/post';
 import { useDispatch, useSelector } from 'react-redux';
 import { Video, ResizeMode } from 'expo-av';
 import * as PostServices from '../services/PostServices';
@@ -29,6 +30,7 @@ heightScreen = Dimensions.get('window').height;
 
 const CreatePost = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
     const [selectedImage, setSelectedImage] = React.useState('');
     const [isShowTagPart, setIsShowTagPart] = useState(true);
     const [isShowKeyBoard, setIsShowKeyBoard] = useState(false);
@@ -211,6 +213,7 @@ const CreatePost = () => {
                         onPress: async () => navigation.goBack(),
                     },
                 ]);
+                dispatch(setStoreStatus(''));
             } else if (result.data.code == '2001') {
                 Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
                     {
@@ -223,7 +226,6 @@ const CreatePost = () => {
                     },
                 ]);
             }
-            console.log('ket qua', result.data);
         } catch (error) {
             console.log('handlePost PostServices addPost', error);
         }
@@ -244,8 +246,12 @@ const CreatePost = () => {
                         <Text style={styles.textBigBold}>Tạo bài viết</Text>
                         {!isCreatePost && <TouchableOpacity
                             style={[
-                                !textInput.length || !(image && image.length) || video == '' ? styles.buttonDisable : '',
-                                textInput.length || (image && image.length) || video != '' ? styles.buttonNotDisable : '',
+                                !textInput.length || !(image && image.length) || video == ''
+                                    ? styles.buttonDisable
+                                    : '',
+                                textInput.length || (image && image.length) || video != ''
+                                    ? styles.buttonNotDisable
+                                    : '',
                             ]}
                             disabled={!textInput.length && !(image && image.length) && video == ''}
                             onPress={handlePost}
@@ -294,7 +300,8 @@ const CreatePost = () => {
                             <View style={styles.right}>
                                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                     <Text style={{ fontSize: 18 }}>
-                                        <Text style={styles.textMediumBold}>{name}</Text> hiện đang cảm thấy {status}
+                                        <Text style={styles.textMediumBold}>{name}</Text>{' '}
+                                        {status && ' hiện đang cảm thấy'} {status}
                                     </Text>
                                 </View>
                                 <View style={styles.rightPublic}>

@@ -26,14 +26,16 @@ export const setBlockUser = async (formData) => {
         const headers = await createAuthHeader();
         const res = await request.post('/set_block', formData, { headers });
         // console.log(res);
-        Alert.alert('Chặn thành công.', 'Bạn đã chặn thành công.', [
-            {
-                text: 'OK',
-                onPress: () => {
-                    // Xử lý khi người dùng nhấn nút OK
+        if (res.data.code == '1000') {
+            Alert.alert('Chặn thành công.', 'Bạn đã chặn thành công.', [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        // Xử lý khi người dùng nhấn nút OK
+                    },
                 },
-            },
-        ]);
+            ]);
+        }
 
         return res;
     } catch (err) {

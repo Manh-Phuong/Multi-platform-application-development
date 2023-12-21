@@ -12,7 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 withScreen = Dimensions.get('window').width;
 heightScreen = Dimensions.get('window').height;
 
-const Menu = () => {
+const Menu = ({handleActive}) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     const name = useSelector((state) => state.profile.name);
@@ -45,6 +45,7 @@ const Menu = () => {
                         const res = await logout();
                         setIsLoadApi(false);
                         await AsyncStorage.removeItem("token");
+                        handleActive('home')
                         navigation.navigate('SaveAccountLogin');
                     },
                 },
@@ -57,9 +58,9 @@ const Menu = () => {
         <View style={styles.container}>
             <View style={styles.header}>
                 <Text style={styles.headerText}>Menu</Text>
-                <View style={styles.viewIcon}>
+                {/* <View style={styles.viewIcon}>
                     <Icon style={styles.searchIcon} name="search" size={20} color="#000" />
-                </View>
+                </View> */}
             </View>
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={styles.menuContainer}>
@@ -147,10 +148,14 @@ const Menu = () => {
                 </View>
 
                 <View style={styles.menuContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')}>
+
                     <View style={styles.menuItem}>
                         <Icon name="question" size={20} />
-                        <Text style={styles.menuText}>Trợ giúp hỗ trợ</Text>
+                        <Text style={styles.menuText}>Đổi mật khẩu</Text>
                     </View>
+                    </TouchableOpacity>
+
                     <View style={styles.shortcutDivider} />
                     <TouchableOpacity onPress={() => navigation.navigate('BlockList')}>
                         <View style={styles.menuItem}>
@@ -226,6 +231,7 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: 'bold',
         fontSize: 28,
+        paddingTop: 6
     },
     menuContainer: {
         padding: 10,
