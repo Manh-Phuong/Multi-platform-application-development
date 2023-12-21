@@ -264,14 +264,15 @@ const CreatePost = () => {
 
             const result = await PostServices.addPost(formData);
             if (result.data.code == '1000') {
-                Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
-                    {
-                        text: 'OK',
-                        onPress: async () => {
-                            navigation.goBack();
-                        },
-                    },
-                ]);
+                // Alert.alert('Đăng thành công', 'Bạn đã đăng bài thành công.', [
+                //     {
+                //         text: 'OK',
+                //         onPress: async () => {
+                //             navigation.goBack();
+                //         },
+                //     },
+                // ]);
+                navigation.goBack();
                 dispatch(setStoreStatus(''));
                 dispatch(setStoreCreatePost(true));
                 setTimeout(() => {
@@ -288,6 +289,14 @@ const CreatePost = () => {
                     {
                         text: 'Mua xu',
                         onPress: async () => navigation.navigate('BuyCoins'),
+                    },
+                ]);
+            }
+            else if (result.data.code == '9998') {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
                     },
                 ]);
             }
@@ -837,6 +846,8 @@ const styles = StyleSheet.create({
         paddingLeft: 14,
         paddingRight: 14,
         borderRadius: 8,
+        minWidth: 70, 
+        minHeight: 40
     },
     buttonNotDisable: {
         backgroundColor: '#0866ff',
@@ -845,6 +856,8 @@ const styles = StyleSheet.create({
         paddingLeft: 14,
         paddingRight: 14,
         borderRadius: 8,
+        minWidth: 70, 
+        minHeight: 40
     },
     textDisable: {
         color: '#8b8d91',

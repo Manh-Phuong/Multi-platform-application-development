@@ -29,6 +29,7 @@ import { faComment, faShareFromSquare, faShareSquare, faThumbsUp } from '@fortaw
 import { deleteFeel, getListComment, getListFeel, setComment, setFeel } from '../services/CommentServices';
 import post from '../feature/post';
 import Modal from 'react-native-modal';
+import { readAsStringAsync } from 'expo-file-system';
 
 const Header = ({ post, type, handleFocusInput, listCmt, resetReact, showModal }) => {
     const [displayEmoji, setDisplayEmoji] = useState(false);
@@ -370,12 +371,52 @@ const DetailPost = ({ route }) => {
                 setNewComment('');
                 inputRef.current.blur();
             }
+            else if (res.code == 2001) {
+                Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Mua xu',
+                        onPress: async () => navigation.navigate('BuyCoins'),
+                    },
+                ]);
+            }
+            else if (res.code == 9998) {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
         } else if (typeOfCmt == 1) {
             const res = await setComment({ id: postInfo.id, content: newComment, mark_id: idMark, type: '' });
             if (res.code == 1000) {
                 setListCmt(res?.data);
                 setNewComment('');
                 inputRef.current.blur();
+            }
+            else if (res.code == 2001) {
+                Alert.alert('Bạn không đủ xu', 'Để đăng bài cần 10 xu. Vui lòng nạp xu.', [
+                    {
+                        text: 'Hủy',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'Mua xu',
+                        onPress: async () => navigation.navigate('BuyCoins'),
+                    },
+                ]);
+            }
+            else if (res.code == 9998) {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
             }
         }
     };

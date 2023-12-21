@@ -82,6 +82,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     const [visiblePause, setVisiblePause] = useState(false);
     const [videoSize, setVideoSize] = useState({ width: withScreen, height: (withScreen * 9) / 16 });
     const listVideoActive = useSelector((state) => state.listPost.listVideoActive);
+    const listVideos = useSelector((state) => state.listPost.listVideos);
     // console.log('urlVideo', urlVideo);
     // console.log('offsetY', offsetY);
 
@@ -93,7 +94,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     const handleClickVideo = () => {
         // console.log('click roi')
         if (!activeVideo) {
-            dispatch(setStoreListVideoActive(_.uniqBy([item, ...listVideoActive]), 'id'));
+            dispatch(setStoreListVideoActive(_.uniqBy([item, ...listVideos]), 'id'));
             navigation.navigate('VideoActive', { item: item });
         }
         setVisiblePause(true);
@@ -149,7 +150,7 @@ const VideoPlay = ({ urlVideo, offsetY, item, activeVideo }) => {
     };
 
     useEffect(() => {
-        loadThumbnail();
+        // loadThumbnail();
         // const playTimeout = setTimeout(() => {
         //     if (video.current) {
         //         video.current.playAsync();
@@ -379,9 +380,9 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
                     {
                         text: 'OK',
                         onPress: async () => {
-                            // Người dùng nhấn "OK", thực hiện xóa bài viết
                             try {
                                 const result = await PostServices.deletePost(id);
+                                setModalReport(false);
 
                                 const response = await PostServices.getListPost({
                                     user_id: null,
@@ -444,7 +445,16 @@ export default function Post({ onCommentPress, darkMode, isMute, offsetY, active
             let type = false;
             const res = await getListComment({ id: props.item.id });
             const res2 = await PostServices.getPost({ id: props.item.id });
-            if (res2.data.code == 1000) {
+            console.log(res2)
+            if (res2.data.code == 9998) {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
+            else if (res2.data.code == 1000) {
                 props.item['feel'] = parseInt(res2.data.data.kudos, 10) + parseInt(res2.data.data.disappointed, 10);
                 type = res2.data.data.is_felt;
                 // props.item["disappointed"] = res.data.data.disappointed

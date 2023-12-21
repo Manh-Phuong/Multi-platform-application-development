@@ -356,7 +356,7 @@ export default function Home() {
             // console.log(response.data.data.post);
             setListPost((prevData) => [
                 ...prevData,
-                ...(response?.data.post?.map((item) => {
+                ...(response?.data?.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -378,7 +378,7 @@ export default function Home() {
                 ,
             ]);
 
-            setHasData(response?.data.post?.length > 0);
+            setHasData(response?.data?.post?.length > 0 || true);
 
             dispatch(
                 setStoreListPost(
@@ -386,7 +386,7 @@ export default function Home() {
                         _.orderBy(
                             [
                                 ...listPostStore,
-                                ...(response?.data.post?.map((item) => {
+                                ...(response?.data?.post?.map((item) => {
                                     return {
                                         id: item?.id,
                                         owner: item.author.name,
@@ -424,6 +424,7 @@ export default function Home() {
         try {
             setListPost([]);
             setLoading(true);
+            dispatch(setStoreListPost([]));
             const response = await PostServices.getListPost({
                 user_id: null,
                 in_campaign: '1',
@@ -435,8 +436,18 @@ export default function Home() {
                 count: '10',
             });
             setLastId(response?.data?.last_id);
+
+            // console.log('refresh data nhu nay: ', response);
+            if (response?.code == '9998') {
+                Alert.alert('Phiên đăng nhập đã hết hạn', 'Vui lòng đăng nhập lại.', [
+                    {
+                        text: 'OK',
+                        onPress: () => navigation.navigate('Login'),
+                    },
+                ]);
+            }
             setListPost(
-                response?.data.post?.map((item) => {
+                response?.data?.post?.map((item) => {
                     return {
                         id: item?.id,
                         owner: item.author.name,
@@ -457,7 +468,7 @@ export default function Home() {
                 }) || [],
             );
 
-            setHasData(response?.data.post?.length > 0);
+            setHasData(response?.data?.post?.length > 0);
 
             dispatch(
                 setStoreListPost(
@@ -465,7 +476,7 @@ export default function Home() {
                         _.orderBy(
                             [
                                 ...listPostStore,
-                                ...(response?.data.post?.map((item) => {
+                                ...(response?.data?.post?.map((item) => {
                                     return {
                                         id: item?.id,
                                         owner: item.author.name,
@@ -538,6 +549,7 @@ export default function Home() {
     return (
         <View style={styles.container}>
             <View style={styles.header}>
+
                 <View>
                     <Text style={styles.logo}>facebook</Text>
                 </View>

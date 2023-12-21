@@ -15,9 +15,11 @@ export const setComment = async ({id = "790", content, index="0",count = "10", m
     try {
         const headers = await createAuthHeader();
         const res = await request.post('/set_mark_comment', {id, content, index,count, mark_id,type}, { headers });
+        console.log(res.data)
         return res.data;
     } catch (err) {
-        return err.response
+        console.log(err.response.data)
+        return err.response.data
     }
 };
 
